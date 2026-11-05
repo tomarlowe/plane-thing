@@ -1,0 +1,167 @@
+{
+  "id": "01a1a8ce-5e3a-71a1-8619-b65be4e9d5d1",
+  "name": "Dash Spotter",
+  "version": "0.1.0",
+  "description": "Aircraft overhead, a live radar, a watch list, a spotter log and an airport arrivals board. Uses your phone's location.",
+  "icon": "icon.png",
+  "settings": "settings.html",
+  "config": [
+    {
+      "type": "enum",
+      "data": {
+        "key": "units",
+        "label": "Units",
+        "description": "Imperial is miles, feet and knots. Aviation is nautical miles, feet and knots. Metric is kilometers, meters and km/h.",
+        "choices": [
+          "imperial",
+          "aviation",
+          "metric"
+        ],
+        "choiceLabels": {
+          "imperial": "Imperial (mi, ft, kt)",
+          "aviation": "Aviation (nm, ft, kt)",
+          "metric": "Metric (km, m, km/h)"
+        },
+        "default": "imperial"
+      }
+    },
+    {
+      "type": "enum",
+      "data": {
+        "key": "clock",
+        "label": "Clock",
+        "description": "How times are shown.",
+        "choices": [
+          "12",
+          "24"
+        ],
+        "choiceLabels": {
+          "12": "12-hour (4:12 PM)",
+          "24": "24-hour (16:12)"
+        },
+        "default": "12"
+      }
+    },
+    {
+      "type": "enum",
+      "data": {
+        "key": "location_mode",
+        "label": "Location",
+        "description": "Auto follows your phone's GPS. Fixed always uses the coordinates below, which is handy at a desk.",
+        "choices": [
+          "auto",
+          "manual"
+        ],
+        "choiceLabels": {
+          "auto": "Follow my phone",
+          "manual": "Fixed place"
+        },
+        "default": "auto"
+      }
+    },
+    {
+      "type": "number",
+      "data": {
+        "key": "manual_lat",
+        "label": "Fixed latitude",
+        "description": "Used only when Location is Fixed place. Example: 40.6413",
+        "min": -90,
+        "max": 90,
+        "step": 0.0001,
+        "default": 0
+      }
+    },
+    {
+      "type": "number",
+      "data": {
+        "key": "manual_lon",
+        "label": "Fixed longitude",
+        "description": "Used only when Location is Fixed place. Example: -73.7781",
+        "min": -180,
+        "max": 180,
+        "step": 0.0001,
+        "default": 0
+      }
+    },
+    {
+      "type": "enum",
+      "data": {
+        "key": "airports_mode",
+        "label": "Airports",
+        "description": "Auto looks only at airports within 250 miles of you and reloads as you travel. Pick a country to use that country's airports. Whole world uses all of them.",
+        "choices": [
+          "auto",
+          "country",
+          "world"
+        ],
+        "choiceLabels": {
+          "auto": "Auto (near my location)",
+          "country": "Pick a country",
+          "world": "Whole world"
+        },
+        "default": "auto"
+      }
+    },
+    {
+      "type": "string",
+      "data": {
+        "key": "airports_country",
+        "label": "Country code",
+        "description": "Two letters, such as US, GB, DE, AU or JP. Used only when Airports is Pick a country. Not sure of a code? The list below the settings has them all.",
+        "pattern": "^[A-Za-z]{0,2}$",
+        "minLength": null,
+        "maxLength": 2,
+        "default": ""
+      }
+    },
+    {
+      "type": "number",
+      "data": {
+        "key": "log_distance",
+        "label": "Log distance (miles)",
+        "description": "An aircraft goes in the spotter log when it comes this close to you.",
+        "min": 1,
+        "max": 50,
+        "step": 1,
+        "default": 10
+      }
+    },
+    {
+      "type": "string",
+      "data": {
+        "key": "watch_list",
+        "label": "Watch list",
+        "description": "Tail numbers, callsigns or the start of one, aircraft type codes or hex codes, separated by commas. Example: N123AB, DAL, A388, MIL",
+        "pattern": "^[A-Za-z0-9 ,;-]*$",
+        "minLength": 0,
+        "maxLength": 300,
+        "default": ""
+      }
+    },
+    {
+      "type": "boolean",
+      "data": {
+        "key": "emergency_jump",
+        "label": "Jump to the radar on an emergency",
+        "description": "When an aircraft within 100 miles squawks 7500, 7600 or 7700, the screen flashes EMERGENCY three times. This also switches to the radar and zooms to show it. Turn off to flash and stay on your screen.",
+        "default": true
+      }
+    },
+    {
+      "type": "boolean",
+      "data": {
+        "key": "dial_reverse",
+        "label": "Reverse the dial",
+        "description": "Turn this on if the radar zooms the wrong way when you turn the dial.",
+        "default": false
+      }
+    }
+  ],
+  "permissions": [
+    "geo"
+  ],
+  "art": {
+    "heroPx": 248,
+    "thumbPx": 96
+  }
+}

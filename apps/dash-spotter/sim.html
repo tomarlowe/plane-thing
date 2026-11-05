@@ -1,0 +1,156 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Dash Spotter simulator</title>
+    <style>
+      :root {
+        color-scheme: dark;
+      }
+      body {
+        margin: 0;
+        padding: 24px;
+        background: #15181d;
+        color: #dfe5ee;
+        font-family: system-ui, sans-serif;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 16px;
+      }
+      h1 {
+        font-size: 18px;
+        margin: 0;
+      }
+      .note {
+        max-width: 820px;
+        font-size: 14px;
+        color: #9aa6b8;
+        text-align: center;
+        margin: 0;
+      }
+      .bezel {
+        padding: 18px;
+        border-radius: 28px;
+        background: #0a0b0d;
+        box-shadow: 0 0 0 2px #2b3038;
+      }
+      iframe {
+        display: block;
+        width: 800px;
+        height: 480px;
+        border: 0;
+        border-radius: 12px;
+        background: #000;
+      }
+      .row {
+        display: flex;
+        gap: 12px;
+        align-items: center;
+        flex-wrap: wrap;
+        justify-content: center;
+      }
+      button,
+      select {
+        font: inherit;
+        padding: 10px 16px;
+        border-radius: 10px;
+        border: 1px solid #3a414c;
+        background: #232830;
+        color: inherit;
+        cursor: pointer;
+      }
+      button:hover {
+        background: #2d343e;
+      }
+      button.recess {
+        background: #0f1114;
+        border-style: dashed;
+      }
+      label {
+        display: flex;
+        gap: 8px;
+        align-items: center;
+        font-size: 14px;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Dash Spotter simulator</h1>
+    <p class="note">
+      Runs the app on made-up aircraft, with no network and no device. Every aircraft, photo and delay here is invented. The
+      buttons send the same events the Car Thing sends. Keyboard keys 1, 2, 3, 4, m and Enter work too, and so does shift plus
+      the mouse wheel for the dial.
+    </p>
+    <div class="bezel"><iframe id="screen" title="Dash Spotter"></iframe></div>
+    <div class="row">
+      <button data-key="1">1 Overhead</button>
+      <button data-key="2">2 Radar</button>
+      <button data-key="3">3 Watchlist</button>
+      <button data-key="4">4 Log</button>
+      <button data-key="m" class="recess">Recessed (m) Arrivals</button>
+      <button data-key="Enter">Dial click</button>
+    </div>
+    <div class="row">
+      <button id="dial-left">Dial ◀ counterclockwise</button>
+      <button id="dial-right">Dial ▶ clockwise</button>
+      <label>
+        Scenario
+        <select id="scenario">
+          <option value="">Normal (aircraft nearby)</option>
+          <option value="scenario=empty">Nothing close</option>
+          <option value="scenario=emergency&emergency_after=20">Emergency squawk after 20 s</option>
+          <option value="scenario=emergency&emergency_after=20&emergency_jump=false">Emergency, no jump to Radar</option>
+          <option value="scenario=fleet">Photo of another tail number</option>
+          <option value="photo=type">Only a type photo</option>
+          <option value="photo=none">No photos</option>
+          <option value="watch_list=UAL2210,MIL">Watch list: UAL2210 and military</option>
+          <option value="units=metric&clock=24">Metric and 24-hour clock</option>
+          <option value="units=aviation">Aviation units</option>
+          <option value="fail=flights,squawk">Flight data down</option>
+          <option value="fail=position">No phone location</option>
+          <option value="dial_reverse=true">Dial reversed</option>
+        </select>
+      </label>
+    </div>
+    <script>
+      const frame = document.getElementById('screen');
+      const scenario = document.getElementById('scenario');
+      const load = () => {
+        const extra = scenario.value ? `&${scenario.value}` : '';
+        frame.src = `/?sim=fixtures${extra}`;
+      };
+      scenario.addEventListener('change', load);
+      load();
+
+      // events must be built by the app window's own constructors, so grab the window first
+      const sendKey = key => {
+        const w = frame.contentWindow;
+        if (w) w.dispatchEvent(new w.KeyboardEvent('keydown', { key, bubbles: true }));
+      };
+      for (const b of document.querySelectorAll('button[data-key]')) {
+        b.addEventListener('click', () => sendKey(b.dataset.key));
+      }
+      const dial = dx => {
+        const w = frame.contentWindow;
+        if (w) w.dispatchEvent(new w.WheelEvent('wheel', { deltaX: dx, bubbles: true }));
+      };
+      document.getElementById('dial-left').addEventListener('click', () => dial(-120));
+      document.getElementById('dial-right').addEventListener('click', () => dial(120));
+
+      // keys typed on this page reach the app too
+      window.addEventListener('keydown', e => {
+        if (e.target instanceof HTMLSelectElement) return;
+        sendKey(e.key);
+      });
+      window.addEventListener(
+        'wheel',
+        e => {
+          if (e.shiftKey && e.deltaX !== 0) dial(e.deltaX);
+        },
+        { passive: true },
+      );
+    </script>
+  </body>
+</html>
