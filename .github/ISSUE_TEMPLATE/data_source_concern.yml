@@ -1,0 +1,49 @@
+name: Data source concern
+description: A service Plane Thing uses may not allow how the app uses it.
+title: "[data source] "
+labels: ["data-source"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        We would rather fix a terms problem than argue about it. See [data sources](https://github.com/tomarlowe/plane-thing/blob/main/docs/data-sources.md)
+        for what the app sends to each service and what was read. If you run one of these services, thank you for telling us.
+  - type: dropdown
+    id: service
+    attributes:
+      label: Which service?
+      options:
+        - adsb.lol
+        - airplanes.live
+        - adsb.fi
+        - Planespotters.net
+        - airport-data.com
+        - Wikimedia Commons
+        - FAA status feed
+        - OurAirports
+        - Another service
+    validations:
+      required: true
+  - type: textarea
+    id: concern
+    attributes:
+      label: What is the concern?
+      description: What does the app do, and which term or rule does it conflict with?
+    validations:
+      required: true
+  - type: input
+    id: link
+    attributes:
+      label: Link to the terms or policy
+    validations:
+      required: true
+  - type: dropdown
+    id: role
+    attributes:
+      label: Who are you?
+      options:
+        - I run or represent this service
+        - A user of Plane Thing
+        - Someone else
+    validations:
+      required: true

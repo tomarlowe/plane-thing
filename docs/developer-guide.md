@@ -125,6 +125,9 @@ There are two kinds, and neither runs on a real device.
 The real device is tested by hand with [device-test-checklist.md](device-test-checklist.md). Until that has been done, every
 live service shape and every phone interaction counts as unconfirmed.
 
+GitHub Actions runs the typecheck, the unit tests and `bun run check` on every push and pull request. The full picture,
+including what has not been tested, is in [testing.md](testing.md).
+
 The unit tests need `tsconfig.test.json` (TypeScript 6 loads no global types by default), which `bun run typecheck` uses.
 
 ## Changing the app

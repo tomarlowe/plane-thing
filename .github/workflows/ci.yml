@@ -22,6 +22,12 @@ jobs:
 
       - run: bun install --frozen-lockfile
 
+      - name: typecheck the app, the settings page and the tests
+        run: bun run --cwd apps/plane-thing typecheck
+
+      - name: unit tests
+        run: bun run --cwd apps/plane-thing test
+
       - name: build, bundle and validate the catalog
         env:
           CHECK_BASE_REF: ${{ github.event_name == 'pull_request' && format('origin/{0}', github.base_ref) || '' }}

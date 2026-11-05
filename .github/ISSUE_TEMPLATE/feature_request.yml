@@ -1,0 +1,33 @@
+name: Feature request
+description: Suggest something Plane Thing could do.
+title: "[idea] "
+labels: ["enhancement"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Please read the [roadmap](https://github.com/tomarlowe/plane-thing/blob/main/docs/roadmap.md) and
+        [design decisions](https://github.com/tomarlowe/plane-thing/blob/main/docs/design-decisions.md) first. Some things were left out on
+        purpose: no accounts, no paid services, no drones in version 1.
+  - type: textarea
+    id: problem
+    attributes:
+      label: What are you trying to do?
+      description: Describe the situation, not only the feature.
+    validations:
+      required: true
+  - type: textarea
+    id: idea
+    attributes:
+      label: What would you like it to do?
+    validations:
+      required: true
+  - type: textarea
+    id: data
+    attributes:
+      label: Where would the data come from?
+      description: If it needs a new data source, name it and link its terms of use. It must be free and need no account.
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Anything you tried instead?

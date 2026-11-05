@@ -1,0 +1,55 @@
+name: Bug report
+description: Something in Plane Thing is wrong, broken or confusing.
+title: "[bug] "
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for reporting. Please check the [troubleshooting guide](https://github.com/tomarlowe/plane-thing/blob/main/docs/troubleshooting.md) first.
+        Do not post your exact location, home address or a full spotter log. Rough places ("near a large airport in Ohio") are plenty.
+  - type: textarea
+    id: what-happened
+    attributes:
+      label: What happened?
+      description: What did you see, and what did you expect instead?
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: How can it be repeated?
+      description: Steps, the screen you were on, and what you pressed or turned.
+  - type: dropdown
+    id: where
+    attributes:
+      label: Where were you running it?
+      options:
+        - On a real Car Thing
+        - In the simulator (sim.html)
+        - In a desktop browser
+        - Not sure
+    validations:
+      required: true
+  - type: input
+    id: version
+    attributes:
+      label: Plane Thing version
+      description: For example 0.1.0. Not sure? Say so.
+  - type: input
+    id: platform
+    attributes:
+      label: Bridgething version and phone
+      description: Which bridgething release is on the Car Thing (if you know), and your phone model and operating system.
+  - type: textarea
+    id: screenshot
+    attributes:
+      label: Photos, screenshots or text from the screen
+      description: Drag files here. Crop out anything you do not want to share.
+  - type: checkboxes
+    id: checks
+    attributes:
+      label: Before sending
+      options:
+        - label: I read the troubleshooting guide.
+        - label: I removed private details from what I pasted.

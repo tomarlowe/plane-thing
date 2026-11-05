@@ -1,0 +1,60 @@
+name: Device test report
+description: Tell us how Plane Thing behaved on a real Car Thing, even if everything worked.
+title: "[device test] "
+labels: ["device-test"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Version 0.1.0 has only been run in a simulator and unit tests so far. Reports from real devices are the most useful
+        thing you can send. Use the [device test checklist](https://github.com/tomarlowe/plane-thing/blob/main/docs/device-test-checklist.md) as a guide.
+        Please do not post your exact location.
+  - type: input
+    id: version
+    attributes:
+      label: Plane Thing version
+    validations:
+      required: true
+  - type: input
+    id: setup
+    attributes:
+      label: Your setup
+      description: Bridgething version, phone model and operating system, and roughly where you were (country or region is fine).
+    validations:
+      required: true
+  - type: dropdown
+    id: overall
+    attributes:
+      label: Overall result
+      options:
+        - Everything I tried worked
+        - Mostly worked, with problems
+        - Did not work
+    validations:
+      required: true
+  - type: checkboxes
+    id: worked
+    attributes:
+      label: Which of these worked?
+      options:
+        - label: The app installed and started
+        - label: Overhead showed a real aircraft near me
+        - label: A photo appeared (say which kind below)
+        - label: Radar drew aircraft and the dial changed the range
+        - label: The nearest airport was named correctly
+        - label: Watchlist showed something
+        - label: The spotter log recorded sightings and survived a restart
+        - label: I exported a CSV from the phone
+        - label: I exported a KML from the phone
+        - label: Arrivals showed an airport and aircraft
+        - label: The emergency flash and jump worked (only if you saw a real or simulated one)
+  - type: textarea
+    id: details
+    attributes:
+      label: Details and surprises
+      description: What was slower, wrong, missing or odd? Include times if you can, for example how long it took to find the first aircraft.
+  - type: textarea
+    id: export
+    attributes:
+      label: Did you open an export anywhere?
+      description: Which program (spreadsheet, map program, logbook), and did the columns and places look right?
