@@ -51,6 +51,8 @@ Record the date, the bridgething version, and the phone. Note anything that diff
 ## Photos
 
 - [ ] A photo of the exact aircraft appears, with the photographer and "Planespotters.net" under it.
+- [ ] Planespotters answers the app's requests at all. Its terms say requests without an Origin or Referer header are
+      rejected (403), and the phone's relay may send neither. Note what the app shows when it fails.
 - [ ] An aircraft with no photo shows "Photo shows ..." with another tail of the same airline and type.
 - [ ] A rare aircraft shows a "Typical ..." photo from Wikimedia Commons with the artist and license.
 - [ ] No photo at all shows the silhouette, and nothing hangs.

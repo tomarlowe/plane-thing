@@ -53,6 +53,10 @@ Car Thing, and the live data services have not been called by its tests. The
 [device test checklist](docs/device-test-checklist.md) lists every thing still to be confirmed on the real device. The
 screenshots in the store listing are simulator pictures with sample data, not photos of the real screen.
 
+Use of the photo services is not fully confirmed against their terms (Planespotters.net in particular asks for things a
+Car Thing cannot do, such as a clickable credit link). Read [docs/data-sources.md](docs/data-sources.md) before listing or
+redistributing the app.
+
 ## Privacy
 
 There is no account, no tracking and no analytics, and nothing is sent to the author. Your position goes to the flight

@@ -90,17 +90,23 @@ the type from Wikimedia Commons (labelled "Typical ..., not this aircraft"), and
 ### Planespotters.net
 
 - Used for: photos of the exact aircraft, looked up by hex code and then tail number.
-- Terms (from its public API pages): photos must be credited to the photographer and Planespotters.net, with a link to
-  the photo page, and they may not be copied, re-hosted or exported. Requests should identify the app with a contact URL
-  in the User-Agent, and the data should not be cached longer than 24 hours.
-- What Dash Spotter does: it shows the photographer and "Planespotters.net" under each photo, sends a User-Agent that names
-  Dash Spotter and its GitHub page, keeps lookups in memory for one hour and photos only while they are on screen, and
-  does not store photos anywhere or put them in the log.
-- **Open issue:** the photo credit carries the link in the page, but the Car Thing's kiosk cannot open links, so nobody can
-  follow it, and the pictures travel through the phone's bridgething connection, which is a kind of relay. Dash Spotter has
-  not been given written permission for this use. The author planned to ask Planespotters. Until they answer, treat the
-  Planespotters photos as unconfirmed. If they say no, a new version can drop Planespotters and use only the other photo
-  sources.
+- Terms (from its public API page, read 2026-11-04): each photo must credit the photographer in text visible next to the
+  image. The thumbnail must link to the photo's page with a plain anchor. API replies may be cached for up to 24 hours,
+  but image files may not be cached or re-hosted, and images must load in the end user's browser from the addresses the
+  API returns, unchanged. Server-side programs must send a unique, descriptive User-Agent with a contact URL. Browser
+  requests must come from a web page that sends a valid Origin or Referer header, and requests without one are rejected.
+  Use must stay within reasonable limits, and the page asks projects with advanced use to contact Planespotters first.
+- What Dash Spotter does: it shows the photographer and "Planespotters.net" next to each photo, puts the photo-page link
+  in the credit, sends a User-Agent that names Dash Spotter and its GitHub page, keeps API replies in memory for one hour,
+  asks for one photo at a time, and never saves or republishes a photo or puts it in the log.
+- **Open issues, not resolved.** The Car Thing has no direct internet access, so Dash Spotter asks the phone's bridgething
+  connection to fetch each image and turns it into a picture held in memory (at most eight). That is not the same as the
+  picture loading in the user's own browser from Planespotters' address, so it may not meet the terms. The kiosk cannot
+  open the credit link, so nobody can follow it. The phone's relay probably sends no Origin or Referer header, so
+  Planespotters may refuse the requests, and in that case the app silently moves on to the other photo sources. Dash
+  Spotter has not been given written permission for any of this and has not been tested against the live service.
+- What to do: ask Planespotters for permission, describing the project and this limit. If they decline, or before listing
+  the app publicly without an answer, a new version should drop Planespotters and use only the other photo sources.
 
 ### airport-data.com
 
