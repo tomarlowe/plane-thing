@@ -1,8 +1,8 @@
 {
-  "name": "Dash Spotter",
+  "name": "Plane Thing",
   "description": "A five-screen aircraft spotter for the Spotify Car Thing.",
-  "homepage": "https://github.com/tomarlowe/dash-spotter",
+  "homepage": "https://github.com/tomarlowe/plane-thing",
   "icon": null,
-  "base_url": "https://tomarlowe.github.io/dash-spotter",
+  "base_url": "https://tomarlowe.github.io/plane-thing",
   "recommended_sources": []
 }

@@ -1,6 +1,6 @@
 # Data sources, credits and terms
 
-Dash Spotter uses free online services. None needs an account or an API key. The phone's internet connection makes every
+Plane Thing uses free online services. None needs an account or an API key. The phone's internet connection makes every
 request. Terms below were last checked on 2026-11-04 by reading each service's public pages. Services change their terms,
 and some pages could not be read (noted below), so read the linked pages yourself if you plan to do anything beyond
 personal or community use. Nothing here is legal advice.
@@ -27,7 +27,7 @@ Everything else (distances, bearings, the log, arrival estimates) is calculated 
   their aircraft to be hidden.
 - Routes are guesses from the callsign, and arrival times are worked out from position and speed. Neither comes from an
   airline schedule.
-- **Dash Spotter is not for navigation or safety.** It says so on the Radar screen and on the settings page.
+- **Plane Thing is not for navigation or safety.** It says so on the Radar screen and on the settings page.
 
 ## Live aircraft data
 
@@ -39,7 +39,7 @@ again. The app spaces its requests to any one of these hosts at least 1.1 second
 
 - Terms: the data is shared under the Open Database License 1.0 (ODbL). Keep the credit, and if you build a database from
   it, the share-alike rules apply. See [adsb.lol](https://adsb.lol/).
-- A numeric request limit was not recorded in this review. Dash Spotter asks about every 6 seconds.
+- A numeric request limit was not recorded in this review. Plane Thing asks about every 6 seconds.
 - Credit shown: the settings page, this page and the README. The service name that answered is shown on the Overhead
   and Radar screens.
 
@@ -52,7 +52,7 @@ again. The app spaces its requests to any one of these hosts at least 1.1 second
 ### adsb.fi
 
 - Terms: the open data API is for personal, non-commercial use, with a limit of about one request per second, and it asks
-  users to credit and link [adsb.fi](https://adsb.fi/). Repeated failed requests can count as abuse, so Dash Spotter backs
+  users to credit and link [adsb.fi](https://adsb.fi/). Repeated failed requests can count as abuse, so Plane Thing backs
   off after a failure instead of retrying quickly.
 - Credit shown: a link to adsb.fi on the settings page, in this page and in the README, and the name on the screens when it
   answers.
@@ -60,12 +60,12 @@ again. The app spaces its requests to any one of these hosts at least 1.1 second
 ### What they receive
 
 The services receive your latitude and longitude rounded to two decimals, about 1 kilometer, and a search radius. They
-also see the phone's IP address like any website would, and the app's User-Agent, which names Dash Spotter and its GitHub
+also see the phone's IP address like any website would, and the app's User-Agent, which names Plane Thing and its GitHub
 page. The emergency search asks for squawk codes only and sends no position.
 
 ### Not used: OpenSky Network
 
-An earlier draft of Dash Spotter listed the OpenSky Network as a last resort. It was removed. The OpenSky Network's terms
+An earlier draft of Plane Thing listed the OpenSky Network as a last resort. It was removed. The OpenSky Network's terms
 limit its REST API to non-profit research and education and require a written license for operational use, which a
 driving app is. The three services above are used instead.
 
@@ -80,7 +80,7 @@ driving app is. The three services above are used instead.
 ## Photos
 
 Photos are fetched one at a time over the phone, kept in memory only (at most eight pictures), and thrown away when the
-app closes. Dash Spotter never saves, uploads or re-publishes a photo, and the spotter log and the CSV carry no photo
+app closes. Plane Thing never saves, uploads or re-publishes a photo, and the spotter log and the CSV carry no photo
 link or photographer name. The photographer and the site are credited under every photo.
 
 The app tries, in order: this aircraft (Planespotters by hex code, then by tail number, then airport-data.com), another
@@ -96,10 +96,10 @@ the type from Wikimedia Commons (labelled "Typical ..., not this aircraft"), and
   API returns, unchanged. Server-side programs must send a unique, descriptive User-Agent with a contact URL. Browser
   requests must come from a web page that sends a valid Origin or Referer header, and requests without one are rejected.
   Use must stay within reasonable limits, and the page asks projects with advanced use to contact Planespotters first.
-- What Dash Spotter does: it shows the photographer and "Planespotters.net" next to each photo, puts the photo-page link
-  in the credit, sends a User-Agent that names Dash Spotter and its GitHub page, keeps API replies in memory for one hour,
+- What Plane Thing does: it shows the photographer and "Planespotters.net" next to each photo, puts the photo-page link
+  in the credit, sends a User-Agent that names Plane Thing and its GitHub page, keeps API replies in memory for one hour,
   asks for one photo at a time, and never saves or republishes a photo or puts it in the log.
-- **Open issues, not resolved.** The Car Thing has no direct internet access, so Dash Spotter asks the phone's bridgething
+- **Open issues, not resolved.** The Car Thing has no direct internet access, so Plane Thing asks the phone's bridgething
   connection to fetch each image and turns it into a picture held in memory (at most eight). That is not the same as the
   picture loading in the user's own browser from Planespotters' address, so it may not meet the terms. The kiosk cannot
   open the credit link, so nobody can follow it. The phone's relay probably sends no Origin or Referer header, so
@@ -112,13 +112,13 @@ the type from Wikimedia Commons (labelled "Typical ..., not this aircraft"), and
 
 - Used for: a second try at a photo of the exact aircraft.
 - Terms: the site's terms for its aircraft picture lookup were not clear in this review. Forum posts mention a limit
-  around 120 requests an hour for the whole service. Dash Spotter asks only after Planespotters has no picture, one at a
+  around 120 requests an hour for the whole service. Plane Thing asks only after Planespotters has no picture, one at a
   time. The photographer and "airport-data.com" are credited under the photo. Treat it as unconfirmed.
 
 ### Wikimedia Commons
 
 - Used for: a typical photo of the aircraft type when no photo of a real aircraft is found.
-- Terms: each file has its own license. Dash Spotter shows the artist and the license text with the photo. The Wikimedia
+- Terms: each file has its own license. Plane Thing shows the artist and the license text with the photo. The Wikimedia
   reuse guidelines page could not be read during this review, so the way credit is shown here has not been checked against
   them.
 

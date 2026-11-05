@@ -19,7 +19,7 @@ const manifest = JSON.parse(readFileSync(new URL('../../public/manifest.json', i
 describe('manifest', () => {
   test('identity', () => {
     expect(manifest.id).toBe('01a1a8ce-5e3a-71a1-8619-b65be4e9d5d1');
-    expect(manifest.name).toBe('Dash Spotter');
+    expect(manifest.name).toBe('Plane Thing');
     expect(manifest.description.length).toBeGreaterThan(20);
     expect(manifest.permissions).toEqual(['geo']);
     expect(manifest.settings).toBe('settings.html');

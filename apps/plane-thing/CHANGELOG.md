@@ -1,4 +1,4 @@
-# dash-spotter
+# plane-thing
 
 ## 0.1.0
 

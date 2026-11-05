@@ -1,6 +1,6 @@
 # User guide
 
-Dash Spotter is not for navigation or safety. Positions can be late, wrong or missing, and arrival times are estimates.
+Plane Thing is not for navigation or safety. Positions can be late, wrong or missing, and arrival times are estimates.
 
 ## Controls
 
@@ -18,7 +18,7 @@ The back button is left alone on purpose, so it stays free for actions that work
 A quick tap of the recessed button opens Arrivals. Bridgething also uses that button to jump to its own dashboard. Which
 gesture does it is a bridgething setting (a long press, five quick presses or a double press), not part of this app.
 
-Dash Spotter only runs while it is on the Car Thing's screen. It does not watch the sky or log aircraft in the background.
+Plane Thing only runs while it is on the Car Thing's screen. It does not watch the sky or log aircraft in the background.
 
 ## Screens
 
@@ -96,7 +96,7 @@ passing over at cruising height are left out.
 - An FAA banner when the FAA reports a delay, ground stop or closure at that airport.
 - Turn the dial or tap the airport name to move to the next of the five nearest large and medium airports.
 
-Times and origins are estimates from position and speed. Dash Spotter does not have airline schedules, so it cannot say
+Times and origins are estimates from position and speed. Plane Thing does not have airline schedules, so it cannot say
 whether a flight is on time or late. For a flight you are meeting, use the airline or an airport flight board.
 
 ## Emergency alert
@@ -121,7 +121,7 @@ Details:
 
 Export happens on the phone, in the app's settings page.
 
-1. On the phone, open the bridgething companion app and open Dash Spotter's settings.
+1. On the phone, open the bridgething companion app and open Plane Thing's settings.
 2. Scroll to "Spotter log". It reads the log from the Car Thing and says how many aircraft it holds.
 3. Choose **Download CSV** to save a file, **Copy CSV** to copy the text, or **Show text** to see it. If a download does
    not appear in your phone's downloads, use Copy or Show text.

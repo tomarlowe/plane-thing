@@ -1,6 +1,6 @@
 # Developer guide
 
-Dash Spotter is a bridgething webapp: one page, 800 by 480 pixels, running full screen in the Car Thing's kiosk browser
+Plane Thing is a bridgething webapp: one page, 800 by 480 pixels, running full screen in the Car Thing's kiosk browser
 and talking to the on-device daemon through `@bridgething/client`. It is built with React, TypeScript and Vite inside a
 Bun workspace; the settings page uses Preact to stay small. The workspace comes from the bridgething scaffold, so [CLAUDE.md](../CLAUDE.md)
 at the repo root also applies. The settings page on the phone is a second, separate page built from `settings/`.
@@ -10,7 +10,7 @@ at the repo root also applies. The settings page on the phone is a second, separ
 ```sh
 bun install
 bun run check                                      # typecheck, build, bundle, validate the catalog
-bun run --cwd apps/dash-spotter dev                # dev server
+bun run --cwd apps/plane-thing dev                # dev server
 ```
 
 Open `/sim.html` on the dev server for the desktop simulator: the app at device size with buttons for the four presses, the
@@ -34,10 +34,10 @@ Other useful commands, all from the repo root:
 ```sh
 bun run push                              # build and install onto a Car Thing connected over USB
 bun run share                             # zip dist/ for someone to install from the companion app
-bun run shot dash-spotter [--replace]     # screenshot the real device for the store listing
-bun run bump dash-spotter patch -m "note"
-bun run --cwd apps/dash-spotter typecheck # checks src, settings and the tests
-cd apps/dash-spotter && bun test          # unit tests
+bun run shot plane-thing [--replace]     # screenshot the real device for the store listing
+bun run bump plane-thing patch -m "note"
+bun run --cwd apps/plane-thing typecheck # checks src, settings and the tests
+cd apps/plane-thing && bun test          # unit tests
 ```
 
 Bun lives at `~/.bun/bin`. Add it to your PATH if `bun` is not found.
@@ -59,7 +59,7 @@ One dial detent can arrive as a burst of wheel events, so only one step is taken
 ## Layout
 
 ```
-apps/dash-spotter/
+apps/plane-thing/
   public/manifest.json    identity, settings fields, the geo permission. Never change "id".
   catalog.json            store listing
   CHANGELOG.md            a section per version
@@ -107,7 +107,7 @@ apps/dash-spotter/
 
 ```sh
 git clone --depth 1 https://github.com/davidmegginson/ourairports-data <folder>
-bun run --cwd apps/dash-spotter airports <folder>
+bun run --cwd apps/plane-thing airports <folder>
 ```
 
 The script writes the packed airport file and `settings/countries.ts` (the countries that have at least one airport). A
@@ -117,7 +117,7 @@ test checks that the two agree. Running it on 2026-11-04 data produced a byte-id
 
 There are two kinds, and neither runs on a real device.
 
-- `bun test` in `apps/dash-spotter`: 103 unit tests of the data layer. Every service reply in them is a **simulated
+- `bun test` in `apps/plane-thing`: 103 unit tests of the data layer. Every service reply in them is a **simulated
   fixture written from the published formats and memory**. They prove the parsers handle what they were written for. They
   do not prove that any live service answers that way. The airport tests use the real airport file.
 - A fake phone page host used while building the settings page, which checked the export flow against a simulated bridge.
@@ -140,8 +140,8 @@ The unit tests need `tsconfig.test.json` (TypeScript 6 loads no global types by 
 
 ## Releasing
 
-1. `bun run bump dash-spotter <patch|minor|major> -m "what changed"` moves the version and opens a changelog section.
-2. Fill in `apps/dash-spotter/CHANGELOG.md` for that version.
+1. `bun run bump plane-thing <patch|minor|major> -m "what changed"` moves the version and opens a changelog section.
+2. Fill in `apps/plane-thing/CHANGELOG.md` for that version.
 3. `bun run check`.
 4. Push to `main`. The publish workflow builds the app into `catalog.v1.json` on the `gh-pages` branch, served by GitHub
    Pages. A published version is immutable, so changes always mean a new version.

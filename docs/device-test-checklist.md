@@ -13,11 +13,11 @@ Record the date, the bridgething version, and the phone. Note anything that diff
 - Car Thing firmware and daemon version: not recorded.
 - Nothing below has been ticked. The code-level tests use simulated data and are not part of this list. The store
   screenshots were taken in the simulator with invented aircraft, not on the device. Replace them with
-  `bun run shot dash-spotter --replace` once the app runs on the device.
+  `bun run shot plane-thing --replace` once the app runs on the device.
 
 ## Install and start
 
-- [ ] The app installs and appears with the name "Dash Spotter".
+- [ ] The app installs and appears with the name "Plane Thing".
 - [ ] It opens to the Overhead screen and finds your location within about 30 seconds.
 - [ ] The first start loads the airport list (about 1.5 MB compressed) and "Loading airports" clears. Note how long it takes
       on the Car Thing's processor.
@@ -59,7 +59,7 @@ Record the date, the bridgething version, and the phone. Note anything that diff
 - [ ] Photos load in a reasonable time over the phone link. Note how long.
 - [ ] The Planespotters, airport-data.com and Wikimedia Commons replies are understood (the shapes in the code were written
       from documentation and have not been checked against live replies).
-- [ ] A custom User-Agent (naming Dash Spotter and its GitHub page) reaches the photo and aircraft services unchanged
+- [ ] A custom User-Agent (naming Plane Thing and its GitHub page) reaches the photo and aircraft services unchanged
       through the phone's connection.
 
 ## Routes and Arrivals

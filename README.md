@@ -1,11 +1,11 @@
-# Dash Spotter
+# Plane Thing
 
 An aircraft spotter for the discontinued Spotify Car Thing, running on [bridgething](https://bridgething.com). Think of
 wardriving for Wi-Fi, but for planes: drive around, and the Car Thing shows what is flying near you and keeps a log of
 every aircraft you pass. Five screens, one for each button, in bright Material 3 Expressive colors on a black background.
 It is free, has no accounts or API keys, and is open source.
 
-Dash Spotter is for fun and curiosity. Positions can be late, wrong or missing. **It is not for navigation or safety.**
+Plane Thing is for fun and curiosity. Positions can be late, wrong or missing. **It is not for navigation or safety.**
 
 ## The five screens
 
@@ -33,8 +33,8 @@ the Radar. A setting turns the jump off.
 See [docs/install.md](docs/install.md). Short version: install it from the bridgething store once it is listed, or paste the
 address of the version zip into the companion app's "install from url or file" panel (not yet tested on a real device).
 
-- Catalog address, which the store reads: `https://tomarlowe.github.io/dash-spotter/catalog.v1.json`
-- Zip for version 0.1.0: `https://tomarlowe.github.io/dash-spotter/r/01a1a8ce-5e3a-71a1-8619-b65be4e9d5d1/0.1.0.zip`
+- Catalog address, which the store reads: `https://tomarlowe.github.io/plane-thing/catalog.v1.json`
+- Zip for version 0.1.0: `https://tomarlowe.github.io/plane-thing/r/01a1a8ce-5e3a-71a1-8619-b65be4e9d5d1/0.1.0.zip`
 
 ## Documentation
 
@@ -44,7 +44,7 @@ address of the version zip into the companion app's "install from url or file" p
 - [Data sources, credits and terms](docs/data-sources.md)
 - [Developer guide](docs/developer-guide.md): build it, change it, test it, ship it
 - [Device test checklist](docs/device-test-checklist.md): what has and has not been tried on a real device
-- [Changelog](apps/dash-spotter/CHANGELOG.md)
+- [Changelog](apps/plane-thing/CHANGELOG.md)
 
 ## Status
 

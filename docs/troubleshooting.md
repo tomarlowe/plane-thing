@@ -1,6 +1,6 @@
 # Troubleshooting
 
-Dash Spotter says plainly what is wrong on the screen. Find the message below. None of these have been seen on a real
+Plane Thing says plainly what is wrong on the screen. Find the message below. None of these have been seen on a real
 device yet. The wording comes from the app's code.
 
 ## Messages while it starts
@@ -19,7 +19,7 @@ device yet. The wording comes from the app's code.
 | Reason shown                                       | What to do                                                                              |
 | -------------------------------------------------- | --------------------------------------------------------------------------------------- |
 | Location is turned off for this app on the phone   | Allow location for the bridgething companion app in your phone's settings.              |
-| Location is not enabled for this app               | Reinstall or update Dash Spotter from the companion app, then allow location.           |
+| Location is not enabled for this app               | Reinstall or update Plane Thing from the companion app, then allow location.           |
 | Phone location is not available                    | The phone has no position fix yet. Try outdoors or wait a moment.                       |
 
 If you do not want to share location, open settings, set Location to "Fixed place" and enter your latitude and longitude.
@@ -31,7 +31,7 @@ If you do not want to share location, open settings, set Location to "Fixed plac
 | Phone not connected   | The Car Thing cannot see the companion app. Open the app on the phone and check the connection. See "Phone link" below. |
 | Network unavailable   | The phone has no internet. Check mobile data or Wi-Fi.                                       |
 | Timed out             | The connection is very slow. The app retries by itself.                                      |
-| Request failed        | The data service refused or failed the request. Usually temporary. Dash Spotter then tries the next service (adsb.lol, then airplanes.live, then adsb.fi) and waits longer before it uses the failed one again. |
+| Request failed        | The data service refused or failed the request. Usually temporary. Plane Thing then tries the next service (adsb.lol, then airplanes.live, then adsb.fi) and waits longer before it uses the failed one again. |
 | Device link problem   | The Car Thing and the daemon on it lost contact. Leave the app and open it again.            |
 
 ## Aircraft and photos
@@ -95,9 +95,9 @@ If you do not want to share location, open settings, set Location to "Fixed plac
 
 ## Phone link (Bluetooth)
 
-The link between the Car Thing and your phone belongs to bridgething, not to Dash Spotter. Dash Spotter needs it because
+The link between the Car Thing and your phone belongs to bridgething, not to Plane Thing. Plane Thing needs it because
 the Car Thing gets its internet and location through the phone. When the two lose each other you see "Phone not
-connected", or the "Offline" note with the last data still showing. Dash Spotter recovers by itself after the link is
+connected", or the "Offline" note with the last data still showing. Plane Thing recovers by itself after the link is
 back, but it cannot bring the link back.
 
 The link can be fussy. On a Pixel 9 Pro, turning the phone's Bluetooth off and on again did not bring a Car Thing back

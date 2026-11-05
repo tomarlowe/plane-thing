@@ -9,7 +9,7 @@ import { COUNTRIES } from './countries';
 import './style.css';
 
 const SHARD = /^log\.(\d+)$/;
-const FILE_STEM = 'dash-spotter-log';
+const FILE_STEM = 'plane-thing-log';
 
 const num = (v: unknown) => typeof v === 'number' && Number.isFinite(v);
 
@@ -272,7 +272,7 @@ function Settings() {
 
   return (
     <main>
-      <h1>Dash Spotter settings</h1>
+      <h1>Plane Thing settings</h1>
       <p className="hint">{ctx ? `version ${ctx.version}` : 'connecting to the phone app...'}</p>
 
       <section className="help">
@@ -309,7 +309,7 @@ function Settings() {
           <a href="https://ourairports.com/">OurAirports</a> (public domain). Delays: FAA National Airspace System status.
         </p>
         <p>
-          Positions can be late, wrong or missing, and arrival times are estimates. Dash Spotter is for fun. It is not for navigation or safety.
+          Positions can be late, wrong or missing, and arrival times are estimates. Plane Thing is for fun. It is not for navigation or safety.
         </p>
       </section>
     </main>

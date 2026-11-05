@@ -20,7 +20,7 @@ export const CSV_HEAD = [
   'Source',
 ];
 
-const SOURCE = 'Dash Spotter, live ADS-B data from adsb.lol, airplanes.live or adsb.fi';
+const SOURCE = 'Plane Thing, live ADS-B data from adsb.lol, airplanes.live or adsb.fi';
 
 export function csvCell(v: string | number | null | undefined): string {
   const s = v === null || v === undefined ? '' : String(v);
@@ -85,5 +85,5 @@ export function toKml(rows: LogEntry[], o: ExportOpts): string {
       return `<Placemark><name>${xml(name)}</name><description>${xml(desc)}</description><Point><coordinates>${r.p[1]},${r.p[0]},0</coordinates></Point></Placemark>`;
     })
     .join('\n');
-  return `<?xml version="1.0" encoding="UTF-8"?>\n<kml xmlns="http://www.opengis.net/kml/2.2"><Document><name>Dash Spotter log</name>\n${marks}\n</Document></kml>\n`;
+  return `<?xml version="1.0" encoding="UTF-8"?>\n<kml xmlns="http://www.opengis.net/kml/2.2"><Document><name>Plane Thing log</name>\n${marks}\n</Document></kml>\n`;
 }

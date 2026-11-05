@@ -43,7 +43,7 @@ export interface Platform {
 }
 
 // sent with every request. services ask for a name and a place to read about the app
-export const USER_AGENT = 'DashSpotter/0.1 (+https://github.com/tomarlowe/dash-spotter; bridgething app for the Spotify Car Thing)';
+export const USER_AGENT = 'PlaneThing/0.1 (+https://github.com/tomarlowe/plane-thing; bridgething app for the Spotify Car Thing)';
 
 // no answer came back at all: phone not connected, phone offline, timed out
 export class NoAnswerError extends Error {}
