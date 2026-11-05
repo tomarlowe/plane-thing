@@ -103,8 +103,8 @@ the type from Wikimedia Commons (labelled "Typical ..., not this aircraft"), and
   connection to fetch each image and turns it into a picture held in memory (at most eight). That is not the same as the
   picture loading in the user's own browser from Planespotters' address, so it may not meet the terms. The kiosk cannot
   open the credit link, so nobody can follow it. The phone's relay probably sends no Origin or Referer header, so
-  Planespotters may refuse the requests, and in that case the app silently moves on to the other photo sources. Dash
-  Spotter has not been given written permission for any of this and has not been tested against the live service.
+  Planespotters may refuse the requests, and in that case the app silently moves on to the other photo sources. Plane
+  Thing has not been given written permission for any of this and has not been tested against the live service.
 - What to do: ask Planespotters for permission, describing the project and this limit. If they decline, or before listing
   the app publicly without an answer, a new version should drop Planespotters and use only the other photo sources.
 
