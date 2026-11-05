@@ -154,7 +154,7 @@ The manifest `id` must never change: devices key upgrades and saved data on it.
 
 ## Known limits
 
-- Everything on the real device is unconfirmed until the checklist is done.
+- Most behavior on the real device is unconfirmed. One day of driving has gone well, but the checklist has not been worked through.
 - The app runs only while it is on the Car Thing's screen. There is no background logging.
 - The settings page is limited to 1 MiB and is currently about 55 KB.
 - The log is limited by the device's doc storage. The 100-row shards are about 30 KiB each against a 256 KiB document

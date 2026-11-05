@@ -5,8 +5,9 @@ This page says what has been tested, how, and what has not. Plane Thing was writ
 
 **The short version:** the logic is covered by 103 automated tests, and the whole app runs in a simulator. All of that uses
 made-up data. Nothing in the automated testing has talked to a live flight service, run on a real Car Thing, or exported a
-file from a real phone. That is what the [device test checklist](device-test-checklist.md) is for, and at the time of
-writing none of its boxes are ticked.
+file from a real phone. That is what the [device test checklist](device-test-checklist.md) is for. Its owner has since driven
+with the app for about a day and reported that it worked well (see [real-device results so far](#real-device-results-so-far)),
+but he has not gone through the checklist item by item.
 
 ## What runs automatically
 
@@ -76,12 +77,28 @@ when testing is done.
 The settings page was checked against a fake phone host that stands in for the companion app. That exercised the export
 flow, but it is not the companion app.
 
+## Real-device results so far
+
+These are the owner's own reports, not measurements. No tool recorded them.
+
+- **When and on what.** About one day of driving, reported on 2026-11-05, on the build made just before the app was renamed.
+  The code in the published version differs from that build only in the app's name, which appears in eight files.
+- **Overall.** He reported that it worked well on the road.
+- **Photos.** Photos of the actual aircraft appeared a second or two after a silhouette, and a photo credited to
+  Planespotters.net was seen on the device. So at least some Planespotters requests are accepted through the phone's
+  connection. Their terms are still an [open issue](data-sources.md#planespottersnet).
+- **Bluetooth.** The link between the Car Thing and the phone dropped at times. The owner believes this is a bridgething
+  matter and not a Plane Thing one. That has not been investigated, and it is his observation, not a finding.
+- **Not covered.** He did not work through the checklist, so nothing else is claimed. Exports, touch, the emergency alert,
+  the Arrivals screen and the log across restarts are not confirmed.
+
 ## What has not been tested
 
 - **Live services.** No automated test calls adsb.lol, airplanes.live, adsb.fi, Planespotters, airport-data.com, Wikimedia
-  Commons or the FAA. Whether Planespotters accepts the app's requests at all is an [open question](data-sources.md).
-- **The real device.** Rendering on the Car Thing's screen, the physical buttons and dial, the recessed button, touch,
-  startup time, and how the app behaves when the device sleeps or another app is shown.
+  Commons or the FAA. The owner's drive shows Planespotters answered at least some requests, but its terms remain an
+  [open issue](data-sources.md).
+- **Most of the real device.** Apart from the drive above, nobody has gone through the buttons and dial, the recessed button,
+  touch, startup time, or how the app behaves when the device sleeps or another app is shown.
 - **The phone.** Location sharing, the settings page inside the companion app, and the actual download or copy of an export.
 - **Opening an export in other tools.** The CSV and KML have not been opened in a spotting logbook, a spreadsheet or a
   mapping program on a real computer.

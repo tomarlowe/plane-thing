@@ -104,6 +104,9 @@ The link can be fussy. On a Pixel 9 Pro, turning the phone's Bluetooth off and o
 (seen with the author's other app, Dash Weather), and the bridgething app showed it as "not connected". Avoid switching
 Bluetooth off while you use the Car Thing.
 
+On the first long real drive the owner also saw the link drop at times. He believes that is down to bridgething and not to
+Plane Thing. It has not been investigated, so treat that as his observation and not as a finding.
+
 If the link does not come back:
 
 1. Open the bridgething app on the phone. If the Car Thing's row says "not connected", carry on.

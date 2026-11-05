@@ -8,10 +8,14 @@ Record the date, the bridgething version, and the phone. Note anything that diff
 
 ## Test log
 
-- Date: not yet tested on a real device (as of 2026-11-04).
+- 2026-11-05: first report from the owner after about a day of real driving, on the build made just before the rename (it
+  differs from the current version only in the app's name). He reported that it worked well, that photos of the actual
+  aircraft appeared a second or two after a silhouette, and that a photo credited to Planespotters.net appeared. He also
+  reported trouble with the Bluetooth link between the Car Thing and the phone, which he believes is a bridgething matter.
+  He did not go through this list item by item, so only items he specifically confirmed are ticked below.
 - Planned phone: Pixel 9 Pro (Android), bridgething companion app 0.16.0. The Car Thing runs Terbium firmware.
 - Car Thing firmware and daemon version: not recorded.
-- Nothing below has been ticked. The code-level tests use simulated data and are not part of this list. The store
+- The code-level tests use simulated data and are not part of this list. The store
   screenshots were taken in the simulator with invented aircraft, not on the device. Replace them with
   `bun run shot plane-thing --replace` once the app runs on the device.
 
@@ -51,8 +55,9 @@ Record the date, the bridgething version, and the phone. Note anything that diff
 ## Photos
 
 - [ ] A photo of the exact aircraft appears, with the photographer and "Planespotters.net" under it.
-- [ ] Planespotters answers the app's requests at all. Its terms say requests without an Origin or Referer header are
-      rejected (403), and the phone's relay may send neither. Note what the app shows when it fails.
+- [x] Planespotters answers the app's requests at all. Its terms say requests without an Origin or Referer header are
+      rejected (403), and the phone's relay may send neither. The owner saw a photo credited to Planespotters.net on the
+      device on 2026-11-05, so at least some requests are accepted. What the app shows when one fails is still unchecked.
 - [ ] An aircraft with no photo shows "Photo shows ..." with another tail of the same airline and type.
 - [ ] A rare aircraft shows a "Typical ..." photo from Wikimedia Commons with the artist and license.
 - [ ] No photo at all shows the silhouette, and nothing hangs.

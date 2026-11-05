@@ -102,9 +102,11 @@ the type from Wikimedia Commons (labelled "Typical ..., not this aircraft"), and
 - **Open issues, not resolved.** The Car Thing has no direct internet access, so Plane Thing asks the phone's bridgething
   connection to fetch each image and turns it into a picture held in memory (at most eight). That is not the same as the
   picture loading in the user's own browser from Planespotters' address, so it may not meet the terms. The kiosk cannot
-  open the credit link, so nobody can follow it. The phone's relay probably sends no Origin or Referer header, so
-  Planespotters may refuse the requests, and in that case the app silently moves on to the other photo sources. Plane
-  Thing has not been given written permission for any of this and has not been tested against the live service.
+  open the credit link, so nobody can follow it. The phone's relay might send no Origin or Referer header, in which case Planespotters would
+  refuse the requests and the app would silently move on to the other photo sources. On 2026-11-05 the owner saw a photo
+  credited to Planespotters.net on a real Car Thing, so at least some requests are accepted through the relay. Whether that
+  holds for every request, and which headers the relay sends, has not been checked. Plane Thing has not been given written
+  permission for any of this.
 - What to do: ask Planespotters for permission, describing the project and this limit. If they decline, or before listing
   the app publicly without an answer, a new version should drop Planespotters and use only the other photo sources.
 

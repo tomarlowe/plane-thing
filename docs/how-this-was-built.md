@@ -37,7 +37,8 @@ behind the technical choices. The commit history shows it: commits carry a `Co-A
    the rule that nothing may cost money. Claude wrote the app.
 5. **Tests.** Claude wrote unit tests and ran the app in a simulator (see [testing](testing.md)).
 6. **Documentation.** Claude wrote the documentation set, and re-checked the terms of every data service it uses.
-7. **Real device.** Thomas installed the app on his own Car Thing. Testing on the real device is [in progress](device-test-checklist.md).
+7. **Real device.** Thomas installed the app on his own Car Thing and drove with it for about a day, which went well. Further
+   testing is [in progress](device-test-checklist.md).
 8. **Publishing.** Thomas decides when the repository becomes public and whether the app is listed in the bridgething store.
 
 ## What this means for how far to trust it
@@ -55,8 +56,8 @@ What has not been checked, and the documentation says so wherever it matters:
 - **No human programmer has reviewed the code line by line.** Thomas reviews behavior, screens and documentation, and
   tests on a device. If you read TypeScript, a review is welcome.
 - **The live services have not been called by the tests.** Every service reply in the tests is a made-up fixture written
-  from documentation and memory. The first real replies are being checked on the device.
-- **Most of the device behavior is unconfirmed** until the [checklist](device-test-checklist.md) is done.
+  from documentation and memory. The first real replies are now being seen on the device.
+- **Most of the device behavior is unconfirmed.** One day of real driving has been reported, but the [checklist](device-test-checklist.md) has not been worked through.
 - The photo services' terms are not fully satisfied. See [data sources](data-sources.md).
 
 AI assistants make mistakes, including confident ones. A few found and fixed while building this:

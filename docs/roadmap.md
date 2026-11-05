@@ -6,8 +6,8 @@ services allow. Things marked **blocked** need something outside the project fir
 
 ## Before anything else: prove version 0.1.0
 
-Version 0.1.0 has only been run in a simulator. The first job is the [device test checklist](device-test-checklist.md), run on
-a real Car Thing and a real phone, over several days of real driving.
+Version 0.1.0 was run in a simulator and then driven with for about a day, which went well. The first job is to work through
+the [device test checklist](device-test-checklist.md) on a real Car Thing and a real phone, over several days of real driving.
 
 - [ ] Run the checklist and record the results in it.
 - [ ] Fix whatever the real services and the real device show up. Expect surprises: the service replies in the tests were

@@ -8,9 +8,11 @@ wardriving for Wi-Fi, but for planes: drive around, and the Car Thing shows what
 aircraft you pass. Five screens, one for each button, in bright Material 3 Expressive colors on a black background. It is free,
 has no accounts or API keys, and is open source.
 
-> **Status: first release, not yet confirmed on a real device.** Version 0.1.0 has been built, type-checked and run in a
-> simulator, and its 103 unit tests pass, but all of that used made-up data. It is now being tested on a real Car Thing. See
-> [what has and has not been tested](docs/testing.md).
+> **Status: first release, lightly tested on a real device.** Version 0.1.0 has been built, type-checked and run in a
+> simulator, and its 103 unit tests pass, but that used made-up data. Its owner has also driven with it on a real Car Thing
+> for about a day and reports that it worked well, including photos of the actual aircraft. That is one person's one day:
+> most of the [checklist](docs/device-test-checklist.md) has not been worked through, and exports have not been tried on a
+> real phone. See [what has and has not been tested](docs/testing.md).
 >
 > **Built with AI assistance, under a person's direction.** Thomas Marlowe decided what to build and how it should behave,
 > approved the designs and is testing it. Claude, an AI assistant made by Anthropic, wrote the code, tests and documentation.
@@ -73,8 +75,10 @@ address of the version zip into the companion app's "install from url or file" p
 
 ## Known limits
 
-- **Unconfirmed on hardware.** Buttons, dial, touch, the phone link, startup time and exports have not been checked on a real
-  device yet. The [checklist](docs/device-test-checklist.md) lists each item.
+- **Lightly tested on hardware.** One day of driving went well, but the buttons, dial, touch, startup time, the emergency
+  alert and exports have not been checked item by item on a real device. The Bluetooth link between the Car Thing and the
+  phone dropped at times, which the owner believes is a bridgething matter and has not been investigated. The
+  [checklist](docs/device-test-checklist.md) lists each item.
 - **Only works while it is on screen.** There is no background logging while another app is shown.
 - **Not every aircraft appears.** Only aircraft sending ADS-B within range of volunteer receivers are seen.
 - **Photos have an unresolved terms problem.** Planespotters.net in particular asks for things the Car Thing cannot do, such

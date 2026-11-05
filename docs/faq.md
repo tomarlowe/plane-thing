@@ -10,10 +10,10 @@ decided what to build, approved the designs, set the rules it follows, and is te
 
 ### Does it work?
 
-It has been built, type-checked and run in a simulator, and 103 unit tests pass. It has not yet been confirmed on a real
-Car Thing, and no automated test has talked to a live flight service. See [testing](testing.md) and the
-[device test checklist](device-test-checklist.md). Until the checklist is done, treat version 0.1.0 as a first release that may
-have rough edges.
+It has been built, type-checked and run in a simulator, and 103 unit tests pass. Its owner has also driven with it on a real
+Car Thing for about a day and reports that it worked well. That is one person's one day: no automated test has talked to a live
+flight service, and most of the [device test checklist](device-test-checklist.md) has not been worked through. See
+[testing](testing.md). Treat version 0.1.0 as a first release that may have rough edges.
 
 ### Is it affiliated with Spotify, Anthropic, the FAA or any data service?
 
