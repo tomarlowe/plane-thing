@@ -27,15 +27,15 @@ will be replaced with real captures once device testing is done.
 
 <table>
   <tr>
-    <td><img src="apps/plane-thing/screenshots/01-overhead.png" alt="Overhead screen: the closest aircraft with a simulated photo, altitude, speed, heading and distance" width="400"></td>
-    <td><img src="apps/plane-thing/screenshots/02-radar.png" alt="Radar screen: a scope with aircraft around the user, and the nearest airport marked (simulated)" width="400"></td>
+    <td align="center"><img src="apps/plane-thing/screenshots/01-overhead.png" alt="Overhead screen: the closest aircraft with a simulated photo, altitude, speed, heading and distance" width="400"><br><b>Overhead (simulated)</b></td>
+    <td align="center"><img src="apps/plane-thing/screenshots/02-radar.png" alt="Radar screen: a scope with aircraft around the user, and the nearest airport marked (simulated)" width="400"><br><b>Radar (simulated)</b></td>
   </tr>
   <tr>
-    <td><img src="apps/plane-thing/screenshots/03-watchlist.png" alt="Watchlist screen (simulated)" width="400"></td>
-    <td><img src="apps/plane-thing/screenshots/04-log.png" alt="Spotter log screen (simulated)" width="400"></td>
+    <td align="center"><img src="apps/plane-thing/screenshots/03-watchlist.png" alt="Watchlist screen: emergency squawks, helicopters and listed callsigns (simulated)" width="400"><br><b>Watchlist (simulated)</b></td>
+    <td align="center"><img src="apps/plane-thing/screenshots/04-log.png" alt="Spotter log screen: counts, recent sightings and what is new today (simulated)" width="400"><br><b>Spotter log (simulated)</b></td>
   </tr>
   <tr>
-    <td><img src="apps/plane-thing/screenshots/05-arrivals.png" alt="Arrivals screen: aircraft landing at the nearest airport with estimated times (simulated)" width="400"></td>
+    <td align="center"><img src="apps/plane-thing/screenshots/05-arrivals.png" alt="Arrivals screen: aircraft landing at the nearest airport with estimated times (simulated)" width="400"><br><b>Arrivals (simulated)</b></td>
     <td></td>
   </tr>
 </table>
