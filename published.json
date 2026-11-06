@@ -1,0 +1,15 @@
+{
+  "01a1a8ce-5e3a-71a1-8619-b65be4e9d5d1": {
+    "0.1.0": {
+      "released_at": "2026-11-06T00:05:47.851Z",
+      "sha256": "504789e83fc2791312f3995e9aa7d77d3832b4b61a0afadc8cb63101a167ce3c",
+      "size": 2231740,
+      "file": "r/01a1a8ce-5e3a-71a1-8619-b65be4e9d5d1/0.1.0.zip",
+      "settings": {
+        "file": "s/01a1a8ce-5e3a-71a1-8619-b65be4e9d5d1/0.1.0.html",
+        "size": 54745,
+        "sha256": "3833d10b8e4f559b963f3899ead4733fadd33246e5f00dbad853c6333e0740f1"
+      }
+    }
+  }
+}

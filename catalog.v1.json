@@ -1,0 +1,55 @@
+{
+  "$schema": "https://apps.bridgething.com/schemas/catalog/v1.json",
+  "schema": "catalog.v1",
+  "updated_at": "2026-11-06T00:05:47.854Z",
+  "repo": {
+    "name": "Plane Thing",
+    "description": "A five-screen aircraft spotter for the Spotify Car Thing.",
+    "homepage": "https://github.com/tomarlowe/plane-thing",
+    "icon": null
+  },
+  "apps": [
+    {
+      "id": "01a1a8ce-5e3a-71a1-8619-b65be4e9d5d1",
+      "name": "Plane Thing",
+      "description": "Aircraft overhead, a live radar, a watch list, a spotter log and an airport arrivals board. Uses your phone's location.",
+      "author": "Thomas Marlowe",
+      "icon": "https://tomarlowe.github.io/plane-thing/icons/01a1a8ce-5e3a-71a1-8619-b65be4e9d5d1.png",
+      "screenshots": [
+        "https://tomarlowe.github.io/plane-thing/screenshots/01a1a8ce-5e3a-71a1-8619-b65be4e9d5d1/01-overhead.png",
+        "https://tomarlowe.github.io/plane-thing/screenshots/01a1a8ce-5e3a-71a1-8619-b65be4e9d5d1/02-radar.png",
+        "https://tomarlowe.github.io/plane-thing/screenshots/01a1a8ce-5e3a-71a1-8619-b65be4e9d5d1/03-watchlist.png",
+        "https://tomarlowe.github.io/plane-thing/screenshots/01a1a8ce-5e3a-71a1-8619-b65be4e9d5d1/04-log.png",
+        "https://tomarlowe.github.io/plane-thing/screenshots/01a1a8ce-5e3a-71a1-8619-b65be4e9d5d1/05-arrivals.png"
+      ],
+      "categories": [
+        "dashboards",
+        "travel"
+      ],
+      "homepage": "https://github.com/tomarlowe/plane-thing",
+      "source": "https://github.com/tomarlowe/plane-thing",
+      "versions": [
+        {
+          "version": "0.1.0",
+          "released_at": "2026-11-06T00:05:47.851Z",
+          "download": {
+            "url": "https://tomarlowe.github.io/plane-thing/r/01a1a8ce-5e3a-71a1-8619-b65be4e9d5d1/0.1.0.zip",
+            "size": 2231740,
+            "sha256": "504789e83fc2791312f3995e9aa7d77d3832b4b61a0afadc8cb63101a167ce3c"
+          },
+          "settings": {
+            "url": "https://tomarlowe.github.io/plane-thing/s/01a1a8ce-5e3a-71a1-8619-b65be4e9d5d1/0.1.0.html",
+            "size": 54745,
+            "sha256": "3833d10b8e4f559b963f3899ead4733fadd33246e5f00dbad853c6333e0740f1"
+          },
+          "permissions": [
+            "geo"
+          ],
+          "min_libbridgething_version": "0.16.0",
+          "changelog": "First release.\n\n- Five screens: Overhead (button 1), Radar (2), Watchlist (3), Spotter log (4) and Arrivals (the recessed button).\n- Overhead shows the closest aircraft within 10 miles: airline, tail number, callsign, type, an estimated route, altitude, speed, heading, distance and a photo with credit. If that exact aircraft has no photo it shows another tail of the same airline and type, then a photo of the type.\n- Radar is a self-drawn scope with five ranges (3, 6, 15, 50 and 100 miles). The dial changes range, and a dial click switches to a distance-sorted list. The nearest airport is plotted with its code, and touching the code looks at the next airport.\n- Watchlist shows emergency squawks (7500, 7600, 7700), helicopters and the callsigns or tail numbers you list.\n- Spotter log keeps every airborne aircraft you pass, once per aircraft, on the Car Thing itself. Export it as CSV (or a KML map file) from the settings page on your phone.\n- Arrivals lists aircraft landing at the nearest airport with estimated times and origins, plus the FAA delay status.\n- Emergency alert: an aircraft squawking 7500, 7600 or 7700 within 100 miles flashes EMERGENCY three times on any screen, then jumps to the Radar. A setting turns off the jump.\n- Settings for units (imperial, aviation or metric), clock, location, airports (nearby, one country or the whole world), logging distance, watch list, the emergency jump and dial direction.\n- Live positions come from adsb.lol, with airplanes.live and adsb.fi as fallbacks. Not for navigation or safety."
+        }
+      ]
+    }
+  ],
+  "recommended_sources": []
+}
