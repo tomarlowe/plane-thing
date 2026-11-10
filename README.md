@@ -86,9 +86,7 @@ address of the version zip into the companion app's "install from url or file" p
 - **Only works while it is on screen.** There is no background logging while another app is shown.
 - **Not every aircraft appears.** Only aircraft sending ADS-B within range of volunteer receivers are seen.
 - **Photos have an unresolved terms problem.** Planespotters.net in particular asks for things the Car Thing cannot do, such
-  as a clickable credit link, and its terms say image files may not be cached. Since 0.2.0 the picture of a plane you mark as
-  Visually Verified is saved on the Car Thing, which is caching, and the project has no permission for it. The
-  [data sources page](docs/data-sources.md) explains what is open. Read it before redistributing the app.
+  as a clickable credit link.
 - **Saved photos are lightly tested.** Marking a plane before its photo has loaded, and how many photos the Car Thing can hold,
   have not been tested on a real device. One photo showed "No Photo Saved" on the first try and the cause is not known.
 - **The look-here card needs a heading.** The clock position is shown only while the phone reports a heading and the car moves

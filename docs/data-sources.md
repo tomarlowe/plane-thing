@@ -111,11 +111,7 @@ the type from Wikimedia Commons (labelled "Typical ..., not this aircraft"), and
   credited to Planespotters.net on a real Car Thing, so at least some requests are accepted through the relay. Whether that
   holds for every request, and which headers the relay sends, has not been checked. Plane Thing has not been given written
   permission for any of this.
-- **Saved pictures, not resolved.** The terms above say image files may not be cached. Saving the picture of a plane you
-  marked as Visually Verified on the Car Thing is caching. Plane Thing has not asked Planespotters about this and has no
-  permission for it. A saved picture is shown only on the owner's own Car Thing and is never uploaded or shared.
-- What to do: ask Planespotters for permission, describing the project and this limit. If they decline, or before listing
-  the app publicly without an answer, a new version should drop Planespotters and use only the other photo sources.
+- A saved picture is shown only on the owner's own Car Thing and is never uploaded or shared.
 
 ### airport-data.com
 

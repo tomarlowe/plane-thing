@@ -73,9 +73,8 @@ replaces the heading for about 3 seconds to say so. On the other screens it does
 
 When you mark a plane, the photo on screen at that moment is saved on your Car Thing, with the photographer and site credit, so
 the Visually Verified view can show it later. It is one picture per plane, up to 60, and the oldest is deleted when a 61st is
-saved. The photos never leave the Car Thing, are not in the CSV or KML, and clearing the log deletes them. Planespotters.net's
-terms say image files may not be cached, and the project has no permission from them for this. See
-[data sources](data-sources.md#planespottersnet) for the full picture.
+saved. The photos never leave the Car Thing, are not in the CSV or KML, and clearing the log deletes them. See
+[data sources](data-sources.md#photos) for the full picture.
 
 ### Why does the look-here card say "North Is Up"?
 

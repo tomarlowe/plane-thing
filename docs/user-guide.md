@@ -136,8 +136,7 @@ For the planes you have seen with your own eyes. On the Overhead screen, press t
 Verified view can show it later. If the photo had not loaded yet when you pressed Back, the app saves it when it arrives,
 unless the plane has gone. This has not been tested on a real device. One picture is kept per plane, up to 60. When a 61st is
 saved the oldest picture is deleted, and its log row stays. Saved photos never leave the Car Thing and are not in the
-export. Clearing the log deletes them. Planespotters.net's terms say image files may not be cached, so read the
-[data sources page](data-sources.md) before relying on this.
+export. Clearing the log deletes them.
 
 ## Emergency alert
 

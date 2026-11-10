@@ -132,7 +132,7 @@ inside a small JSON document) and the Repo writes one document per plane, named 
   failed save is silent.
 - Clearing the log from the phone removes the pictures with it. The settings page and the exports never read them.
 
-The terms question about keeping these pictures is in [data sources](data-sources.md#planespottersnet).
+What is saved, and what the photo services' terms say, is described in [data sources](data-sources.md#photos).
 
 ## Build and release
 

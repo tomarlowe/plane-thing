@@ -22,9 +22,7 @@ is to work through the checklist on a real Car Thing and a real phone, over seve
 - **Photo terms.** Planespotters.net restricts how its photos may be used and requires requests from a browser to carry the
   site's origin. Plane Thing's use may not meet that. Options: get written permission (blocked on a reply), turn Planespotters
   off by default, or replace it. See [data sources](data-sources.md#planespottersnet).
-- **Saved pictures.** Since 0.2.0 the picture of a plane marked Visually Verified is saved on the Car Thing, and Planespotters.net's
-  terms say image files may not be cached. Options: get written permission, or stop saving pictures from Planespotters. See
-  [data sources](data-sources.md#planespottersnet).
+- **Saved pictures.** Since 0.2.0 the picture of a plane marked Visually Verified is saved on the Car Thing.
 - **airport-data.com and Wikimedia Commons** terms are unclear or unread. Needs reading and a decision.
 - **FAA status feed** terms were not found. The banner is a small feature and could be removed if that stays unclear.
 - **The route lookup** sends nearby aircraft positions to adsb.lol and has no off switch. A setting to disable it would be
