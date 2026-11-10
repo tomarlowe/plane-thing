@@ -7,7 +7,7 @@ import type { RepoState } from '../../data/repo';
 import { distLabel, distValue, fmtAlt, fmtDist, fmtSpeed } from '../../data/units';
 import type { Aircraft, Coord, EmergencyInfo, NearAirport } from '../../data/types';
 import { Waiting } from '../common';
-import { AirportMark, DescendGlyph, ListGlyph, MinusGlyph, PlusGlyph, RadarGlyph, WarnGlyph } from '../icons';
+import { AirportMark, DescendGlyph, ListGlyph, MinusGlyph, OpenGlyph, PlusGlyph, RadarGlyph, WarnGlyph } from '../icons';
 import { KIND_PAL, kindOf, ringNum, shortOperator, type Kind } from '../kinds';
 import { hereOf, useApp, useRepo, waitingFor } from '../state';
 import { KIND_COLOR, MUTED, PAPER } from '../theme';
@@ -204,14 +204,24 @@ function Scope({ s, here, range, dots, count }: { s: RepoState; here: Coord; ran
             You
           </text>
         </g>
+
+        {/* a touch on or near an aircraft opens it. the farthest are laid down first so the closest wins an overlap */}
+        <g fill="transparent">
+          {[...visible].reverse().map(d => {
+            const { x, y } = at(d, range);
+            return <circle key={`hit-${d.key}`} cx={x} cy={y} r="24" onPointerDown={() => nav.open(d.key)} />;
+          })}
+        </g>
       </svg>
+
+      {nearestAir ? <TapToOpen x={at(nearestAir, range).x} y={at(nearestAir, range).y} onOpen={() => nav.open(nearestAir.key)} /> : null}
 
       {banner ? <EmergencyBanner e={banner} u={u} /> : null}
 
       <Pill style={{ left: 16, top: 16 + top, padding: '8px 16px 8px 12px', borderRadius: 18, gap: 10 }}>
         <RadarGlyph size={26} color={GREEN_INK} />
         <span style={{ fontSize: 22, fontWeight: 700 }}>{`Radar · ${ringNum(distValue(range, u))} ${distLabel(u)}`}</span>
-        {!banner ? <span style={{ fontSize: 16, fontWeight: 600, color: MUTED }}>{`${count} aircraft`}</span> : null}
+        {!banner ? <span style={{ fontSize: 16, fontWeight: 600, color: MUTED }}>{`${count} Aircraft`}</span> : null}
       </Pill>
 
       {airport ? (
@@ -232,7 +242,7 @@ function Scope({ s, here, range, dots, count }: { s: RepoState; here: Coord; ran
           fontWeight: 600,
           color: '#86A896',
         }}>
-        {`Not for navigation or safety · ${s.provider ? PROVIDER_NAMES[s.provider] : 'no data yet'}`}
+        {`Not for Navigation or Safety · ${s.provider ? PROVIDER_NAMES[s.provider] : 'No Data Yet'}`}
       </div>
 
       <ZoomBar range={range} top={banner ? 96 : 90} onPick={mi => nav.setRange(mi)} />
@@ -280,7 +290,7 @@ function Scope({ s, here, range, dots, count }: { s: RepoState; here: Coord; ran
           lineHeight: 1,
         }}>
         <ListGlyph size={24} />
-        <span>Click dial for list</span>
+        <span>Click Dial for List</span>
       </div>
     </div>
   );
@@ -459,10 +469,10 @@ function RadarList({ s, dots, range, index }: { s: RepoState; dots: Dot[]; range
             <ListGlyph size={24} color={GREEN_INK} />
             Nearby
           </div>
-          <div style={{ fontSize: 16, fontWeight: 600, color: MUTED }}>{`closest first · within ${ringNum(distValue(range, u))} ${distLabel(u)}`}</div>
+          <div style={{ fontSize: 16, fontWeight: 600, color: MUTED }}>{`Closest First · Within ${ringNum(distValue(range, u))} ${distLabel(u)}`}</div>
         </div>
         <div style={{ display: 'flex', alignItems: 'center', gap: 14 }}>
-          <div style={{ fontSize: 15, fontWeight: 600, color: MUTED }}>Turn dial to scroll</div>
+          <div style={{ fontSize: 15, fontWeight: 600, color: MUTED }}>Turn to Scroll · Click to Open</div>
           <div
             onPointerDown={() => nav.setListOpen(false)}
             style={{
@@ -479,7 +489,7 @@ function RadarList({ s, dots, range, index }: { s: RepoState; dots: Dot[]; range
               lineHeight: 1,
             }}>
             <RadarGlyph size={18} />
-            Scope view
+            Scope View
           </div>
         </div>
       </div>
@@ -497,6 +507,7 @@ function RadarList({ s, dots, range, index }: { s: RepoState; dots: Dot[]; range
 
 function ListRow({ d, s, selected }: { d: Dot; s: RepoState; selected: boolean }) {
   const u = s.settings.units;
+  const { nav } = useApp();
   const pal = KIND_PAL[d.kind];
   const [num, unit] = split2(fmtDist(d.distMi, u));
   const a = d.a;
@@ -508,9 +519,10 @@ function ListRow({ d, s, selected }: { d: Dot; s: RepoState; selected: boolean }
   const sub = [typ, a?.desc && !typ ? a.desc : null, op].filter(Boolean).join(' · ');
   const alt = a?.altFt ?? info?.altFt ?? null;
   const descending = a?.vertFpm !== null && a?.vertFpm !== undefined && a.vertFpm <= -300;
-  const badge = d.kind === 'helicopter' ? 'Helicopter' : d.kind === 'watched' ? 'On your list' : d.kind === 'emergency' && info ? `${info.code} ${EMERGENCY_LABELS[info.code]}` : null;
+  const badge = d.kind === 'helicopter' ? 'Helicopter' : d.kind === 'watched' ? 'On Your List' : d.kind === 'emergency' && info ? `${info.code} ${EMERGENCY_LABELS[info.code]}` : null;
   return (
     <div
+      onPointerDown={() => nav.open(d.key)}
       style={{
         height: ROW,
         flex: 'none',
@@ -549,6 +561,43 @@ const split2 = (t: string): [string, string] => {
   const i = t.indexOf(' ');
   return i < 0 ? [t, ''] : [t.slice(0, i), t.slice(i + 1)];
 };
+
+// the aircraft on a row of the radar list, for the dial click to open
+export function keyAtRow(s: RepoState, range: number, index: number): string | null {
+  const here = hereOf(s);
+  if (!here) return null;
+  const rows = buildDots(s, here).filter(d => d.distMi <= range);
+  return rows[Math.max(0, Math.min(index, rows.length - 1))]?.key ?? null;
+}
+
+// the hint that sits by the closest aircraft on the scope
+function TapToOpen({ x, y, onOpen }: { x: number; y: number; onOpen: () => void }) {
+  const left = Math.max(150, Math.min(540, x - 48));
+  const top = Math.max(70, Math.min(310, y + 26));
+  return (
+    <div
+      onPointerDown={onOpen}
+      style={{
+        position: 'absolute',
+        left,
+        top,
+        height: 32,
+        display: 'flex',
+        alignItems: 'center',
+        gap: 6,
+        background: PAPER,
+        color: SCOPE_BG,
+        borderRadius: 16,
+        padding: '0 12px 0 14px',
+        fontSize: 16,
+        fontWeight: 800,
+        lineHeight: 1,
+      }}>
+      Tap to Open
+      <OpenGlyph size={18} />
+    </div>
+  );
+}
 
 // how many aircraft the radar shows at a range, for the dial to know where the list ends
 export function rowsInRange(s: RepoState, range: number): number {

@@ -8,7 +8,6 @@ import type { LogEntry } from '../src/data/types';
 import { COUNTRIES } from './countries';
 import './style.css';
 
-const SHARD = /^log\.(\d+)$/;
 const FILE_STEM = 'plane-thing-log';
 
 const num = (v: unknown) => typeof v === 'number' && Number.isFinite(v);
@@ -32,16 +31,15 @@ function usable(r: unknown): r is LogEntry {
   );
 }
 
-// the log is saved on the device as numbered docs plus one small index. read them back in order
+// the log is saved on the device as numbered docs plus one small index. read them back in order, one doc at a time,
+// because the device keeps other docs that are far bigger and are of no use here
 async function readLog(): Promise<LogEntry[]> {
-  const entries = await settings.doc.list();
-  const byKey = new Map(entries.map(e => [e.key, e.value]));
-  const metaText = byKey.get(META_KEY);
+  const metaText = (await settings.doc.get(META_KEY)).value;
   if (!metaText) return [];
   const meta = JSON.parse(metaText) as { shards?: number };
   const rows: LogEntry[] = [];
   for (let i = 0; i < (meta.shards ?? 0); i++) {
-    const text = byKey.get(`log.${i}`);
+    const text = (await settings.doc.get(`log.${i}`)).value;
     if (!text) continue;
     try {
       const part: unknown = JSON.parse(text);
@@ -158,8 +156,11 @@ function LogSection() {
     }
     setArmed(false);
     try {
-      const keys = (await settings.doc.list()).map(e => e.key).filter(k => SHARD.test(k));
-      for (const k of keys) await settings.doc.delete(k);
+      const metaText = (await settings.doc.get(META_KEY)).value;
+      const shards = metaText ? ((JSON.parse(metaText) as { shards?: number }).shards ?? 0) : 0;
+      for (let i = 0; i < shards; i++) await settings.doc.delete(`log.${i}`);
+      // the pictures kept for aircraft marked as seen by eye go with the log
+      for (const r of rows ?? []) if (r.s !== undefined) await settings.doc.delete(`photo.${r.hex}`);
       // the index goes last: the app clears its own copy when it sees the index disappear
       await settings.doc.delete(META_KEY);
       setShown(null);
@@ -176,7 +177,7 @@ function LogSection() {
 
   return (
     <section className="log">
-      <h2>Spotter log</h2>
+      <h2>Spotter Log</h2>
       <p className="note">
         {problem
           ? `Could not read the log from your Car Thing: ${problem}`
@@ -204,12 +205,12 @@ function LogSection() {
           Copy CSV
         </button>
         <button type="button" className="secondary" disabled={empty || rows === null} onClick={() => setShown(shown === 'csv' ? null : 'csv')}>
-          {shown === 'csv' ? 'Hide text' : 'Show text'}
+          {shown === 'csv' ? 'Hide Text' : 'Show Text'}
         </button>
       </div>
       <div className="row wrap">
         <button type="button" className="secondary" disabled={empty || rows === null} onClick={() => download('kml')}>
-          Download map file (KML)
+          Download Map File (KML)
         </button>
         <button type="button" className="secondary" disabled={empty || rows === null} onClick={() => void copy('kml')}>
           Copy KML
@@ -223,7 +224,7 @@ function LogSection() {
 
       <div className="row wrap">
         <button type="button" className={armed ? 'danger' : 'secondary'} disabled={empty || rows === null} onClick={() => void clearAll()}>
-          {armed ? `Tap again to delete ${count.toLocaleString()} sightings` : 'Clear the log'}
+          {armed ? `Tap Again to Delete ${count.toLocaleString()} Sightings` : 'Clear the Log'}
         </button>
       </div>
       <p className="note small">Clearing cannot be undone. Export first if you want to keep a copy.</p>
@@ -238,8 +239,8 @@ function CountryCodes() {
   const shown = needle ? COUNTRIES.filter(([code, name]) => code.toLowerCase() === needle || name.toLowerCase().includes(needle)) : COUNTRIES;
   return (
     <details className="codes">
-      <summary>Country codes</summary>
-      <input type="search" placeholder="Search by country name" value={q} onChange={e => setQ(e.currentTarget.value)} />
+      <summary>Country Codes</summary>
+      <input type="search" placeholder="Search by Country Name" value={q} onChange={e => setQ(e.currentTarget.value)} />
       <ul>
         {shown.map(([code, name]) => (
           <li key={code}>
@@ -272,16 +273,17 @@ function Settings() {
 
   return (
     <main>
-      <h1>Plane Thing settings</h1>
+      <h1>Plane Thing Settings</h1>
       <p className="hint">{ctx ? `version ${ctx.version}` : 'connecting to the phone app...'}</p>
 
       <section className="help">
         <h2>Controls</h2>
         <ul>
-          <li>Buttons 1 to 4: Overhead, Radar, Watchlist, Log</li>
+          <li>Buttons 1 to 4: Overhead, Radar, Watchlist, Log &amp; Photos</li>
           <li>Small recessed button: Arrivals (landings at the nearest airport)</li>
-          <li>Dial: zooms the radar, or scrolls a list. Click the dial on Radar to switch between scope and list</li>
-          <li>Touch the airport chip on Radar to look at the next airport</li>
+          <li>Dial: zooms the radar, or scrolls a list. Click the dial on Radar to switch between scope and list, and again to open the highlighted aircraft. On Log &amp; Photos, click the dial to step through its four views</li>
+          <li>Back button: on Overhead, marks the aircraft you are looking at as seen by eye</li>
+          <li>Touch an aircraft on Radar to open it on Overhead. Touch the airport chip on Radar to look at the next airport</li>
         </ul>
       </section>
 
@@ -300,7 +302,7 @@ function Settings() {
       <p className="status">{status}</p>
 
       <section className="credits">
-        <h2>Data sources</h2>
+        <h2>Data Sources</h2>
         <p>
           Live aircraft positions come from volunteers who run ADS-B receivers, shared by <a href="https://adsb.lol/">adsb.lol</a> (Open
           Database License), <a href="https://airplanes.live/">airplanes.live</a> (non-commercial use) and{' '}

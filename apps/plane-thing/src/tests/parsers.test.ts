@@ -63,14 +63,14 @@ describe('FAA status', () => {
   test('reads each airport under its kind of delay', () => {
     const list = parseFaa(xml);
     expect(list.map(s => s.code)).toEqual(['EWR', 'SFO', 'LGA']);
-    expect(list[0]).toEqual({ code: 'EWR', kind: 'Ground delay program', reason: 'thunderstorms', avg: '47 minutes' });
-    expect(list[2]).toMatchObject({ kind: 'Ground stop', reason: 'wind & rain', avg: null });
+    expect(list[0]).toEqual({ code: 'EWR', kind: 'Ground Delay Program', reason: 'thunderstorms', avg: '47 minutes' });
+    expect(list[2]).toMatchObject({ kind: 'Ground Stop', reason: 'wind & rain', avg: null });
   });
   test('looks up an airport and words the line', () => {
     const list = parseFaa(xml);
     expect(statusFor(list, 'ewr')!.code).toBe('EWR');
     expect(statusFor(list, 'JFK')).toBeNull();
-    expect(faaLine(list[0]!)).toBe('Ground delay program, thunderstorms, average 47 minutes');
+    expect(faaLine(list[0]!)).toBe('Ground Delay Program, Thunderstorms, Average 47 minutes');
     expect(faaLine({ code: 'X', kind: 'Airport closed', reason: null, avg: null })).toBe('Airport closed');
   });
   test('an empty or odd reply gives no entries', () => {

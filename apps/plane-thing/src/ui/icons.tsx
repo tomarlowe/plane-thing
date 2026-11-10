@@ -154,6 +154,21 @@ export const MinusGlyph = (p: P) => (
   </svg>
 );
 
+// a target with ticks, for an aircraft picked on the radar
+export const PickGlyph = (p: P) => (
+  <svg {...stroke(p)}>
+    <circle cx="12" cy="12" r="7.5" />
+    <circle cx="12" cy="12" r="2.2" />
+    <path d="M12 2v4M12 18v4M2 12h4M18 12h4" />
+  </svg>
+);
+
+export const OpenGlyph = (p: P) => (
+  <svg {...stroke(p, 3)}>
+    <path d="M7 17L17 7M9 7h8v8" />
+  </svg>
+);
+
 // the arrow that shows a heading. points up at 0 degrees
 export const HeadingArrow = ({ deg, size = 22, color }: { deg: number; size?: number; color: string }) => (
   <svg width={size} height={size} viewBox="0 0 24 24" fill={color} aria-hidden="true" style={{ transform: `rotate(${deg}deg)` }}>

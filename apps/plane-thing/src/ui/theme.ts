@@ -24,12 +24,12 @@ export const ROW_PALS: Pal[] = [BLUE, GREEN, PEACH, LAVENDER, YELLOW];
 
 export type ScreenId = 'overhead' | 'radar' | 'watchlist' | 'log' | 'arrivals';
 
-export const SCREENS: Array<{ id: ScreenId; label: string; bg: string; fg: string; key: string }> = [
-  { id: 'overhead', label: 'Overhead', bg: '#8AB4F8', fg: '#0A2A5E', key: '1' },
-  { id: 'radar', label: 'Radar', bg: '#7BE0A0', fg: '#003820', key: '2' },
-  { id: 'watchlist', label: 'Watchlist', bg: '#FFC48A', fg: '#4A2400', key: '3' },
-  { id: 'log', label: 'Log', bg: '#CBB8FF', fg: '#2A1A63', key: '4' },
-  { id: 'arrivals', label: 'Arrivals', bg: '#FFD966', fg: '#3B2A00', key: 'm' },
+export const SCREENS: Array<{ id: ScreenId; label: string; bg: string; fg: string; key: string; weight: number }> = [
+  { id: 'overhead', label: 'Overhead', bg: '#8AB4F8', fg: '#0A2A5E', key: '1', weight: 1 },
+  { id: 'radar', label: 'Radar', bg: '#7BE0A0', fg: '#003820', key: '2', weight: 1 },
+  { id: 'watchlist', label: 'Watchlist', bg: '#FFC48A', fg: '#4A2400', key: '3', weight: 1 },
+  { id: 'log', label: 'Log & Photos', bg: '#CBB8FF', fg: '#2A1A63', key: '4', weight: 1.3 },
+  { id: 'arrivals', label: 'Arrivals', bg: '#FFD966', fg: '#3B2A00', key: 'm', weight: 1 },
 ];
 
 export const MUTED = '#A9B7D0';

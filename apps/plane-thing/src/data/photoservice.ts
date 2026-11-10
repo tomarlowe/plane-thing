@@ -19,13 +19,15 @@ const KEEP_IMAGES = 8;
 
 export const NO_PHOTO: PhotoResult = { kind: 'none', hit: null, shows: null };
 
-// finds a picture for an aircraft, trying the exact one first and then stand-ins. pictures are kept in memory only, as
-// blob addresses for the screen, and are never written to storage. the services ask for credit next to each picture
+// finds a picture for an aircraft, trying the exact one first and then stand-ins. the latest few pictures are held as blob
+// addresses for the screen, with their bytes beside them for when one is saved. the services ask for credit next to each picture
 export class PhotoService {
   private json = new Map<string, { at: number; hit: PhotoHit | null }>();
   private results = new Map<string, { at: number; r: PhotoResult }>();
   private pending = new Map<string, Promise<PhotoResult>>();
   private images = new Map<string, string>();
+  // the bytes behind each blob address
+  private raw = new Map<string, { bytes: Uint8Array; mime: string }>();
   private chain: Promise<unknown> = Promise.resolve();
 
   constructor(private p: Platform) {}
@@ -68,12 +70,20 @@ export class PhotoService {
     const mime = /\.png(\?|$)/i.test(hit.imageUrl) ? 'image/png' : 'image/jpeg';
     const url = URL.createObjectURL(new Blob([r.body as BlobPart], { type: mime }));
     this.images.set(hit.imageUrl, url);
+    this.raw.set(url, { bytes: r.body, mime });
     while (this.images.size > KEEP_IMAGES) {
       const oldest = this.images.keys().next().value as string;
-      URL.revokeObjectURL(this.images.get(oldest)!);
+      const old = this.images.get(oldest)!;
+      URL.revokeObjectURL(old);
+      this.raw.delete(old);
       this.images.delete(oldest);
     }
     return { ...hit, imageUrl: url };
+  }
+
+  // the picture behind a blob address handed out by this service, while it is still held
+  rawFor(blobUrl: string): { bytes: Uint8Array; mime: string } | null {
+    return this.raw.get(blobUrl) ?? null;
   }
 
   private async exact(a: { hex: string; reg: string | null }): Promise<PhotoHit | null> {

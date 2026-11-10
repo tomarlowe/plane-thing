@@ -61,7 +61,7 @@ describe('units', () => {
   test('altitudes', () => {
     expect(fmtAlt(3400, 'imperial')).toBe('3,400 ft');
     expect(fmtAlt(null, 'imperial')).toBe('--');
-    expect(fmtAlt(0, 'imperial')).toBe('ground');
+    expect(fmtAlt(0, 'imperial')).toBe('Ground');
     expect(fmtAlt(3400, 'metric')).toBe('1,036 m');
   });
   test('speeds are knots except in metric', () => {

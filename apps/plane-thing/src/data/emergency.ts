@@ -6,9 +6,9 @@ export const EMERGENCY_CODES: EmergencyCode[] = ['7500', '7600', '7700'];
 export const ALERT_RADIUS_MI = 100;
 
 export const EMERGENCY_LABELS: Record<EmergencyCode, string> = {
-  '7500': 'Hijack code',
-  '7600': 'Radio failure',
-  '7700': 'General emergency',
+  '7500': 'Hijack Code',
+  '7600': 'Radio Failure',
+  '7700': 'General Emergency',
 };
 
 // a code must be heard on two separate updates at least this far apart before it counts. pilots dial through codes

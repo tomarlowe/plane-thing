@@ -16,7 +16,20 @@ export interface LogStats {
   total: number;
   types: number;
   newToday: number;
+  // aircraft the user marked as seen by eye
+  seen: number;
 }
+
+// one line of the types view
+export interface TypeRow {
+  code: string;
+  name: string;
+  count: number;
+  // last seen, unix seconds
+  last: number;
+}
+
+export type SeenMark = { kind: 'new' | 'again'; hex: string; at: number; added: boolean };
 
 export interface LogDocs {
   get(key: string): Promise<string | null>;
@@ -52,6 +65,25 @@ export class SpotterLog {
     if (this.rows.length > MAX_ROWS) this.trim();
     if (added) this.version++;
     return added;
+  }
+
+  // marks an aircraft as seen by eye. one that is not in the log yet is added. a second mark keeps the first time
+  markSeen(nowS: number, a: Aircraft, place: string, me: Coord): SeenMark {
+    let at = this.byHex.get(a.hex);
+    let added = false;
+    if (at === undefined) {
+      this.add(nowS, a, place, me);
+      at = this.rows.length - 1;
+      added = true;
+    } else {
+      this.touch(at, nowS, a);
+    }
+    const row = this.rows[at]!;
+    if (row.s !== undefined) return { kind: 'again', hex: a.hex, at: row.s, added };
+    row.s = nowS;
+    this.mark(at);
+    this.version++;
+    return { kind: 'new', hex: a.hex, at: nowS, added };
   }
 
   private add(nowS: number, a: Aircraft, place: string, me: Coord) {
@@ -113,7 +145,10 @@ export class SpotterLog {
 
   // drops the oldest rows and rewrites everything
   private trim() {
-    const keep = [...this.rows].sort((a, b) => b.l - a.l).slice(0, MAX_ROWS - TRIM_ROWS);
+    // rows the user marked as seen by eye are never the ones dropped
+    const marked = this.rows.filter(r => r.s !== undefined);
+    const rest = this.rows.filter(r => r.s === undefined).sort((a, b) => b.l - a.l);
+    const keep = [...marked, ...rest.slice(0, Math.max(0, MAX_ROWS - TRIM_ROWS - marked.length))];
     keep.sort((a, b) => a.f - b.f);
     this.rows = keep;
     this.byHex = new Map(keep.map((r, i) => [r.hex, i]));
@@ -126,17 +161,52 @@ export class SpotterLog {
     const day = localDayStart(nowS, offsetS);
     const types = new Set<string>();
     let newToday = 0;
+    let seen = 0;
     for (const r of this.rows) {
       const t = r.t ?? r.d;
       if (t) types.add(t);
       if (r.f >= day) newToday++;
+      if (r.s !== undefined) seen++;
     }
-    return { total: this.rows.length, types: types.size, newToday };
+    return { total: this.rows.length, types: types.size, newToday, seen };
   }
 
   // newest first
   recent(n: number): LogEntry[] {
     return [...this.rows].sort((a, b) => b.l - a.l).slice(0, n);
+  }
+
+  // first logged today, newest first
+  today(nowS: number, offsetS: number, n: number): LogEntry[] {
+    const day = localDayStart(nowS, offsetS);
+    return this.rows
+      .filter(r => r.f >= day)
+      .sort((a, b) => b.f - a.f)
+      .slice(0, n);
+  }
+
+  // marked as seen by eye, most recently marked first
+  seenRows(n = Infinity): LogEntry[] {
+    return this.rows
+      .filter(r => r.s !== undefined)
+      .sort((a, b) => b.s! - a.s!)
+      .slice(0, n);
+  }
+
+  // one line per aircraft type, the most logged first
+  typeTable(n: number): TypeRow[] {
+    const by = new Map<string, TypeRow>();
+    for (const r of this.rows) {
+      const code = r.t ?? r.d;
+      if (!code) continue;
+      const row = by.get(code);
+      if (row) {
+        row.count++;
+        if (r.l > row.last) row.last = r.l;
+        if (row.name === code && r.d) row.name = r.d;
+      } else by.set(code, { code, name: r.d ?? code, count: 1, last: r.l });
+    }
+    return [...by.values()].sort((a, b) => b.count - a.count || b.last - a.last || a.code.localeCompare(b.code)).slice(0, n);
   }
 
   all(): LogEntry[] {
@@ -177,7 +247,14 @@ export class SpotterLog {
       const text = await docs.get(shardKey(i));
       if (!text) continue;
       const part = JSON.parse(text) as LogEntry[];
-      if (Array.isArray(part)) rows.push(...part.filter(r => r && typeof r.hex === 'string'));
+      if (Array.isArray(part)) {
+        for (const r of part) {
+          if (!r || typeof r.hex !== 'string') continue;
+          // a row written before seen by eye existed has no mark, and a damaged mark is dropped
+          if (r.s !== undefined && typeof r.s !== 'number') delete r.s;
+          rows.push(r);
+        }
+      }
     }
     this.rows = rows;
     this.byHex = new Map(rows.map((r, i) => [r.hex, i]));

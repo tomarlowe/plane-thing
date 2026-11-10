@@ -17,7 +17,7 @@ export function fmtDist(mi: number, u: UnitSystem): string {
 
 export function fmtAlt(ft: number | null, u: UnitSystem): string {
   if (ft === null) return '--';
-  if (ft <= 0) return 'ground';
+  if (ft <= 0) return 'Ground';
   if (u === 'metric') return `${Math.round(ft * 0.3048).toLocaleString('en-US')} m`;
   return `${Math.round(ft).toLocaleString('en-US')} ft`;
 }

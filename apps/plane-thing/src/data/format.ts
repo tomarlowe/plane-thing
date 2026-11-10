@@ -47,6 +47,29 @@ export function ago(nowS: number, thenS: number): string {
   return `${Math.round(s / 86400)} d ago`;
 }
 
+// words that stay lowercase inside a label. the first word, and the first word after a separator, is always capitalized
+const SMALL_WORDS = new Set(['a', 'an', 'and', 'as', 'at', 'by', 'for', 'in', 'of', 'on', 'or', 'out', 'the', 'to', 'up']);
+// units and abbreviations that keep their own case
+const UNIT_WORDS = new Set(['ft', 'kt', 'mi', 'nm', 'km', 'm', 'h', 's', 'min', 'minute', 'minutes', 'hour', 'hours', 'est.']);
+
+// capitalizes a label for the screen: "closest first · within 15 mi" becomes "Closest First · Within 15 mi"
+export function titleLabel(text: string): string {
+  let start = true;
+  return text
+    .split(/(\s+)/)
+    .map(w => {
+      if (/^\s*$/.test(w)) return w;
+      const first = start;
+      start = /[:,.·]$/.test(w) || w === '·';
+      if (w === '·') return w;
+      const bare = w.replace(/[^A-Za-z.]/g, '').toLowerCase();
+      if (/\d/.test(w) || (w.length > 1 && w === w.toUpperCase() && /[A-Z]/.test(w)) || UNIT_WORDS.has(bare)) return w;
+      if (!first && SMALL_WORDS.has(bare)) return w.toLowerCase();
+      return w[0]!.toUpperCase() + w.slice(1);
+    })
+    .join('');
+}
+
 // ICAO and trade names arrive in capitals, make them readable
 export function titleCase(s: string): string {
   return s

@@ -3,7 +3,9 @@
 import { afterEach, describe, expect, test } from 'bun:test';
 import { readFileSync } from 'node:fs';
 import { META_KEY } from '../data/log';
-import { OVERHEAD_MI, parseSettings, Repo } from '../data/repo';
+import { emergencyAircraft, OVERHEAD_MI, parseSettings, Repo, shownOf } from '../data/repo';
+import { decodePhoto, encodePhoto, MAX_SAVED_PHOTOS, photoKey } from '../data/savedphoto';
+import type { Aircraft, EmergencyInfo } from '../data/types';
 import { SIM_NOW_S } from '../sim/fixtures';
 import { simPlatform } from '../sim/platform';
 
@@ -35,6 +37,26 @@ async function until(what: string, ok: () => boolean, ms = 8000) {
     await new Promise(r => setTimeout(r, 25));
   }
   throw new Error(`timed out waiting for ${what}`);
+}
+
+// starts a run on a platform that already holds some docs, like a device that has been used before
+function startWithDocs(query: string, docs: Record<string, string>) {
+  const p = simPlatform(new URLSearchParams(query), { airportData, clock: () => SIM_NOW_S });
+  const ready = Promise.all(Object.entries(docs).map(([k, v]) => p.docPut(k, v)));
+  const repo = new Repo(p);
+  repos.push(repo);
+  return { p, repo, ready, state: () => repo.getSnapshot() };
+}
+
+// waits for a doc to exist, or to be gone
+async function docChanged(p: ReturnType<typeof simPlatform>, key: string, present: boolean, ms = 8000) {
+  const end = Date.now() + ms;
+  while (Date.now() < end) {
+    const v = await p.docGet(key);
+    if ((v !== null) === present) return v;
+    await sleep(25);
+  }
+  throw new Error(`timed out waiting for doc ${key} to be ${present ? 'there' : 'gone'}`);
 }
 
 afterEach(() => {
@@ -206,6 +228,245 @@ describe('log and the phone', () => {
     await repo2.start();
     await until('loaded', () => repo2.getSnapshot().logStats.total === 6);
     expect(repo2.logRows()).toHaveLength(6);
+  });
+});
+
+describe('which aircraft the Overhead screen is about', () => {
+  const air = (o: Partial<Aircraft> = {}): Aircraft => ({
+    hex: 'a1',
+    reg: 'N1',
+    callsign: 'TST1',
+    type: 'A320',
+    desc: null,
+    operator: null,
+    lat: 40.8,
+    lon: -74,
+    altFt: 3000,
+    onGround: false,
+    gsKt: 200,
+    trackDeg: 90,
+    vertFpm: 0,
+    squawk: '1200',
+    category: 'A3',
+    military: false,
+    seenPosS: 1,
+    distMi: 4,
+    bearingDeg: 10,
+    ...o,
+  });
+  const emg = (o: Partial<EmergencyInfo> = {}): EmergencyInfo => ({
+    code: '7700',
+    label: 'General Emergency',
+    hex: 'e1',
+    callsign: 'EMG1',
+    reg: 'N9',
+    type: 'B738',
+    desc: 'Boeing 737-800',
+    distMi: 30,
+    bearingDeg: 340,
+    altFt: 31000,
+    lat: 41,
+    lon: -74,
+    sinceS: 0,
+    lastS: 0,
+    ...o,
+  });
+  const view = (picked: string | null, list: Aircraft[] | null, emergencies: EmergencyInfo[] = [], overhead: Aircraft | null = list?.[0] ?? null) => ({
+    picked,
+    aircraft: { data: list, status: 'ok' as const, error: null },
+    emergencies,
+    overhead,
+  });
+
+  test('with nothing picked it is the closest aircraft, or nothing', () => {
+    const a = air();
+    expect(shownOf(view(null, [a]))).toEqual({ a, picked: false, lost: false });
+    expect(shownOf(view(null, [], [], null))).toEqual({ a: null, picked: false, lost: false });
+  });
+  test('a picked aircraft that is still heard is the one shown, not the closest', () => {
+    const near = air({ hex: 'near', distMi: 1 });
+    const far = air({ hex: 'far', distMi: 14 });
+    const s = shownOf(view('far', [near, far], [], near));
+    expect(s).toEqual({ a: far, picked: true, lost: false });
+  });
+  test('a picked aircraft goes stale after 60 seconds without a position', () => {
+    expect(shownOf(view('a1', [air({ seenPosS: 60 })])).lost).toBe(false);
+    expect(shownOf(view('a1', [air({ seenPosS: 61 })]))).toEqual({ a: null, picked: true, lost: true });
+  });
+  test('a picked aircraft that has landed or left the list is lost', () => {
+    expect(shownOf(view('a1', [air({ onGround: true })])).lost).toBe(true);
+    expect(shownOf(view('a1', [air({ hex: 'other' })])).lost).toBe(true);
+    expect(shownOf(view('a1', null, [], null)).lost).toBe(true);
+  });
+  test('a picked emergency aircraft that is not in the nearby list is still shown, without speed or heading', () => {
+    const s = shownOf(view('e1', [air()], [emg()]));
+    expect(s.picked).toBe(true);
+    expect(s.lost).toBe(false);
+    expect(s.a).toMatchObject({ hex: 'e1', reg: 'N9', callsign: 'EMG1', type: 'B738', altFt: 31000, distMi: 30, bearingDeg: 340, squawk: '7700' });
+    expect(s.a!.gsKt).toBeNull();
+    expect(s.a!.trackDeg).toBeNull();
+    expect(s.a!.onGround).toBe(false);
+  });
+  test('the live record wins over the emergency record when both exist', () => {
+    const live = air({ hex: 'e1', gsKt: 380, trackDeg: 160 });
+    expect(shownOf(view('e1', [live], [emg()])).a).toBe(live);
+  });
+  test('the emergency stand-in has no operator, category or heading', () => {
+    expect(emergencyAircraft(emg())).toMatchObject({ operator: null, category: null, military: false, vertFpm: null, seenPosS: 0 });
+  });
+});
+
+describe('seen by eye', () => {
+  test('there is nothing to mark when no aircraft is within the 10 mile zone', async () => {
+    const h = start('scenario=empty');
+    await h.repo.start();
+    await until('feed', () => h.state().aircraft.status === 'ok');
+    expect(h.repo.markSeen()).toEqual({ kind: 'none', why: 'zone' });
+    expect(h.state().logStats.seen).toBe(0);
+    expect(h.state().logSeen).toHaveLength(0);
+  });
+
+  test('marks the closest aircraft once, and a second mark keeps the first time', async () => {
+    const h = start('scenario=normal');
+    await h.repo.start();
+    await until('aircraft', () => h.state().overhead !== null);
+    expect(h.repo.markSeen()).toEqual({ kind: 'new', tail: 'N372DN', at: SIM_NOW_S });
+    expect(h.state().logStats.seen).toBe(1);
+    expect(h.state().logSeen.map(r => r.hex)).toEqual(['a1c001']);
+    // a second later, still the same aircraft
+    await h.step(1);
+    expect(h.repo.markSeen()).toEqual({ kind: 'again', tail: 'N372DN', at: SIM_NOW_S });
+    expect(h.state().logStats.seen).toBe(1);
+  });
+
+  test('a picked aircraft is marked even outside the zone, and unpicking goes back to the closest', async () => {
+    const h = start('scenario=normal');
+    await h.repo.start();
+    await until('aircraft', () => h.state().overhead !== null && h.state().aircraft.data!.some(a => a.hex === 'a1c006'));
+    h.repo.pick('a1c006');
+    const s = shownOf(h.state());
+    expect(s).toMatchObject({ picked: true, lost: false });
+    expect(s.a!.hex).toBe('a1c006');
+    expect(s.a!.distMi).toBeGreaterThan(OVERHEAD_MI);
+    // it was too far for the log to have recorded it, so the mark adds the row
+    expect(h.state().logRecent.some(r => r.hex === 'a1c006')).toBe(false);
+    expect(h.repo.markSeen()).toEqual({ kind: 'new', tail: 'N77865', at: SIM_NOW_S });
+    expect(h.state().logSeen.map(r => r.hex)).toEqual(['a1c006']);
+    expect(h.state().logRecent.some(r => r.hex === 'a1c006')).toBe(true);
+    h.repo.unpick();
+    expect(h.state().picked).toBeNull();
+    expect(shownOf(h.state())).toMatchObject({ picked: false, lost: false });
+    expect(shownOf(h.state()).a!.hex).toBe('a1c001');
+  });
+
+  test('a picked aircraft that is not heard cannot be marked', async () => {
+    const h = start('scenario=normal');
+    await h.repo.start();
+    await until('aircraft', () => h.state().overhead !== null);
+    h.repo.pick('ffffff');
+    expect(shownOf(h.state())).toEqual({ a: null, picked: true, lost: true });
+    expect(h.repo.markSeen()).toEqual({ kind: 'none', why: 'lost' });
+    expect(h.state().logStats.seen).toBe(0);
+  });
+
+  test('marking saves the picture with its credit, and it reads back', async () => {
+    const h = start('scenario=normal&photo=all');
+    await h.repo.start();
+    await until('aircraft', () => h.state().overhead !== null);
+    await until('photo', () => h.state().photo.status === 'done' && h.state().photo.hex === 'a1c001', 12000);
+    h.repo.markSeen();
+    const text = await docChanged(h.p, photoKey('a1c001'), true);
+    const d = decodePhoto(text!)!;
+    expect(d).toMatchObject({ kind: 'exact', mime: 'image/jpeg' });
+    expect(d.credit.source).toBe('Planespotters.net');
+    expect(d.credit.photographer).toBe('Sample Photographer');
+    expect(d.bytes.length).toBeGreaterThan(0);
+    const back = await h.repo.savedPhoto('a1c001');
+    expect(back).toMatchObject({ kind: 'exact', shows: null });
+    expect(back!.hit!.credit.link).toBe(d.credit.link);
+    expect(back!.hit!.imageUrl.startsWith('blob:')).toBe(true);
+    // the second look is the same object, and an aircraft with nothing saved reads as nothing
+    expect(await h.repo.savedPhoto('a1c001')).toBe(back);
+    expect(await h.repo.savedPhoto('a1c002')).toBeNull();
+  });
+
+  test('marking before the picture has loaded saves it when it arrives', async () => {
+    const h = start('scenario=normal&photo=all');
+    await h.repo.start();
+    await until('aircraft', () => h.state().overhead !== null);
+    expect(h.state().photo.status).not.toBe('done');
+    h.repo.markSeen();
+    expect(await h.p.docGet(photoKey('a1c001'))).toBeNull();
+    const text = await docChanged(h.p, photoKey('a1c001'), true, 12000);
+    expect(decodePhoto(text!)).not.toBeNull();
+  });
+
+  test('an aircraft with no picture anywhere is still marked, and nothing is saved for it', async () => {
+    const h = start('scenario=normal&photo=none');
+    await h.repo.start();
+    await until('aircraft', () => h.state().overhead !== null);
+    await until('photo', () => h.state().photo.status === 'done', 15000);
+    expect(h.repo.markSeen().kind).toBe('new');
+    await sleep(300);
+    expect(await h.p.docGet(photoKey('a1c001'))).toBeNull();
+    expect(await h.repo.savedPhoto('a1c001')).toBeNull();
+    expect(h.state().logStats.seen).toBe(1);
+  });
+
+  test('only the most recent pictures are kept, and the oldest loses its picture but not its row', async () => {
+    const credit = { photographer: 'Earlier Photographer', source: 'Planespotters.net', link: 'https://www.planespotters.net/photo/9' };
+    const pic = encodePhoto({ kind: 'exact', shows: null, mime: 'image/jpeg', credit, bytes: new Uint8Array([1, 2, 3]) })!;
+    const hexOf = (i: number) => `b0${i.toString(16).padStart(4, '0')}`;
+    const before = SIM_NOW_S - 90000;
+    const rows = Array.from({ length: MAX_SAVED_PHOTOS }, (_, i) => ({
+      hex: hexOf(i), r: null, c: null, t: 'A320', d: null, o: null,
+      f: before + i, l: before + i, m: 20, b: 10, h: 30, n: 1, p: [40.74, -74.03], w: '', s: before + i,
+    }));
+    const docs: Record<string, string> = { [META_KEY]: JSON.stringify({ v: 1, rows: rows.length, shards: 1 }), 'log.0': JSON.stringify(rows) };
+    for (const r of rows) docs[photoKey(r.hex)] = pic;
+    const h = startWithDocs('scenario=normal&photo=all', docs);
+    await h.ready;
+    await h.repo.start();
+    await until('log loaded', () => h.state().logStats.seen === MAX_SAVED_PHOTOS);
+    await until('aircraft', () => h.state().overhead !== null);
+    await until('photo', () => h.state().photo.status === 'done' && h.state().photo.hex === 'a1c001', 12000);
+    expect(h.repo.markSeen().kind).toBe('new');
+    await docChanged(h.p, photoKey('a1c001'), true);
+    await docChanged(h.p, photoKey(hexOf(0)), false);
+    // the next oldest keeps its picture, and every row is still in the log
+    expect(await h.p.docGet(photoKey(hexOf(1)))).not.toBeNull();
+    expect(await h.p.docGet(photoKey(hexOf(MAX_SAVED_PHOTOS - 1)))).not.toBeNull();
+    expect(h.state().logStats.seen).toBe(MAX_SAVED_PHOTOS + 1);
+    expect(h.state().logSeen.some(r => r.hex === hexOf(0))).toBe(true);
+  });
+
+  test('clearing the log in the app removes the saved pictures too', async () => {
+    const h = start('scenario=normal&photo=all');
+    await h.repo.start();
+    await until('aircraft', () => h.state().overhead !== null);
+    await until('photo', () => h.state().photo.status === 'done' && h.state().photo.hex === 'a1c001', 12000);
+    h.repo.markSeen();
+    await docChanged(h.p, photoKey('a1c001'), true);
+    expect(await h.repo.savedPhoto('a1c001')).not.toBeNull();
+    await h.repo.clearLog();
+    expect(await h.p.docGet(photoKey('a1c001'))).toBeNull();
+    expect(h.state().logStats.seen).toBe(0);
+    expect(h.state().logSeen).toHaveLength(0);
+    expect(await h.repo.savedPhoto('a1c001')).toBeNull();
+  });
+
+  test('when the phone clears the log, the marks leave the running app', async () => {
+    const h = start('scenario=normal');
+    await h.repo.start();
+    await until('aircraft', () => h.state().overhead !== null);
+    h.repo.markSeen();
+    await h.step(20);
+    await docChanged(h.p, META_KEY, true, 5000);
+    expect(h.state().logStats.seen).toBe(1);
+    await h.p.docDelete('log.0');
+    await h.p.docDelete(META_KEY);
+    expect(h.state().logStats.seen).toBe(0);
+    expect(h.state().logSeen).toHaveLength(0);
   });
 });
 

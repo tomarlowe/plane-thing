@@ -36,13 +36,13 @@ export default function Watchlist() {
           <div style={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: 8, fontSize: 17, fontWeight: 700, color: SALMON.soft }}>
               <WarnGlyph size={22} color={SALMON.accent} />
-              Emergency squawk
+              Emergency Squawk
             </div>
             <div style={{ fontSize: 64, fontWeight: 800, lineHeight: 1, letterSpacing: '-0.01em' }}>{e.code}</div>
           </div>
           <div style={{ display: 'flex', flexDirection: 'column', gap: 6, minWidth: 0 }}>
             <div style={{ fontSize: 32, fontWeight: 800, lineHeight: 1, whiteSpace: 'nowrap' }}>{e.callsign ?? e.reg ?? e.hex.toUpperCase()}</div>
-            <div style={{ fontSize: 18, fontWeight: 600, color: SALMON.soft, whiteSpace: 'nowrap' }}>{e.desc ?? e.type ?? 'Unknown type'}</div>
+            <div style={{ fontSize: 18, fontWeight: 600, color: SALMON.soft, whiteSpace: 'nowrap' }}>{e.desc ?? e.type ?? 'Unknown Type'}</div>
             <div style={{ alignSelf: 'flex-start', background: SALMON.chip, color: SALMON.chipInk, borderRadius: 14, padding: '5px 12px', fontSize: 14, fontWeight: 700, lineHeight: 1 }}>
               {EMERGENCY_LABELS[e.code]}
             </div>
@@ -60,7 +60,7 @@ export default function Watchlist() {
           height={116}
           radius={32}
           icon={<WarnGlyph size={26} color={MUTED} />}
-          title="No emergency squawks"
+          title="No Emergency Squawks"
           detail="Watching codes 7500, 7600 and 7700 within 100 miles."
         />
       )}
@@ -69,13 +69,13 @@ export default function Watchlist() {
         {heli ? (
           <Card pal={PEACH} icon={<HeliGlyph size={22} color={PEACH.accent} />} label="Helicopter" big={heli.callsign ?? heli.reg ?? heli.hex.toUpperCase()} line={describe(heli)} />
         ) : (
-          <Quiet fill radius={32} icon={<HeliGlyph size={24} color={MUTED} />} title="No helicopters" detail={searching ? 'Waiting for your location.' : 'None heard nearby.'} />
+          <Quiet fill radius={32} icon={<HeliGlyph size={24} color={MUTED} />} title="No Helicopters" detail={searching ? 'Waiting for your location.' : 'None heard nearby.'} />
         )}
         {watched ? (
           <Card
             pal={YELLOW}
             icon={<StarGlyph size={22} />}
-            label="On your list"
+            label="On Your List"
             big={watched.a.callsign ?? watched.a.reg ?? watched.a.hex.toUpperCase()}
             line={describe(watched.a)}
           />
@@ -84,7 +84,7 @@ export default function Watchlist() {
             fill
             radius={32}
             icon={<StarGlyph size={24} color="#7A6B2E" />}
-            title="Nothing on your list"
+            title="Nothing on Your List"
             detail={s.settings.watch.length ? 'None of them are nearby.' : 'Add names in settings on your phone.'}
           />
         )}
@@ -107,7 +107,7 @@ export default function Watchlist() {
             <EyeGlyph size={24} color={LAVENDER.accent} />
             Watching for
           </div>
-          <div style={{ fontSize: 16, fontWeight: 600, color: LAVENDER.soft }}>Edit on your phone</div>
+          <div style={{ fontSize: 16, fontWeight: 600, color: LAVENDER.soft }}>Edit on Your Phone</div>
         </div>
         <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8 }}>
           {watchingChips(s).map(c => (
@@ -123,12 +123,12 @@ export default function Watchlist() {
 
 // the fixed things, then what the user added
 export function watchingChips(s: RepoState): string[] {
-  const out = ['7500 hijack', '7600 radio failure', '7700 emergency', 'Helicopters'];
+  const out = ['7500 Hijack', '7600 Radio Failure', '7700 Emergency', 'Helicopters'];
   const tokens = s.settings.watch;
   if (tokens.includes('MIL')) out.push('Military');
   const own = tokens.filter(t => t !== 'MIL');
   if (own.length > 0 && own.length <= 3) out.push(...own);
-  else if (own.length > 3) out.push(`${own.length} on your list`);
+  else if (own.length > 3) out.push(`${own.length} on Your List`);
   return out;
 }
 
