@@ -132,7 +132,7 @@ export interface RepoState {
   // first logged today, newest first
   logToday: LogEntry[];
   logTypes: TypeRow[];
-  // marked as seen by eye, newest mark first
+  // marked as visually verified, newest mark first
   logSeen: LogEntry[];
   logVersion: number;
 }
@@ -199,7 +199,7 @@ export class Repo {
   private alertN = 0;
   private overheadHex: string | null = null;
   private photoWanted: { hex: string; sinceMs: number } | null = null;
-  // marked as seen by eye before the picture had loaded. saved as soon as it does
+  // marked as visually verified before the picture had loaded. saved as soon as it does
   private keepWhenReady = new Set<string>();
   private saved = new Map<string, PhotoResult | null>();
   private saveAt = 0;
@@ -354,7 +354,7 @@ export class Repo {
     this.set({ picked: null });
   }
 
-  // the Back button on the Overhead screen: the aircraft being shown is marked as seen by eye
+  // the Back button on the Overhead screen: the aircraft being shown is marked as visually verified
   markSeen(): SeenOutcome {
     const shown = shownOf(this.state);
     const a = shown.a;
@@ -370,7 +370,7 @@ export class Repo {
     return { kind: mark.kind, tail: a.reg ?? a.callsign ?? a.hex.toUpperCase(), at: mark.at };
   }
 
-  // keeps the picture on screen for an aircraft marked as seen by eye, so the photos view can show it later
+  // keeps the picture on screen for an aircraft marked as visually verified, so the photos view can show it later
   private async keepPicture(a: Aircraft, fresh: boolean) {
     const ph = this.state.photo;
     if (ph.hex !== a.hex || ph.status !== 'done') {

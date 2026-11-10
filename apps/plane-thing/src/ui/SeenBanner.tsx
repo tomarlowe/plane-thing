@@ -21,7 +21,7 @@ export default function SeenBanner({ banner }: { banner: Banner }) {
   const u = s.settings.units;
   const look: Look =
     banner.kind === 'new'
-      ? { bg: '#7BE0A0', ink: '#003820', soft: '#0B5A36', icon: <EyeGlyph size={24} color="#003820" style={{ flex: 'none' }} />, title: 'Seen by Eye', detail: `${banner.tail} · ${when}` }
+      ? { bg: '#7BE0A0', ink: '#003820', soft: '#0B5A36', icon: <EyeGlyph size={24} color="#003820" style={{ flex: 'none' }} />, title: 'Visually Verified', detail: `${banner.tail} · ${when}` }
       : banner.kind === 'again'
         ? { bg: '#CBB8FF', ink: '#2A1A63', soft: '#4B2FA8', icon: <EyeGlyph size={24} color="#2A1A63" style={{ flex: 'none' }} />, title: 'Already Marked', detail: `${banner.tail} · First Marked at ${when}` }
         : {

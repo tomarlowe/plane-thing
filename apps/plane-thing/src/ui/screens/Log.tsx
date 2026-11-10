@@ -19,7 +19,7 @@ const TITLES: Record<LogView, { title: string; hint: string }> = {
   list: { title: 'Recent Sightings', hint: 'Turn Dial to Scroll' },
   types: { title: 'Types Logged', hint: 'Most Logged First · Turn Dial to Scroll' },
   today: { title: 'First Logged Today', hint: 'Newest First · Turn Dial to Scroll' },
-  photos: { title: 'Seen by Eye', hint: 'Turn Dial for Next Photo' },
+  photos: { title: 'Visually Verified', hint: 'Turn Dial for Next Photo' },
 };
 
 export default function Log() {
@@ -33,7 +33,7 @@ export default function Log() {
         <Card pal={LAVENDER} label="Aircraft Logged" value={total} on={view === 'list'} onPick={() => nav.setLogView('list')} icon={<PlaneGlyph size={26} color={LAVENDER.accent} />} />
         <Card pal={GREEN} label="Different Types" value={types} on={view === 'types'} onPick={() => nav.setLogView('types')} icon={<TagGlyph size={26} color={GREEN.accent} />} />
         <Card pal={YELLOW} label="New Today" value={newToday} on={view === 'today'} onPick={() => nav.setLogView('today')} icon={<PlusCircleGlyph size={26} color={YELLOW.accent} />} />
-        <Card pal={BLUE} label="Visually Identified" value={seen} on={view === 'photos'} onPick={() => nav.setLogView('photos')} icon={<CameraGlyph size={26} color={BLUE.soft} />} />
+        <Card pal={BLUE} label="Visually Verified" value={seen} on={view === 'photos'} onPick={() => nav.setLogView('photos')} icon={<CameraGlyph size={26} color={BLUE.soft} />} />
       </div>
 
       <div style={{ flex: 1, minHeight: 0, display: 'flex', flexDirection: 'column', gap: 6 }}>
@@ -246,7 +246,7 @@ function TypeRow({ t, s, pal }: { t: { code: string; name: string; count: number
   );
 }
 
-// ---- the photos of aircraft seen by eye
+// ---- the photos of aircraft marked as visually verified
 
 function PhotosView({ s, index }: { s: RepoState; index: number }) {
   const { repo } = useApp();
@@ -343,7 +343,7 @@ function PhotosView({ s, index }: { s: RepoState; index: number }) {
             <div style={{ fontSize: 17, fontWeight: 600, color: MUTED, lineHeight: 1.2 }}>{[r.o, r.d ?? r.t].filter(Boolean).join(' · ')}</div>
           </div>
           <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
-            <Fact label="Seen by Eye" value={seenAt} />
+            <Fact label="Visually Verified" value={seenAt} />
             <div style={{ display: 'flex', justifyContent: 'space-between', gap: 16 }}>
               <Fact label="Closest" value={`${fmtDist(r.m / 10, u)} ${dirText(r.b)}`} />
               <Fact label="Times Seen" value={`×${r.n}`} />

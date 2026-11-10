@@ -137,7 +137,7 @@ describe('spotter log', () => {
   });
 });
 
-describe('seen by eye', () => {
+describe('visually verified', () => {
   test('marking an aircraft already in the log stamps it and counts it', () => {
     const log = new SpotterLog();
     log.record(T0, [ac()], 10, 'p', me);
@@ -221,7 +221,7 @@ describe('seen by eye', () => {
     expect(log.stats(T0, EST).seen).toBe(0);
     expect(m.size).toBe(0);
   });
-  test('when the log is trimmed, aircraft marked as seen by eye are kept', () => {
+  test('when the log is trimmed, aircraft marked as visually verified are kept', () => {
     const log = new SpotterLog();
     const hex = (i: number) => i.toString(16).padStart(6, '0');
     // the oldest aircraft is marked at the time it was first seen, so its last seen time stays the oldest
@@ -346,18 +346,18 @@ describe('export', () => {
     expect(kml).toContain('A &amp; B &lt;Air&gt;');
     expect(kml.startsWith('<?xml')).toBe(true);
   });
-  test('csv has a Seen by Eye column just before the source, empty unless marked', () => {
+  test('csv has a Visually Verified column just before the source, empty unless marked', () => {
     const log = new SpotterLog();
     log.record(T0, [ac(), ac({ hex: '02', reg: null, callsign: null, operator: null, desc: null, type: 'R44' })], 10, 'p', me);
     log.markSeen(T0 + 120, ac(), 'p', me);
-    expect(CSV_HEAD.indexOf('Seen by Eye')).toBe(CSV_HEAD.length - 2);
+    expect(CSV_HEAD.indexOf('Visually Verified')).toBe(CSV_HEAD.length - 2);
     expect(CSV_HEAD.at(-1)).toBe('Source');
     const lines = toCsv(log.all(), { offsetS: EST, withCoords: false }).slice(1).split('\r\n');
     // the local time of the mark, not the time first seen
     expect(lines[1]).toContain(',A1B2C3,2026-11-04 08:48,"Plane Thing,');
     expect(lines[2]).toContain(',02,,"Plane Thing,');
     const withCoords = toCsv(log.all(), { offsetS: EST, withCoords: true }).slice(1).split('\r\n');
-    expect(withCoords[0]!.endsWith('Seen by Eye,Source,Observer Latitude,Observer Longitude')).toBe(true);
+    expect(withCoords[0]!.endsWith('Visually Verified,Source,Observer Latitude,Observer Longitude')).toBe(true);
   });
   test('the mark time follows a zone given as a function', () => {
     const log = new SpotterLog();
@@ -368,14 +368,14 @@ describe('export', () => {
     // the time first seen used the other zone
     expect(line).toContain(',2026-11-04 13:46,');
   });
-  test('kml says when an aircraft was seen by eye, and leaves the line out when it was not', () => {
+  test('kml says when an aircraft was visually verified, and leaves the line out when it was not', () => {
     const log = new SpotterLog();
     log.record(T0, [ac(), ac({ hex: '02' })], 10, 'p', me);
     log.markSeen(T0 + 120, ac(), 'p', me);
     const kml = toKml(log.all(), { offsetS: EST, withCoords: true });
     expect(kml).toContain('<name>Plane Thing Log</name>');
     expect(kml.match(/Times Seen: 1/g)).toHaveLength(2);
-    expect(kml.match(/Seen by Eye: /g)).toHaveLength(1);
-    expect(kml).toContain('Seen by Eye: 2026-11-04 08:48');
+    expect(kml.match(/Visually Verified: /g)).toHaveLength(1);
+    expect(kml).toContain('Visually Verified: 2026-11-04 08:48');
   });
 });

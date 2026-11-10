@@ -1,6 +1,6 @@
 import type { PhotoCredit, PhotoKind } from './photos';
 
-// a picture kept for an aircraft the user marked as seen by eye. one doc per aircraft, the picture as base64 text
+// a picture kept for an aircraft the user marked as visually verified. one doc per aircraft, the picture as base64 text
 export const PHOTO_PREFIX = 'photo.';
 export const photoKey = (hex: string) => `${PHOTO_PREFIX}${hex}`;
 // the most pictures kept. the oldest go first

@@ -1,7 +1,7 @@
 import type { ScreenId } from './ui/theme';
 
 // preset buttons 1 to 4 and the recessed mode button ("m") pick the screen. the dial is read as a wheel and its click
-// is Enter. the back button is Escape and marks an aircraft as seen by eye on the Overhead screen
+// is Enter. the back button is Escape and marks an aircraft as visually verified on the Overhead screen
 const KEY_TO_SCREEN: Record<string, ScreenId> = {
   '1': 'overhead',
   '2': 'radar',

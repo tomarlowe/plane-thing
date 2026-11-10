@@ -159,7 +159,7 @@ function LogSection() {
       const metaText = (await settings.doc.get(META_KEY)).value;
       const shards = metaText ? ((JSON.parse(metaText) as { shards?: number }).shards ?? 0) : 0;
       for (let i = 0; i < shards; i++) await settings.doc.delete(`log.${i}`);
-      // the pictures kept for aircraft marked as seen by eye go with the log
+      // the pictures kept for aircraft marked as visually verified go with the log
       for (const r of rows ?? []) if (r.s !== undefined) await settings.doc.delete(`photo.${r.hex}`);
       // the index goes last: the app clears its own copy when it sees the index disappear
       await settings.doc.delete(META_KEY);
@@ -282,7 +282,7 @@ function Settings() {
           <li>Buttons 1 to 4: Overhead, Radar, Watchlist, Log &amp; Photos</li>
           <li>Small recessed button: Arrivals (landings at the nearest airport)</li>
           <li>Dial: zooms the radar, or scrolls a list. Click the dial on Radar to switch between scope and list, and again to open the highlighted aircraft. On Log &amp; Photos, click the dial to step through its four views</li>
-          <li>Back button: on Overhead, marks the aircraft you are looking at as seen by eye</li>
+          <li>Back button: on Overhead, marks the aircraft you are looking at as visually verified</li>
           <li>Touch an aircraft on Radar to open it on Overhead. Touch the airport chip on Radar to look at the next airport</li>
         </ul>
       </section>

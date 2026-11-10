@@ -16,7 +16,7 @@ export interface LogStats {
   total: number;
   types: number;
   newToday: number;
-  // aircraft the user marked as seen by eye
+  // aircraft the user marked as visually verified
   seen: number;
 }
 
@@ -67,7 +67,7 @@ export class SpotterLog {
     return added;
   }
 
-  // marks an aircraft as seen by eye. one that is not in the log yet is added. a second mark keeps the first time
+  // marks an aircraft as visually verified. one that is not in the log yet is added. a second mark keeps the first time
   markSeen(nowS: number, a: Aircraft, place: string, me: Coord): SeenMark {
     let at = this.byHex.get(a.hex);
     let added = false;
@@ -145,7 +145,7 @@ export class SpotterLog {
 
   // drops the oldest rows and rewrites everything
   private trim() {
-    // rows the user marked as seen by eye are never the ones dropped
+    // rows the user marked as visually verified are never the ones dropped
     const marked = this.rows.filter(r => r.s !== undefined);
     const rest = this.rows.filter(r => r.s === undefined).sort((a, b) => b.l - a.l);
     const keep = [...marked, ...rest.slice(0, Math.max(0, MAX_ROWS - TRIM_ROWS - marked.length))];
@@ -185,7 +185,7 @@ export class SpotterLog {
       .slice(0, n);
   }
 
-  // marked as seen by eye, most recently marked first
+  // marked as visually verified, most recently marked first
   seenRows(n = Infinity): LogEntry[] {
     return this.rows
       .filter(r => r.s !== undefined)
@@ -250,7 +250,7 @@ export class SpotterLog {
       if (Array.isArray(part)) {
         for (const r of part) {
           if (!r || typeof r.hex !== 'string') continue;
-          // a row written before seen by eye existed has no mark, and a damaged mark is dropped
+          // a row written before marking existed has no mark, and a damaged mark is dropped
           if (r.s !== undefined && typeof r.s !== 'number') delete r.s;
           rows.push(r);
         }

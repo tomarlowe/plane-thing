@@ -17,7 +17,7 @@ export const CSV_HEAD = [
   'Highest Altitude (ft)',
   'Times Seen',
   'ICAO Hex',
-  'Seen by Eye',
+  'Visually Verified',
   'Source',
 ];
 
@@ -81,7 +81,7 @@ export function toKml(rows: LogEntry[], o: ExportOpts): string {
         `Seen: ${isoLocal(r.f, offsetAt(o, r.f))}`,
         `Closest: ${(r.m / 10).toFixed(1)} mi at ${r.b} deg`,
         `Times Seen: ${r.n}`,
-        r.s === undefined ? '' : `Seen by Eye: ${isoLocal(r.s, offsetAt(o, r.s))}`,
+        r.s === undefined ? '' : `Visually Verified: ${isoLocal(r.s, offsetAt(o, r.s))}`,
       ]
         .filter(Boolean)
         .join('\n');

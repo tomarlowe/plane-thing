@@ -316,7 +316,7 @@ describe('which aircraft the Overhead screen is about', () => {
   });
 });
 
-describe('seen by eye', () => {
+describe('visually verified', () => {
   test('there is nothing to mark when no aircraft is within the 10 mile zone', async () => {
     const h = start('scenario=empty');
     await h.repo.start();
