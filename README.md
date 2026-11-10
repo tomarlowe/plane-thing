@@ -8,11 +8,12 @@ wardriving for Wi-Fi, but for planes: drive around, and the Car Thing shows what
 aircraft you pass. Five screens, one for each button, in bright Material 3 Expressive colors on a black background. It is free,
 has no accounts or API keys, and is open source.
 
-> **Status: first release, lightly tested on a real device.** Version 0.1.0 has been built, type-checked and run in a
-> simulator, and its 103 unit tests pass, but that used made-up data. Its owner has also driven with it on a real Car Thing
-> for about a day and reports that it worked well, including photos of the actual aircraft. That is one person's one day:
-> most of the [checklist](docs/device-test-checklist.md) has not been worked through, and exports have not been tried on a
-> real phone. See [what has and has not been tested](docs/testing.md).
+> **Status: early release, lightly tested on a real device.** Version 0.2.0 has been built, type-checked and run in a
+> simulator, and its 165 unit tests pass, but that used made-up data. Its owner drove with version 0.1.0 on a real Car Thing
+> for about a day and reports that it worked well, including photos of the actual aircraft, and on 2026-11-10 he tried the
+> main 0.2.0 features by hand on the same device. That is one person on one device: most of the
+> [checklist](docs/device-test-checklist.md) has not been worked through, and exports have not been tried on a real phone.
+> See [what has and has not been tested](docs/testing.md).
 
 > Built by Thomas Marlowe with help from Claude, an AI tool from Anthropic. More in [docs/how-this-was-built.md](docs/how-this-was-built.md).
 
@@ -20,8 +21,8 @@ Plane Thing is for fun and curiosity. Positions can be late, wrong or missing. *
 
 ## Screenshots
 
-These are **pictures from the simulator, with invented aircraft and a sample photo**, not photos of a real Car Thing. They
-will be replaced with real captures once device testing is done.
+These are **pictures from the simulator, with invented aircraft and a sample photo**, not photos of a real Car Thing. Each
+carries a "simulated" stamp. They will be replaced with real captures once device testing is done.
 
 <table>
   <tr>
@@ -29,12 +30,12 @@ will be replaced with real captures once device testing is done.
     <td align="center"><img src="apps/plane-thing/screenshots/02-radar.png" alt="Radar screen: a scope with aircraft around the user, and the nearest airport marked (simulated)" width="400"><br><b>Radar (simulated)</b></td>
   </tr>
   <tr>
-    <td align="center"><img src="apps/plane-thing/screenshots/03-watchlist.png" alt="Watchlist screen: emergency squawks, helicopters and listed callsigns (simulated)" width="400"><br><b>Watchlist (simulated)</b></td>
-    <td align="center"><img src="apps/plane-thing/screenshots/04-log.png" alt="Spotter log screen: counts, recent sightings and what is new today (simulated)" width="400"><br><b>Spotter log (simulated)</b></td>
+    <td align="center"><img src="apps/plane-thing/screenshots/03-visually-verified.png" alt="Overhead screen right after the Back button: a bar says Visually Verified, replacing the heading (simulated)" width="400"><br><b>Back marks a plane Visually Verified (simulated)</b></td>
+    <td align="center"><img src="apps/plane-thing/screenshots/04-log-photos.png" alt="Log and Photos screen: the Visually Verified view showing a marked plane with its saved photo (simulated)" width="400"><br><b>Log &amp; Photos (simulated)</b></td>
   </tr>
   <tr>
-    <td align="center"><img src="apps/plane-thing/screenshots/05-arrivals.png" alt="Arrivals screen: aircraft landing at the nearest airport with estimated times (simulated)" width="400"><br><b>Arrivals (simulated)</b></td>
-    <td></td>
+    <td align="center"><img src="apps/plane-thing/screenshots/05-watchlist.png" alt="Watchlist screen: emergency squawks, helicopters and listed callsigns (simulated)" width="400"><br><b>Watchlist (simulated)</b></td>
+    <td align="center"><img src="apps/plane-thing/screenshots/06-arrivals.png" alt="Arrivals screen: aircraft landing at the nearest airport with estimated times (simulated)" width="400"><br><b>Arrivals (simulated)</b></td>
   </tr>
 </table>
 
@@ -42,15 +43,19 @@ will be replaced with real captures once device testing is done.
 
 | Button          | Screen      | What it shows                                                                                       |
 | --------------- | ----------- | --------------------------------------------------------------------------------------------------- |
-| 1               | Overhead    | The closest aircraft within 10 miles: airline, tail number, callsign, type, estimated route, altitude, speed, heading, distance, and a photo with credit |
-| 2               | Radar       | A scope of everything near you with five ranges, the nearest airport plotted with its code, and a list view |
+| 1               | Overhead    | The closest aircraft within 10 miles: airline, tail number, callsign, type, estimated route, altitude, speed, heading, distance, a photo with credit, and a look-here card (which way and how high to look). The Back button marks the plane Visually Verified |
+| 2               | Radar       | A scope of everything near you with five ranges, the nearest airport plotted with its code, and a list view. Touch a plane, or click one in the list, to see it on Overhead |
 | 3               | Watchlist   | Emergency squawks, helicopters, and the callsigns, tail numbers or types you list                   |
-| 4               | Spotter log | Counts, recent sightings and what is new today. Export the whole log from your phone                |
+| 4               | Log & Photos | Four cards: Aircraft Logged, Different Types, New Today and Visually Verified, which shows the planes you marked with their saved photos. Export the whole log from your phone |
 | Recessed button | Arrivals    | Aircraft landing at the nearest airport with estimated times and origins, plus FAA delay status     |
 
 An aircraft squawking 7500, 7600 or 7700 within 100 miles flashes EMERGENCY on whatever screen you are on and then jumps to
 the Radar. A setting turns the jump off. The log keeps one row per aircraft, tail number included, and exports to CSV and KML
 from the settings page on your phone.
+
+The Back button, the large round one below the dial, does something only on Overhead: it marks the plane you are looking at as
+Visually Verified, meaning you saw it with your own eyes. The photo on screen at that moment is saved on the Car Thing so
+Log & Photos can show it later.
 
 Arrivals are **estimates** from position and speed, not airline schedules, which are paid data. The screen says "est." wherever
 it is guessing.
@@ -69,19 +74,25 @@ See [docs/install.md](docs/install.md). Short version: install it from the bridg
 address of the version zip into the companion app's "install from url or file" panel (not yet tested on a real device).
 
 - Catalog address, which the store reads: `https://tomarlowe.github.io/plane-thing/catalog.v1.json`
-- Zip for version 0.1.0: `https://tomarlowe.github.io/plane-thing/r/01a1a8ce-5e3a-71a1-8619-b65be4e9d5d1/0.1.0.zip`
+- Zip for version 0.2.0: `https://tomarlowe.github.io/plane-thing/r/01a1a8ce-5e3a-71a1-8619-b65be4e9d5d1/0.2.0.zip` (available once this version is published)
 
 ## Known limits
 
-- **Lightly tested on hardware.** One day of driving went well, but the buttons, dial, touch, startup time, the emergency
-  alert and exports have not been checked item by item on a real device. The Bluetooth link between the Car Thing and the
+- **Lightly tested on hardware.** One day of driving with 0.1.0 went well and the owner tried the main 0.2.0 features by hand
+  on his own Car Thing, but the buttons, dial, touch, startup time, the emergency alert and exports have not been checked item
+  by item on a real device. The Bluetooth link between the Car Thing and the
   phone dropped at times, which the owner believes is a bridgething matter and has not been investigated. The
   [checklist](docs/device-test-checklist.md) lists each item.
 - **Only works while it is on screen.** There is no background logging while another app is shown.
 - **Not every aircraft appears.** Only aircraft sending ADS-B within range of volunteer receivers are seen.
 - **Photos have an unresolved terms problem.** Planespotters.net in particular asks for things the Car Thing cannot do, such
-  as a clickable credit link. The [data sources page](docs/data-sources.md) explains what is open. Read it before
-  redistributing the app.
+  as a clickable credit link, and its terms say image files may not be cached. Since 0.2.0 the picture of a plane you mark as
+  Visually Verified is saved on the Car Thing, which is caching, and the project has no permission for it. The
+  [data sources page](docs/data-sources.md) explains what is open. Read it before redistributing the app.
+- **Saved photos are lightly tested.** Marking a plane before its photo has loaded, and how many photos the Car Thing can hold,
+  have not been tested on a real device. One photo showed "No Photo Saved" on the first try and the cause is not known.
+- **The look-here card needs a heading.** The clock position is shown only while the phone reports a heading and the car moves
+  at about walking pace or faster. Otherwise the card says "North Is Up" and gives a compass direction.
 - **The data services are free favors.** They can slow down, change or stop at any time, and their terms say personal,
   non-commercial use.
 - **No drones** in version 1. See the [roadmap](docs/roadmap.md).
@@ -90,7 +101,7 @@ address of the version zip into the companion app's "install from url or file" p
 
 There is no account, no tracking and no analytics, and nothing is sent to the author. Your position goes to the flight data
 services only as coordinates rounded to about 1 kilometer. Photo services see the aircraft's identifying numbers, not you. The
-spotter log stays on your Car Thing until you export it. Full detail, including what the route lookup sends, is in
+spotter log and the photos of planes you marked as Visually Verified stay on your Car Thing. Full detail, including what the route lookup sends, is in
 [docs/privacy.md](docs/privacy.md).
 
 ## Documentation

@@ -10,10 +10,11 @@ decided what to build, approved the designs, set the rules it follows, and is te
 
 ### Does it work?
 
-It has been built, type-checked and run in a simulator, and 103 unit tests pass. Its owner has also driven with it on a real
-Car Thing for about a day and reports that it worked well. That is one person's one day: no automated test has talked to a live
-flight service, and most of the [device test checklist](device-test-checklist.md) has not been worked through. See
-[testing](testing.md). Treat version 0.1.0 as a first release that may have rough edges.
+It has been built, type-checked and run in a simulator, and 165 unit tests pass. Its owner has also driven with version 0.1.0
+on a real Car Thing for about a day and reports that it worked well, and he checked the main 0.2.0 features by hand on his
+Car Thing on 2026-11-10. That is one person on one device: no automated test has talked to a live flight service, and most of
+the [device test checklist](device-test-checklist.md) has not been worked through. See [testing](testing.md). Treat version
+0.2.0 as an early release that may have rough edges.
 
 ### Is it affiliated with Spotify, Anthropic, the FAA or any data service?
 
@@ -62,6 +63,26 @@ The Overhead screen tries the exact aircraft first. If no photo exists, it shows
 type and labels it with that aircraft's tail number, then a photo of the type, then a drawn silhouette. The label always says
 which one you are seeing. Photos are credited to their photographers.
 
+### What does the Back button do?
+
+On the Overhead screen it marks the plane you are looking at as Visually Verified: you saw it with your own eyes. A bar
+replaces the heading for about 3 seconds to say so. On the other screens it does nothing. See the
+[user guide](user-guide.md#marking-a-plane-visually-verified).
+
+### Where do the photos in Log & Photos come from, and are they stored?
+
+When you mark a plane, the photo on screen at that moment is saved on your Car Thing, with the photographer and site credit, so
+the Visually Verified view can show it later. It is one picture per plane, up to 60, and the oldest is deleted when a 61st is
+saved. The photos never leave the Car Thing, are not in the CSV or KML, and clearing the log deletes them. Planespotters.net's
+terms say image files may not be cached, and the project has no permission from them for this. See
+[data sources](data-sources.md#planespottersnet) for the full picture.
+
+### Why does the look-here card say "North Is Up"?
+
+The clock position ("11 o'clock") needs to know which way the car is pointing. The phone reports that only while you are
+moving at about walking pace or faster. When it has no usable heading the card gives the compass direction instead, with north
+at the top, rather than guess.
+
 ### Why are there no drones?
 
 Drones were considered. No free source was found that is confirmed to allow use in a free hobby app, so version 1 leaves them
@@ -87,7 +108,7 @@ keeps running while another one is shown has not been tested on a real device.
 
 ### How do I get my log out?
 
-Open the Plane Thing settings in the companion app on your phone and scroll to "Spotter log". Choose **Download CSV**,
+Open the Plane Thing settings in the companion app on your phone and scroll to "Spotter Log". Choose **Download CSV**,
 **Copy CSV** or **Show text**, or the map file buttons for KML. The Car Thing itself cannot save a file. Whether the phone's
 download and copy actions work inside the companion app has not been tested on a real device. See the
 [user guide](user-guide.md#export-the-log).

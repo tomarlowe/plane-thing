@@ -66,7 +66,7 @@ If you do not want to share location, open settings, set Location to "Fixed plac
 | Arrivals says nothing is arriving   | No aircraft within about 45 miles looks like it is landing. Normal at quiet airports or at night. |
 | Arrivals shows "Origin unknown"     | The route lookup had no guess for that callsign.                                         |
 
-## Spotter log and export
+## Log & Photos and export
 
 | What you see                                             | What to do                                                                          |
 | -------------------------------------------------------- | ----------------------------------------------------------------------------------- |
@@ -76,6 +76,9 @@ If you do not want to share location, open settings, set Location to "Fixed plac
 | Download CSV does nothing or no file appears             | Use Copy CSV or Show text on the same page, then paste into a note or a spreadsheet. Whether downloads work inside the companion app has not been tested. |
 | Clear the log says it was not fully cleared              | Try again. Export first if you want a copy.                                         |
 | Opening the CSV in a spreadsheet shows odd times         | Times are written in your phone's time zone as `YYYY-MM-DD HH:MM`.                  |
+| The Visually Verified view says "No Photo Saved" for a plane | No photo had loaded when you pressed Back, or the picture could not be saved. Pressing Back once the photo is showing saves it. The app is meant to save a late photo when it arrives, but that has not been tested on a real device. |
+| The Visually Verified view shows fewer photos than planes | Only 60 pictures are kept, and the oldest is deleted when a 61st is saved. The plane's log row stays. |
+| The look-here card says "North Is Up"                    | The phone reported no heading, usually because the car is stopped or moving very slowly. The card then gives the compass direction. |
 
 ## Emergency alert
 
@@ -91,7 +94,7 @@ If you do not want to share location, open settings, set Location to "Fixed plac
 - A quick tap of the recessed button opens Arrivals. Bridgething also uses that button to jump to its dashboard, with a
   gesture you can choose in bridgething: a long press, five quick presses or a double press. If a tap sends you to the
   dashboard, your bridgething gesture setting is probably catching it.
-- The back button does nothing in this app, by design.
+- The Back button marks a plane as Visually Verified on the Overhead screen, and does nothing on the other screens.
 
 ## Phone link (Bluetooth)
 

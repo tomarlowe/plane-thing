@@ -18,9 +18,9 @@ The companion app has an "install from url or file" panel on its Apps screen. It
 2. Open the "install from url or file" panel.
 3. Paste this address, then tap install:
 
-   `https://tomarlowe.github.io/plane-thing/r/01a1a8ce-5e3a-71a1-8619-b65be4e9d5d1/0.1.0.zip`
+   `https://tomarlowe.github.io/plane-thing/r/01a1a8ce-5e3a-71a1-8619-b65be4e9d5d1/0.2.0.zip`
 
-This is the zip for version 0.1.0. The [catalog](https://tomarlowe.github.io/plane-thing/catalog.v1.json) lists the
+This is the zip for version 0.2.0. The [catalog](https://tomarlowe.github.io/plane-thing/catalog.v1.json) lists the
 address of every version.
 
 ## Option 3: install a downloaded zip file
@@ -39,7 +39,7 @@ Plane Thing has not yet been installed through Option 2 or Option 3 on a real de
 - The first start also loads the airport list that ships inside the app (about 1.5 MB compressed). Give it a few seconds.
 - Press button 1 to 4 or the recessed button to switch screens. The [user guide](user-guide.md) lists every control.
 - Open the app's settings from the companion app to change units, clock, airports, the watch list and the rest. That page
-  is also where you export the spotter log.
+  is also where you export the spotter log. The app keeps the same id in every version, so bridgething should upgrade it in place and keep its saved data. Whether your log and saved photos survive an upgrade has not been tested.
 - Plane Thing only works while it is on the Car Thing's screen. It does not log aircraft in the background.
 
 If something does not work, see [troubleshooting](troubleshooting.md).

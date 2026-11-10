@@ -48,11 +48,11 @@ The device sends ordinary browser events. `src/input.ts` is the only place that 
 
 | Control         | Event                                | Used here                                       |
 | --------------- | ------------------------------------ | ----------------------------------------------- |
-| Buttons 1 to 4  | `keydown` "1" to "4"                 | Overhead, Radar, Watchlist, Spotter log         |
+| Buttons 1 to 4  | `keydown` "1" to "4"                 | Overhead, Radar, Watchlist, Log & Photos        |
 | Mode (recessed) | `keydown` "m"                        | Arrivals                                        |
-| Back            | `keydown` "Escape"                   | never touched, left free                        |
-| Dial turn       | `wheel` with horizontal `deltaX`     | radar range, list scroll, next airport          |
-| Dial click      | `keydown` "Enter"                    | Radar list toggle                               |
+| Back            | `keydown` "Escape"                   | Overhead: marks the plane Visually Verified     |
+| Dial turn       | `wheel` with horizontal `deltaX`     | radar range, list scroll, next airport, next photo |
+| Dial click      | `keydown` "Enter"                    | Radar list toggle, open the highlighted plane, step the Log & Photos views |
 
 One dial detent can arrive as a burst of wheel events, so only one step is taken per 120 ms.
 
@@ -117,7 +117,7 @@ test checks that the two agree. Running it on 2026-11-04 data produced a byte-id
 
 There are two kinds, and neither runs on a real device.
 
-- `bun test` in `apps/plane-thing`: 103 unit tests of the data layer. Every service reply in them is a **simulated
+- `bun test` in `apps/plane-thing`: 165 unit tests of the data layer. Every service reply in them is a **simulated
   fixture written from the published formats and memory**. They prove the parsers handle what they were written for. They
   do not prove that any live service answers that way. The airport tests use the real airport file.
 - A fake phone page host used while building the settings page, which checked the export flow against a simulated bridge.

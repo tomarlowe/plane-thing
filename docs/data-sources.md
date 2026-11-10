@@ -79,9 +79,12 @@ driving app is. The three services above are used instead.
 
 ## Photos
 
-Photos are fetched one at a time over the phone, kept in memory only (at most eight pictures), and thrown away when the
-app closes. Plane Thing never saves, uploads or re-publishes a photo, and the spotter log and the CSV carry no photo
-link or photographer name. The photographer and the site are credited under every photo.
+Photos are fetched one at a time over the phone and kept in memory (at most eight pictures), and thrown away when the
+app closes. There is one exception, added in version 0.2.0: when you mark a plane as Visually Verified, the picture on the
+screen at that moment is saved on the Car Thing, together with the photographer and site credit, so the Log & Photos screen
+can show it later. One picture is kept per plane, up to 60, and the oldest is deleted when a 61st is saved. Clearing the log
+deletes them. This applies to any of the sources below. Plane Thing never uploads or re-publishes a photo, and the spotter
+log and the CSV carry no photo link or photographer name. The photographer and the site are credited under every photo.
 
 The app tries, in order: this aircraft (Planespotters by hex code, then by tail number, then airport-data.com), another
 aircraft of the same airline and type from the aircraft in the current list (labelled "Photo shows N123AB"), a photo of
@@ -98,7 +101,8 @@ the type from Wikimedia Commons (labelled "Typical ..., not this aircraft"), and
   Use must stay within reasonable limits, and the page asks projects with advanced use to contact Planespotters first.
 - What Plane Thing does: it shows the photographer and "Planespotters.net" next to each photo, puts the photo-page link
   in the credit, sends a User-Agent that names Plane Thing and its GitHub page, keeps API replies in memory for one hour,
-  asks for one photo at a time, and never saves or republishes a photo or puts it in the log.
+  asks for one photo at a time, and never republishes a photo or puts it in the log. Pictures stay in memory, except the
+  ones saved on the Car Thing for planes marked Visually Verified (see above).
 - **Open issues, not resolved.** The Car Thing has no direct internet access, so Plane Thing asks the phone's bridgething
   connection to fetch each image and turns it into a picture held in memory (at most eight). That is not the same as the
   picture loading in the user's own browser from Planespotters' address, so it may not meet the terms. The kiosk cannot
@@ -107,6 +111,9 @@ the type from Wikimedia Commons (labelled "Typical ..., not this aircraft"), and
   credited to Planespotters.net on a real Car Thing, so at least some requests are accepted through the relay. Whether that
   holds for every request, and which headers the relay sends, has not been checked. Plane Thing has not been given written
   permission for any of this.
+- **Saved pictures, not resolved.** The terms above say image files may not be cached. Saving the picture of a plane you
+  marked as Visually Verified on the Car Thing is caching. Plane Thing has not asked Planespotters about this and has no
+  permission for it. A saved picture is shown only on the owner's own Car Thing and is never uploaded or shared.
 - What to do: ask Planespotters for permission, describing the project and this limit. If they decline, or before listing
   the app publicly without an answer, a new version should drop Planespotters and use only the other photo sources.
 
@@ -146,9 +153,9 @@ the type from Wikimedia Commons (labelled "Typical ..., not this aircraft"), and
 - Your phone's location leaves the device only as coordinates rounded to about 1 kilometer, sent to the aircraft data
   services above.
 - Photo services see an aircraft's hex code or tail number, never your position.
-- A little data is saved on the Car Thing: the spotter log, your last position, and the airport list in use. The log
-  never leaves the Car Thing except when you export it from the settings page on your phone, and then it goes only where
-  you send it. Observer coordinates are in the exported CSV only if you turn that on, and always in the KML map file.
+- A little data is saved on the Car Thing: the spotter log, your last position, the airport list in use, and the pictures
+  of planes you marked as Visually Verified. The log never leaves the Car Thing except when you export it from the settings
+  page on your phone, and then it goes only where you send it. The saved pictures never leave the Car Thing. Observer coordinates are in the exported CSV only if you turn that on, and always in the KML map file.
 - Each log row records where you were, rounded to about 1 kilometer (two decimals), and the name of the nearest airport.
   That is what the KML map file draws, and the CSV includes it only if you tick "Add my position". If that matters to you,
   clear the log from the settings page, and be careful who you share an export with.
