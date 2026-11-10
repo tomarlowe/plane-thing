@@ -138,9 +138,9 @@ function LogSection() {
     try {
       if (kind === 'csv') saveFile(`${FILE_STEM}.csv`, 'text/csv;charset=utf-8', csv());
       else saveFile(`${FILE_STEM}.kml`, 'application/vnd.google-earth.kml+xml', kml());
-      setNote(`Asked the phone to save ${FILE_STEM}.${kind}. If nothing shows up in your downloads, use Copy or Show text instead.`);
+      setNote(`Asked the phone to save ${FILE_STEM}.${kind}. If nothing shows up in your downloads, use Copy or Show Text instead.`);
     } catch (err) {
-      setNote(`Saving a file did not work here (${errText(err)}). Use Copy or Show text instead.`);
+      setNote(`Saving a file did not work here (${errText(err)}). Use Copy or Show Text instead.`);
     }
   }
 

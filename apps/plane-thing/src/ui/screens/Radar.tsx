@@ -214,7 +214,7 @@ function Scope({ s, here, range, dots, count }: { s: RepoState; here: Coord; ran
         </g>
       </svg>
 
-      {nearestAir ? <TapToOpen x={at(nearestAir, range).x} y={at(nearestAir, range).y} onOpen={() => nav.open(nearestAir.key)} /> : null}
+      {nearestAir ? <TapToOpen onOpen={() => nav.open(nearestAir.key)} /> : null}
 
       {banner ? <EmergencyBanner e={banner} u={u} /> : null}
 
@@ -570,17 +570,15 @@ export function keyAtRow(s: RepoState, range: number, index: number): string | n
   return rows[Math.max(0, Math.min(index, rows.length - 1))]?.key ?? null;
 }
 
-// the hint that sits by the closest aircraft on the scope
-function TapToOpen({ x, y, onOpen }: { x: number; y: number; onOpen: () => void }) {
-  const left = Math.max(150, Math.min(540, x - 48));
-  const top = Math.max(70, Math.min(310, y + 26));
+// the hint for the ringed aircraft. it sits in a fixed free corner of the scope, because by the aircraft it would cover labels
+function TapToOpen({ onOpen }: { onOpen: () => void }) {
   return (
     <div
       onPointerDown={onOpen}
       style={{
         position: 'absolute',
-        left,
-        top,
+        left: 164,
+        bottom: 21,
         height: 32,
         display: 'flex',
         alignItems: 'center',

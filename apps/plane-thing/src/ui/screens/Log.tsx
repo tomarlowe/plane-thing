@@ -344,8 +344,10 @@ function PhotosView({ s, index }: { s: RepoState; index: number }) {
           </div>
           <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
             <Fact label="Seen by Eye" value={seenAt} />
-            <Fact label="Closest" value={`${fmtDist(r.m / 10, u)} ${dirText(r.b)}`} />
-            <Fact label="Times Seen" value={`×${r.n}`} />
+            <div style={{ display: 'flex', justifyContent: 'space-between', gap: 16 }}>
+              <Fact label="Closest" value={`${fmtDist(r.m / 10, u)} ${dirText(r.b)}`} />
+              <Fact label="Times Seen" value={`×${r.n}`} />
+            </div>
           </div>
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
             <Dots n={n} at={at} />
