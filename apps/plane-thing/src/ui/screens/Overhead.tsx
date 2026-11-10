@@ -8,7 +8,8 @@ import { distLabel, distValue, fmtAlt, fmtDist, fmtSpeed } from '../../data/unit
 import type { Aircraft, UnitSystem } from '../../data/types';
 import { Heading, Waiting } from '../common';
 import { CameraGlyph, ClimbGlyph, DescendGlyph, EyeGlyph, PickGlyph, PinGlyph } from '../icons';
-import { dataNote, hereOf, useRepo, waitingFor } from '../state';
+import SeenBanner from '../SeenBanner';
+import { dataNote, hereOf, useApp, useRepo, waitingFor } from '../state';
 import { BLUE, GREEN, LAVENDER, PEACH, SALMON, YELLOW, type Pal } from '../theme';
 
 const split = (text: string): [string, string] => {
@@ -21,9 +22,12 @@ export default function Overhead() {
   const here = hereOf(s);
   const ready = here && (s.aircraft.data || s.aircraft.status === 'ok');
   const shown = shownOf(s);
+  const { nav } = useApp();
   return (
     <>
-      {shown.picked ? (
+      {nav.banner ? (
+        <SeenBanner banner={nav.banner} />
+      ) : shown.picked ? (
         <Heading
           icon={<PickGlyph size={22} color="#7BE0A0" />}
           title="Picked From Radar"

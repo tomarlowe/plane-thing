@@ -9,7 +9,6 @@ import Arrivals from './ui/screens/Arrivals';
 import Log, { logViewLength, LOG_ROWS_SHOWN } from './ui/screens/Log';
 import Overhead from './ui/screens/Overhead';
 import Radar, { keyAtRow, rowsInRange } from './ui/screens/Radar';
-import SeenBanner from './ui/SeenBanner';
 import Watchlist from './ui/screens/Watchlist';
 import { Ctx, LOG_VIEWS, type AppContext, type Banner, type LogView, type Nav } from './ui/state';
 import { fmtAlt, fmtDist } from './data/units';
@@ -214,7 +213,6 @@ export default function App({ repo }: { repo: Repo }) {
         {screen === 'log' ? <Log /> : null}
         {screen === 'arrivals' ? <Arrivals /> : null}
       </Frame>
-      {screen === 'overhead' && banner && !flash ? <SeenBanner banner={banner} /> : null}
       {flash ? <EmergencyFlash alert={flash} units={s.settings.units} onDone={finishFlash} /> : null}
     </Ctx.Provider>
   );
