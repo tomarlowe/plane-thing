@@ -13,10 +13,8 @@ has no accounts or API keys, and is open source.
 > for about a day and reports that it worked well, including photos of the actual aircraft. That is one person's one day:
 > most of the [checklist](docs/device-test-checklist.md) has not been worked through, and exports have not been tried on a
 > real phone. See [what has and has not been tested](docs/testing.md).
->
-> **Built with AI assistance, under a person's direction.** Thomas Marlowe decided what to build and how it should behave,
-> approved the designs and is testing it. Claude, an AI assistant made by Anthropic, wrote the code, tests and documentation.
-> No human programmer has reviewed the code line by line. [Read exactly who did what.](docs/how-this-was-built.md)
+
+> Built by Thomas Marlowe with help from Claude, an AI tool from Anthropic. More in [docs/how-this-was-built.md](docs/how-this-was-built.md).
 
 Plane Thing is for fun and curiosity. Positions can be late, wrong or missing. **It is not for navigation or safety.**
 
