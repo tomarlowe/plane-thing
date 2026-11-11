@@ -1,7 +1,7 @@
 {
   "$schema": "https://apps.bridgething.com/schemas/catalog/v1.json",
   "schema": "catalog.v1",
-  "updated_at": "2026-11-11T00:06:05.703Z",
+  "updated_at": "2026-11-11T00:25:57.534Z",
   "repo": {
     "name": "Plane Thing",
     "description": "A five-screen aircraft spotter for the Spotify Car Thing.",
@@ -12,7 +12,7 @@
     {
       "id": "01a1a8ce-5e3a-71a1-8619-b65be4e9d5d1",
       "name": "Plane Thing",
-      "description": "Aircraft overhead, a live radar, a watch list, a spotter log and an airport arrivals board. Uses your phone's location.",
+      "description": "See what is flying near you: the closest plane with a photo and where to look, a live radar, a watch list, a log of the planes you spot, and an estimated arrivals board. Not for navigation or safety.",
       "author": "Thomas Marlowe",
       "icon": "https://tomarlowe.github.io/plane-thing/icons/01a1a8ce-5e3a-71a1-8619-b65be4e9d5d1.png",
       "screenshots": [
@@ -30,6 +30,25 @@
       "homepage": "https://github.com/tomarlowe/plane-thing",
       "source": "https://github.com/tomarlowe/plane-thing",
       "versions": [
+        {
+          "version": "0.2.1",
+          "released_at": "2026-11-11T00:25:57.517Z",
+          "download": {
+            "url": "https://tomarlowe.github.io/plane-thing/r/01a1a8ce-5e3a-71a1-8619-b65be4e9d5d1/0.2.1.zip",
+            "size": 2254390,
+            "sha256": "5e4489e62b447547c666a9c6d121fb25c528686ef63c2805e9267dab7865a797"
+          },
+          "settings": {
+            "url": "https://tomarlowe.github.io/plane-thing/s/01a1a8ce-5e3a-71a1-8619-b65be4e9d5d1/0.2.1.html",
+            "size": 55176,
+            "sha256": "307d767894f6ef5aa735a75735a7d72a45ce839d27f9dcc524020075d03fd560"
+          },
+          "permissions": [
+            "geo"
+          ],
+          "min_libbridgething_version": "0.16.0",
+          "changelog": "The store tagline now says what the app does in current terms (look-here cue, estimated arrivals) and that it is not for navigation or safety. No other change: the app behaves the same as 0.2.0, and was not reinstalled on a real Car Thing for this version."
+        },
         {
           "version": "0.2.0",
           "released_at": "2026-11-11T00:06:05.326Z",
