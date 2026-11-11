@@ -1,7 +1,7 @@
 {
   "$schema": "https://apps.bridgething.com/schemas/catalog/v1.json",
   "schema": "catalog.v1",
-  "updated_at": "2026-11-11T00:25:57.534Z",
+  "updated_at": "2026-11-11T02:41:50.613Z",
   "repo": {
     "name": "Plane Thing",
     "description": "A five-screen aircraft spotter for the Spotify Car Thing.",
@@ -16,12 +16,12 @@
       "author": "Thomas Marlowe",
       "icon": "https://tomarlowe.github.io/plane-thing/icons/01a1a8ce-5e3a-71a1-8619-b65be4e9d5d1.png",
       "screenshots": [
-        "https://tomarlowe.github.io/plane-thing/screenshots/01a1a8ce-5e3a-71a1-8619-b65be4e9d5d1/01-overhead.png",
-        "https://tomarlowe.github.io/plane-thing/screenshots/01a1a8ce-5e3a-71a1-8619-b65be4e9d5d1/02-radar.png",
-        "https://tomarlowe.github.io/plane-thing/screenshots/01a1a8ce-5e3a-71a1-8619-b65be4e9d5d1/03-visually-verified.png",
-        "https://tomarlowe.github.io/plane-thing/screenshots/01a1a8ce-5e3a-71a1-8619-b65be4e9d5d1/04-log-photos.png",
-        "https://tomarlowe.github.io/plane-thing/screenshots/01a1a8ce-5e3a-71a1-8619-b65be4e9d5d1/05-watchlist.png",
-        "https://tomarlowe.github.io/plane-thing/screenshots/01a1a8ce-5e3a-71a1-8619-b65be4e9d5d1/06-arrivals.png"
+        "https://tomarlowe.github.io/plane-thing/screenshots/01a1a8ce-5e3a-71a1-8619-b65be4e9d5d1/device-01-overhead.png",
+        "https://tomarlowe.github.io/plane-thing/screenshots/01a1a8ce-5e3a-71a1-8619-b65be4e9d5d1/device-02-radar.png",
+        "https://tomarlowe.github.io/plane-thing/screenshots/01a1a8ce-5e3a-71a1-8619-b65be4e9d5d1/device-03-radar-list.png",
+        "https://tomarlowe.github.io/plane-thing/screenshots/01a1a8ce-5e3a-71a1-8619-b65be4e9d5d1/device-04-watchlist.png",
+        "https://tomarlowe.github.io/plane-thing/screenshots/01a1a8ce-5e3a-71a1-8619-b65be4e9d5d1/device-05-log-photos.png",
+        "https://tomarlowe.github.io/plane-thing/screenshots/01a1a8ce-5e3a-71a1-8619-b65be4e9d5d1/device-06-arrivals.png"
       ],
       "categories": [
         "dashboards",
@@ -30,6 +30,25 @@
       "homepage": "https://github.com/tomarlowe/plane-thing",
       "source": "https://github.com/tomarlowe/plane-thing",
       "versions": [
+        {
+          "version": "0.2.2",
+          "released_at": "2026-11-11T02:41:50.566Z",
+          "download": {
+            "url": "https://tomarlowe.github.io/plane-thing/r/01a1a8ce-5e3a-71a1-8619-b65be4e9d5d1/0.2.2.zip",
+            "size": 2254391,
+            "sha256": "5f5211f3d49bee53c70cbffada45b6173443bfff0efdfcbecd4b1533074c7c91"
+          },
+          "settings": {
+            "url": "https://tomarlowe.github.io/plane-thing/s/01a1a8ce-5e3a-71a1-8619-b65be4e9d5d1/0.2.2.html",
+            "size": 55176,
+            "sha256": "307d767894f6ef5aa735a75735a7d72a45ce839d27f9dcc524020075d03fd560"
+          },
+          "permissions": [
+            "geo"
+          ],
+          "min_libbridgething_version": "0.16.0",
+          "changelog": "The store and README pictures are now real captures from a Car Thing, taken by the owner on 2026-11-10 with the app's Location set to a fixed place at JFK airport. Two README pictures (the Visually Verified bar and the saved photo view) are still from the simulator and say so. The Overhead picture includes a photo credited to Lucian Ojog on Planespotters.net. No change to the app itself: it behaves the same as 0.2.0, and 0.2.2 was not installed on a real Car Thing."
+        },
         {
           "version": "0.2.1",
           "released_at": "2026-11-11T00:25:57.517Z",
