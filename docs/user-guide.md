@@ -6,14 +6,14 @@ Plane Thing is not for navigation or safety. Positions can be late, wrong or mis
 
 | Control               | What it does                                                                                       |
 | --------------------- | -------------------------------------------------------------------------------------------------- |
-| Buttons 1, 2, 3, 4    | Overhead, Radar, Watchlist, Spotter log                                                            |
+| Buttons 1, 2, 3, 4    | Overhead, Radar, Watchlist, Log & Photos                                                           |
 | Small recessed button | Arrivals                                                                                           |
-| Dial turn             | Radar: zoom (clockwise zooms in) or scroll the list. Spotter log: scroll. Arrivals: next airport   |
-| Dial click            | Radar: switch between the scope and the list. Does nothing on the other screens                    |
-| Back button           | Not used by this app                                                                               |
-| Touch                 | Tap a pill along the top to switch screens. Tap the airport chip on Radar for the next airport, or the airport name on Arrivals. A touch during the emergency flash cuts it short |
+| Dial turn             | Radar: zoom (clockwise zooms in) or scroll the list. Log & Photos: scroll, or next photo. Arrivals: next airport |
+| Dial click            | Radar: switch between the scope and the list, and open the highlighted plane from the list. Log & Photos: next of the four views. Does nothing on the other screens |
+| Back button           | Overhead: marks the plane you are looking at as Visually Verified. Does nothing on the other screens |
+| Touch                 | Tap a pill along the top to switch screens. Tap a plane on the Radar to open it. Tap a card on Log & Photos to select it. Tap the airport chip on Radar for the next airport, or the airport name on Arrivals. A touch during the emergency flash cuts it short |
 
-The back button is left alone on purpose, so it stays free for actions that work across all your bridgething apps.
+The Back button is the large round button below the dial. In this app it only works on the Overhead screen, where it marks a plane as Visually Verified (see below).
 
 A quick tap of the recessed button opens Arrivals. Bridgething also uses that button to jump to its own dashboard. Which
 gesture does it is a bridgething setting (a long press, five quick presses or a double press), not part of this app.
@@ -36,6 +36,13 @@ The closest airborne aircraft within 10 miles of you, in large type.
 - A photo with the photographer and the photo site credited under it. If the exact aircraft has no photo it shows another
   aircraft of the same airline and type and says "Photo shows" with that tail number. If there is none it shows a photo of
   that type and says "Typical" (not this aircraft). If there is no photo at all it draws a silhouette.
+- A look-here card at the bottom of the right column. It says where to look: a clock position ("11 o'clock", with 12 straight
+  ahead of the car) and how high ("Low · About 15° up", "Mid" or "High"), with an arrow on a small dial. The clock position
+  needs the phone to report which way the car is heading, and it only trusts that heading while the car is moving at about
+  walking pace or faster. Otherwise the card says "North Is Up" and gives the compass direction ("Look NE") instead. Very close
+  to straight overhead it says "Right Above". The height is estimated from the altitude and distance, so treat it as a rough
+  guide.
+- A small eye icon next to the tail number when you have marked this plane as Visually Verified.
 
 When nothing is within 10 miles the screen says "No aircraft within 10 mi" (in your units), shows how far the nearest
 aircraft is and a small scope. If the wider search finds nothing within 100 miles it says so and keeps checking.
@@ -53,6 +60,9 @@ name of the data service in use. There is a legend for the colors and a north-ea
   The ranges shown are the same distances in your units (the 15 mile range reads 24 km in metric).
 - **Airport:** the nearest airport of any kind is drawn as a white rounded square with its code on a chip. Tap the chip to
   look at the next nearest, through the five nearest. An airport farther than the range sits on the rim of the scope.
+- **Open a plane:** touch a plane on the scope. Or click the dial to open the list, turn the dial to a row and click again.
+  The Overhead screen then shows that plane, with its photo, and keeps following it live. Its heading reads "Picked From
+  Radar". Button 1 goes back to showing the closest plane. If the plane goes out of range the screen says so.
 - **Emergency:** an emergency aircraft gets a salmon ring, a label with its squawk code and a salmon banner (see
   "Emergency alert" below).
 
@@ -71,17 +81,26 @@ Three cards:
 Below them are chips for the entries on your list. When a card has nothing to show it says so ("No emergency squawks",
 "No helicopters", "Nothing on your list"). Drones are not shown in this version.
 
-### 4. Spotter log (button 4)
+### 4. Log & Photos (button 4)
 
 The log is a running record of every airborne aircraft that came within your logging distance (10 miles unless you change
 it). Each aircraft is logged once, by its unique hex code, and updated on later passes.
 
-- Three counters: Aircraft logged, Different types, New today.
-- Recent sightings, newest first, four at a time. Turn the dial to scroll. Each row shows the tail number, type and
-  operator, the closest pass, when it was first seen, how many times it has been seen and a NEW badge for aircraft first
-  logged today.
+Four cards run across the top. Touch one, or click the dial to step through them, and the view below changes:
+
+- **Aircraft Logged:** the recent sightings, newest first, four at a time. Turn the dial to scroll. Each row shows the tail
+  number, type and operator, the closest pass, when it was first seen, how many times it has been seen and a NEW badge for
+  aircraft first logged today. An eye icon marks a plane you marked as Visually Verified.
+- **Different Types:** one row per aircraft type with a count.
+- **New Today:** the aircraft first logged today.
+- **Visually Verified:** the planes you marked, newest first, one photo at a time. Turn the dial for the next photo. Next to
+  the photo are the tail number, airline and type, when you marked it, the closest pass and how many times it was seen. If
+  no photo was saved for a plane the photo box says "No Photo Saved".
+
+More about the log:
+
 - An aircraft that leaves range for 15 minutes and comes back counts as another visit.
-- The log keeps up to 12,000 aircraft. After that it drops the oldest.
+- The log keeps up to 12,000 aircraft. After that it drops the oldest, but never one you marked as Visually Verified.
 - The Car Thing has no way to save a file. Tapping Export CSV on the screen only reminds you that export happens on the
   phone. See "Export the log" below.
 
@@ -98,6 +117,26 @@ passing over at cruising height are left out.
 
 Times and origins are estimates from position and speed. Plane Thing does not have airline schedules, so it cannot say
 whether a flight is on time or late. For a flight you are meeting, use the airline or an airport flight board.
+
+## Marking a plane Visually Verified
+
+For the planes you have seen with your own eyes. On the Overhead screen, press the Back button.
+
+- A green bar saying "Visually Verified", with the tail number and the time, takes the place of the "Overhead Now" heading for
+  about 3 seconds. It does not cover anything.
+- Pressing Back again on a plane you already marked shows a purple bar, "Already Marked", with the time of the first mark.
+  The first time is kept.
+- When nothing is within 10 miles there is nothing to mark, and the bar says "Nothing Overhead to Mark".
+- A plane you opened from the Radar is marked the same way, because it is the plane on the Overhead screen.
+- A marked plane is added to the log if it is not there yet, gets an eye icon next to its tail number, shows up in the
+  Visually Verified view and has a Visually Verified time in the export.
+- There is no undo on the device. Clearing the log is the only way to remove a mark.
+
+**Saved photos.** When you mark a plane, the photo on the screen at that moment is saved on the Car Thing so the Visually
+Verified view can show it later. If the photo had not loaded yet when you pressed Back, the app saves it when it arrives,
+unless the plane has gone. This has not been tested on a real device. One picture is kept per plane, up to 60. When a 61st is
+saved the oldest picture is deleted, and its log row stays. Saved photos never leave the Car Thing and are not in the
+export. Clearing the log deletes them.
 
 ## Emergency alert
 
@@ -122,7 +161,7 @@ Details:
 Export happens on the phone, in the app's settings page.
 
 1. On the phone, open the bridgething companion app and open Plane Thing's settings.
-2. Scroll to "Spotter log". It reads the log from the Car Thing and says how many aircraft it holds.
+2. Scroll to "Spotter Log". It reads the log from the Car Thing and says how many aircraft it holds.
 3. Choose **Download CSV** to save a file, **Copy CSV** to copy the text, or **Show text** to see it. If a download does
    not appear in your phone's downloads, use Copy or Show text.
 4. For a map file (KML) use **Download map file** or **Copy KML**. A map file puts each sighting where you stood, so it
@@ -130,16 +169,16 @@ Export happens on the phone, in the app's settings page.
 
 The CSV columns are Registration, Aircraft Type, Airline, Serial Number (left blank), Date and Time Seen, Place (the
 nearest airport), Notes, then Callsign, ICAO Type Code, Closest Distance, Bearing at Closest, Highest Altitude, Times
-Seen, ICAO Hex and Source. The tail number comes first because that is the order plane spotting tools and logbooks tend to
+Seen, ICAO Hex, Visually Verified (the date and time you first marked the plane, empty if you did not) and Source. The tail number comes first because that is the order plane spotting tools and logbooks tend to
 use. This order was chosen from research and has not been tried in any particular spotting tool. Distances in the file are
 always in miles and altitudes in feet, whatever the Units setting. Your own latitude and longitude are left out unless you
 tick "Add my position". Times use your phone's time zone.
 
 The log stays on your Car Thing and nowhere else. The file is made on your phone and goes only where you send it. The log
 and its export do not contain photo links or photographer names, because the photo sites do not allow re-use of their
-data.
+data. The photos saved for Visually Verified planes stay on the Car Thing and are not in the export.
 
-**Clear the log** deletes every sighting on the Car Thing. It asks you to tap twice and cannot be undone, so export first.
+**Clear the log** deletes every sighting and every saved photo on the Car Thing. It asks you to tap twice and cannot be undone, so export first.
 
 Whether the phone's download, copy and share actions work inside the companion app has not been tested on a real device.
 

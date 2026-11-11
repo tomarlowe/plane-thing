@@ -15,7 +15,7 @@ Claude proposed something and Thomas approved it, both are named. Decisions that
 
 ### 2. Five screens, one per button
 
-- **Decision:** Overhead (1), Radar (2), Watchlist (3), Spotter log (4) and Arrivals (the recessed button). The screen is
+- **Decision:** Overhead (1), Radar (2), Watchlist (3), Spotter log (4, renamed Log & Photos in version 0.2.0) and Arrivals (the recessed button). The screen is
   a second or third display in a car, so each screen answers one question at a glance.
 - **Why:** the Car Thing has four preset buttons and a mode button, and a kiosk shows one page at a time. Mapping one
   screen to each button keeps navigation to a single press.
@@ -173,6 +173,8 @@ Claude proposed something and Thomas approved it, both are named. Decisions that
 - **Decision:** the app never reacts to the back button, and the dial click only matters on the Radar.
 - **Why:** the back button is left free for actions that work across all bridgething apps.
 - **Decided by:** Claude.
+- **Superseded in version 0.2.0** by decision 26: the Back button now marks a plane on the Overhead screen. The dial click now
+  also steps through the four views on Log & Photos and opens the highlighted plane in the Radar list.
 
 ## Project
 
@@ -188,4 +190,62 @@ Claude proposed something and Thomas approved it, both are named. Decisions that
 
 - **Decision:** the app is called Plane Thing. It started as "Dash Spotter" (chosen by Claude because two other names were
   taken), and Thomas renamed it before anything was published. The app's internal id did not change.
+- **Decided by:** Thomas.
+
+## Added in version 0.2.0
+
+### 24. A look-here cue on Overhead
+
+- **Decision:** a white card at the bottom of the right column says where to look from the car: an arrow on a small dial and
+  the clock position in words ("11 o'clock", 12 being straight ahead), plus how high ("Low", "Mid" or "High" with an angle
+  rounded to 5 degrees).
+- **Why:** the Overhead screen said how far away a plane was, but not which way to turn your head.
+- **How it works:** the clock position needs the phone's heading, and the app trusts that only while the car moves at about
+  walking pace or faster, because a standing phone gives a meaningless heading. Otherwise the card says "North Is Up" and gives
+  the compass direction. The height is the angle above the horizon from altitude and distance, and the split points are 30 and
+  60 degrees.
+- **Decided by:** Thomas asked for the cue, wanted both the arrow and the clock words, and chose the layout from mockups. Claude
+  chose the arithmetic, the walking-pace rule and the fallback.
+
+### 25. Open a plane from the Radar
+
+- **Decision:** touching a plane on the Radar scope, or clicking the highlighted row in the list view, shows that plane on the
+  Overhead screen, which follows it live. Button 1 returns to the closest plane.
+- **Why:** the Radar shows everything nearby, and the Overhead screen has the photo and the detail, so the two should connect.
+- **Decided by:** Thomas asked for it and approved the mockups. Claude chose the touch and dial behavior and the "Picked From
+  Radar" heading.
+
+### 26. Back marks a plane as Visually Verified
+
+- **Decision:** on the Overhead screen the Back button marks the plane being shown as Visually Verified, meaning the owner
+  saw it with his own eyes. A bar takes the place of the heading for about 3 seconds ("Visually Verified", "Already
+  Marked" or "Nothing Overhead to Mark"), a small eye icon marks the plane afterwards, and the first time is kept. There is no
+  undo on the device. The mark works on the Overhead screen only, including for a plane opened from the Radar. Marked planes
+  are never dropped when the log trims old rows, and the CSV and KML carry the time. The photo on screen when the plane is
+  marked is saved on the Car Thing with the mark; see [data sources](data-sources.md#photos) for what is saved and what the
+  photo services' terms say.
+- **Why:** the log recorded what the radio heard, not what a person saw. A button press is the quickest way to say "I saw
+  that one" while driving.
+- **Decided by:** Thomas asked for it, chose the Back button, chose the name Visually Verified (replacing "seen by eye"), and
+  chose that it works on Overhead only. The first mockup had the bar floating over the heading and the cards, Thomas pointed that
+  out, and Claude moved it into the heading's place.
+
+### 27. Log & Photos with four selectable cards
+
+- **Decision:** the Spotter log screen became Log & Photos. Its counters became four cards you can touch, or step through with
+  the dial click: Aircraft Logged, Different Types, New Today and Visually Verified. The fourth shows the marked planes, one
+  photo at a time. The tab is drawn wider than the others so the name fits.
+- **Why:** the new photos needed a home, and the counters were already the natural way into the lists behind them.
+- **Decided by:** Thomas chose the structure and the names. Claude drew the layouts and made the fit changes, such as the wider tab.
+
+### 28. Title Case for every label
+
+- **Decision:** every label and heading on the screens starts each word with a capital, except small words in the middle
+  ("by", "to", "of"). Units and codes keep their own case ("mi", "ft", "N372DN").
+- **Decided by:** Thomas asked for it across the whole app. Claude wrote the rule as a tested function so new labels follow it.
+
+### 29. One release, without the Watchlist redesign
+
+- **Decision:** version 0.2.0 contains the four changes above. A redesigned Watchlist that Thomas had been considering is not in
+  it, and is undecided (see the [roadmap](roadmap.md)).
 - **Decided by:** Thomas.

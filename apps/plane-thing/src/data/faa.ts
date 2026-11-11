@@ -1,3 +1,5 @@
+import { titleLabel } from './format';
+
 // the FAA airport status feed is xml. it lists ground stops, delay programs, closures and delays by airport code
 export interface FaaStatus {
   code: string;
@@ -17,9 +19,9 @@ const tag = (block: string, name: string): string | null => {
 };
 
 const NICE: Record<string, string> = {
-  'ground stops': 'Ground stop',
-  'ground delay programs': 'Ground delay program',
-  'airport closures': 'Airport closed',
+  'ground stops': 'Ground Stop',
+  'ground delay programs': 'Ground Delay Program',
+  'airport closures': 'Airport Closed',
   'arrival/departure delays': 'Delays',
   'delays by destination': 'Delays',
 };
@@ -47,6 +49,6 @@ export function statusFor(list: FaaStatus[], iata: string): FaaStatus | null {
 }
 
 export function faaLine(s: FaaStatus): string {
-  const bits = [s.reason ? s.reason.toLowerCase() : null, s.avg ? `average ${s.avg}` : null].filter(Boolean);
+  const bits = [s.reason ? titleLabel(s.reason.toLowerCase()) : null, s.avg ? `Average ${s.avg}` : null].filter(Boolean);
   return bits.length ? `${s.kind}, ${bits.join(', ')}` : s.kind;
 }

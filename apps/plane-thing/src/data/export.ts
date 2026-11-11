@@ -17,6 +17,7 @@ export const CSV_HEAD = [
   'Highest Altitude (ft)',
   'Times Seen',
   'ICAO Hex',
+  'Visually Verified',
   'Source',
 ];
 
@@ -57,6 +58,7 @@ export function toCsv(rows: LogEntry[], o: ExportOpts): string {
       r.h * 100,
       r.n,
       r.hex.toUpperCase(),
+      r.s === undefined ? '' : isoLocal(r.s, offsetAt(o, r.s)),
       SOURCE,
     ];
     if (o.withCoords) cells.push(r.p[0], r.p[1]);
@@ -78,12 +80,13 @@ export function toKml(rows: LogEntry[], o: ExportOpts): string {
         r.o ? `Operator: ${r.o}` : '',
         `Seen: ${isoLocal(r.f, offsetAt(o, r.f))}`,
         `Closest: ${(r.m / 10).toFixed(1)} mi at ${r.b} deg`,
-        `Times seen: ${r.n}`,
+        `Times Seen: ${r.n}`,
+        r.s === undefined ? '' : `Visually Verified: ${isoLocal(r.s, offsetAt(o, r.s))}`,
       ]
         .filter(Boolean)
         .join('\n');
       return `<Placemark><name>${xml(name)}</name><description>${xml(desc)}</description><Point><coordinates>${r.p[1]},${r.p[0]},0</coordinates></Point></Placemark>`;
     })
     .join('\n');
-  return `<?xml version="1.0" encoding="UTF-8"?>\n<kml xmlns="http://www.opengis.net/kml/2.2"><Document><name>Plane Thing log</name>\n${marks}\n</Document></kml>\n`;
+  return `<?xml version="1.0" encoding="UTF-8"?>\n<kml xmlns="http://www.opengis.net/kml/2.2"><Document><name>Plane Thing Log</name>\n${marks}\n</Document></kml>\n`;
 }

@@ -9,6 +9,7 @@
 //   frozen=1                                keeps the clock at 2:41 PM instead of running
 //   speed=10                                runs the clock faster
 //   slow=ms                                 adds a delay to every reply
+//   heading=90                              the phone reports this driving direction in degrees, at 15 m/s. without it the phone gives none
 
 import type { FetchOptions, FetchResult, Platform, PositionResult } from '../platform/types';
 import {
@@ -183,7 +184,9 @@ export function simPlatform(params: URLSearchParams, opts: SimOptions = {}): Pla
       const lat = Number(params.get('lat'));
       const lon = Number(params.get('lon'));
       const here = params.has('lat') && Number.isFinite(lat) && Number.isFinite(lon) ? { lat, lon } : SIM_COORD;
-      return { ok: true, fix: { ...here, speedMps: null, headingDeg: null } };
+      const heading = params.has('heading') ? Number(params.get('heading')) : NaN;
+      const driving = Number.isFinite(heading);
+      return { ok: true, fix: { ...here, speedMps: driving ? 15 : null, headingDeg: driving ? heading : null } };
     },
 
     async utcOffsetS() {

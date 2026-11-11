@@ -52,15 +52,17 @@ flowchart TB
     WATCH["watch<br/>watch list matching"]
     APT["airports<br/>nearest, working set"]
     LOG["log + export<br/>one row per aircraft, CSV, KML"]
+    LOOK["look<br/>where to look from the car"]
     PHOTOS["photoservice<br/>photo fallback chain"]
+    SAVED["savedphoto<br/>saved pictures, as text"]
     ARR["arrivals + faa + route"]
   end
   subgraph UI["Screens (src/ui)"]
-    SCR["Overhead, Radar, Watchlist,<br/>Spotter log, Arrivals"]
+    SCR["Overhead, Radar, Watchlist,<br/>Log & Photos, Arrivals"]
     FLASH["Emergency flash"]
   end
   PLAT --> REPO
-  REPO --> ADSBP & EM & WATCH & APT & LOG & PHOTOS & ARR
+  REPO --> ADSBP & EM & WATCH & APT & LOG & LOOK & PHOTOS & SAVED & ARR
   REPO -->|"useSyncExternalStore"| SCR
   REPO --> FLASH
   INPUT["input.ts<br/>buttons and dial"] --> SCR
@@ -117,6 +119,20 @@ The log is split into pieces of about 100 rows because the device stores each pi
 The phone builds the export itself, so the log never leaves the Car Thing except as a file you choose to save or copy.
 Clearing the log from the phone removes the pieces and then the index, and the app notices the index is gone and empties
 its own copy.
+
+## Saved photos
+
+When you mark a plane as Visually Verified, the Repo keeps the picture that is on screen. The photo service holds the bytes of
+its latest eight pictures beside the blob addresses the screen shows. `savedphoto.ts` turns those bytes into text (base64
+inside a small JSON document) and the Repo writes one document per plane, named `photo.` followed by the plane's hex code.
+
+- A picture that would make the document longer than 250,000 characters is not saved. The mark stands without a picture.
+- At most 60 pictures are kept. Saving a picture for a 61st plane deletes the oldest one. The plane's log row stays.
+- If the photo has not loaded when Back is pressed, the Repo remembers the plane and saves the photo when it arrives. A
+  failed save is silent.
+- Clearing the log from the phone removes the pictures with it. The settings page and the exports never read them.
+
+What is saved, and what the photo services' terms say, is described in [data sources](data-sources.md#photos).
 
 ## Build and release
 

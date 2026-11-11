@@ -37,6 +37,9 @@ On the Car Thing:
 
 - **The spotter log.** One row per aircraft: tail number, hex code, type, airline, the closest pass, the highest altitude,
   times, and where you were when it passed, rounded to about 1 kilometer, with the nearest airport's name. Up to 12,000 rows.
+- **Photos of planes you marked as Visually Verified.** When you press Back on the Overhead screen, the photo on screen is
+  saved with its photographer and site credit, one per plane, up to 60. They are shown only on the Log & Photos screen, never
+  leave the Car Thing and are not in an export. This was added in version 0.2.0.
 - **Your last known position,** at full precision, so the app can start with a position before the phone answers.
 - **Your settings,** which the companion app also holds.
 
@@ -59,7 +62,8 @@ a month of them reveals a routine, and a position at 1 km can still be a street 
 
 ## Clearing it
 
-On the phone, open the Plane Thing settings and choose **Clear the log**. The Car Thing's copy empties, too. Whether
+On the phone, open the Plane Thing settings and choose **Clear the log**. The Car Thing's copy empties, too, including the
+saved photos. Whether
 uninstalling the app also removes its saved data has not been tested.
 
 ## What is never collected

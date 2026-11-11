@@ -80,17 +80,18 @@
     <h1>Plane Thing simulator</h1>
     <p class="note">
       Runs the app on made-up aircraft, with no network and no device. Every aircraft, photo and delay here is invented. The
-      buttons send the same events the Car Thing sends. Keyboard keys 1, 2, 3, 4, m and Enter work too, and so does shift plus
-      the mouse wheel for the dial.
+      buttons send the same events the Car Thing sends. Keyboard keys 1, 2, 3, 4, m, Enter and Escape (Back) work too, and so does
+      shift plus the mouse wheel for the dial.
     </p>
     <div class="bezel"><iframe id="screen" title="Plane Thing"></iframe></div>
     <div class="row">
       <button data-key="1">1 Overhead</button>
       <button data-key="2">2 Radar</button>
       <button data-key="3">3 Watchlist</button>
-      <button data-key="4">4 Log</button>
+      <button data-key="4">4 Log &amp; Photos</button>
       <button data-key="m" class="recess">Recessed (m) Arrivals</button>
       <button data-key="Enter">Dial click</button>
+      <button data-key="Escape">Back (visually verified)</button>
     </div>
     <div class="row">
       <button id="dial-left">Dial ◀ counterclockwise</button>
@@ -110,6 +111,7 @@
           <option value="units=aviation">Aviation units</option>
           <option value="fail=flights,squawk">Flight data down</option>
           <option value="fail=position">No phone location</option>
+          <option value="heading=90">Driving east (look-here uses clock positions)</option>
           <option value="dial_reverse=true">Dial reversed</option>
         </select>
       </label>

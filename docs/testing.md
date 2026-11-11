@@ -3,11 +3,11 @@
 This page says what has been tested, how, and what has not. Plane Thing was written with an AI assistant (see
 [how this was built](how-this-was-built.md)), so the honest answer to "does it work?" matters more than usual.
 
-**The short version:** the logic is covered by 103 automated tests, and the whole app runs in a simulator. All of that uses
+**The short version:** the logic is covered by 165 automated tests, and the whole app runs in a simulator. All of that uses
 made-up data. Nothing in the automated testing has talked to a live flight service, run on a real Car Thing, or exported a
 file from a real phone. That is what the [device test checklist](device-test-checklist.md) is for. Its owner has since driven
-with the app for about a day and reported that it worked well (see [real-device results so far](#real-device-results-so-far)),
-but he has not gone through the checklist item by item.
+with version 0.1.0 for about a day and checked the 0.2.0 features by hand (see
+[real-device results so far](#real-device-results-so-far)), but he has not gone through the checklist item by item.
 
 ## What runs automatically
 
@@ -17,7 +17,7 @@ Every push and pull request runs these in GitHub Actions (`.github/workflows/ci.
 | ----------------------------------------- | ------------------------------------------------------------------------------------------- |
 | `bun install --frozen-lockfile`           | The lockfile matches `package.json`                                                         |
 | `bun run --cwd apps/plane-thing typecheck` | Strict TypeScript over the app, the settings page and the tests                            |
-| `bun run --cwd apps/plane-thing test`      | The 103 unit tests below                                                                   |
+| `bun run --cwd apps/plane-thing test`      | The 165 unit tests below                                                                   |
 | `bun run check`                           | Build, bundle, catalog generation and validation, and a version bump on any changed app    |
 
 You can run the same things on your own computer. From the repository root:
@@ -39,10 +39,13 @@ The tests live in `apps/plane-thing/src/tests/`. They cover the logic that has n
 | `airports.test.ts`      |    13 | Unpacking the real airport file, auto/country/world scoping, nearest airport, commercial-only for Arrivals       |
 | `emergency-watch.test.ts` |  12 | The two-sightings rule, alert once, false-alarm cases, the watch list matching, the jump-to-Radar range         |
 | `geo-units.test.ts`     |    13 | Distances, bearings, unit conversion, clock text in a time zone                                                  |
-| `log-export.test.ts`    |    15 | One row per aircraft, saving in pieces, clearing, CSV columns and quoting, KML                                   |
+| `log-export.test.ts`    |    31 | One row per aircraft, saving in pieces, clearing, CSV columns and quoting, KML, marking Visually Verified, the lists on the Log & Photos screen |
 | `manifest.test.ts`      |     6 | Every setting is declared, defaults are consistent, every choice has a label                                     |
 | `parsers.test.ts`       |    17 | FAA status, routes, the three photo services, sister-aircraft selection, arrival estimates                       |
-| `repo.test.ts`          |    16 | The whole data layer against a simulated platform: feeds, fallbacks, errors, saving and reloading the log        |
+| `look.test.ts`          |    16 | The look-here arithmetic: which heading to trust, clock position, how high to look, the wording                  |
+| `repo.test.ts`          |    33 | The whole data layer against a simulated platform: feeds, fallbacks, errors, saving and reloading the log, which plane the Overhead screen is about, marking a plane Visually Verified and keeping its photo |
+| `savedphoto.test.ts`    |     6 | Saving a picture as text and reading it back, too-big pictures, damaged or foreign saved data                    |
+| `titlelabel.test.ts`    |     7 | The Title Case rule for every label on the screens                                                               |
 
 Some of the tests exist because of a specific mistake that was found while building:
 
@@ -69,9 +72,9 @@ the airport file is caught), and `geo-units.test.ts` checks distances against we
 skies, failing services and missing photos (options are in the [developer guide](developer-guide.md#get-started)). It is how
 the screens, the flash, and the dial and button behavior were checked without a device.
 
-Its pictures carry a "SIMULATED PICTURE" watermark. The five images in `apps/plane-thing/screenshots/` that appear in the
-README were taken from the simulator with invented aircraft and are not photos of a real screen. The script that took them is
-not part of the repository. They will be replaced with real captures from the device (`bun run shot plane-thing --replace`)
+Its pictures carry a "SIMULATED PICTURE" watermark. The six images in `apps/plane-thing/screenshots/` that appear in the
+README were taken from the simulator with invented aircraft and are not photos of a real screen. Each carries a line along
+the bottom saying so. The script that took them is not part of the repository. They will be replaced with real captures from the device (`bun run shot plane-thing --replace`)
 when testing is done.
 
 The settings page was checked against a fake phone host that stands in for the companion app. That exercised the export
@@ -92,12 +95,24 @@ These are the owner's own reports, not measurements. No tool recorded them.
 - **Not covered.** He did not work through the checklist, so nothing else is claimed. Exports, touch, the emergency alert,
   the Arrivals screen and the log across restarts are not confirmed.
 
+**Version 0.2.0, reported on 2026-11-10** (a build installed from the project files by the owner on his own Car Thing):
+
+- **Worked, as he reported it:** the five-tab bar with the wider Log & Photos tab; pressing Back on Overhead to mark a plane
+  Visually Verified, and again for Already Marked; opening a plane from the Radar; the Log & Photos screen; and the look-here
+  card.
+- **Photo view.** A plane marked straight after it appeared showed "No Photo Saved" in the Visually Verified view. On a retest,
+  with another plane whose photo had already loaded, the plane and its photo were recorded correctly. So saving and showing a
+  photo works when the photo has loaded first. Why the first plane had no photo was not determined.
+- **Not recorded separately:** whether the look-here card used the car's heading while moving, or only the compass fallback.
+
 ## What has not been tested
 
 - **Live services.** No automated test calls adsb.lol, airplanes.live, adsb.fi, Planespotters, airport-data.com, Wikimedia
   Commons or the FAA. The owner's drive shows Planespotters answered at least some requests, but its terms remain an
   [open issue](data-sources.md).
-- **Most of the real device.** Apart from the drive above, nobody has gone through the buttons and dial, the recessed button,
+- **Marking a plane before its photo has loaded.** The app is meant to save the photo when it arrives. That has not been seen
+  working on a real device. How many saved photos the Car Thing can hold has not been measured either.
+- **Most of the real device.** Apart from the drives and checks above, nobody has gone through the buttons and dial, the recessed button,
   touch, startup time, or how the app behaves when the device sleeps or another app is shown.
 - **The phone.** Location sharing, the settings page inside the companion app, and the actual download or copy of an export.
 - **Opening an export in other tools.** The CSV and KML have not been opened in a spotting logbook, a spreadsheet or a

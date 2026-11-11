@@ -17,7 +17,7 @@ export function TopStrip({ active, onPick }: { active: ScreenId; onPick: (id: Sc
         const Glyph = GLYPHS[s.id];
         const on = s.id === active;
         const style: CSSProperties = {
-          flex: 1,
+          flex: s.weight,
           minWidth: 0,
           display: 'flex',
           alignItems: 'center',
@@ -65,12 +65,15 @@ export function Frame({
   );
 }
 
-export function Heading({ icon, title, right }: { icon: ReactNode; title: ReactNode; right?: ReactNode }) {
+export function Heading({ icon, title, right, chip }: { icon: ReactNode; title: ReactNode; right?: ReactNode; chip?: ReactNode }) {
   return (
     <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', height: 26, flex: 'none', padding: '0 4px', gap: 12 }}>
-      <div style={{ display: 'flex', alignItems: 'center', gap: 8, fontSize: 22, fontWeight: 700, color: '#EAF0FB', minWidth: 0 }}>
-        {icon}
-        {title}
+      <div style={{ display: 'flex', alignItems: 'center', gap: 12, minWidth: 0 }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 8, fontSize: 22, fontWeight: 700, color: '#EAF0FB', minWidth: 0 }}>
+          {icon}
+          {title}
+        </div>
+        {chip}
       </div>
       {right ? <div style={{ fontSize: 15, fontWeight: 600, color: MUTED, whiteSpace: 'nowrap' }}>{right}</div> : null}
     </div>

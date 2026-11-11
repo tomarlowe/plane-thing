@@ -11,9 +11,10 @@ import {
 } from './airports';
 import { EmergencyTracker, EMERGENCY_CODES, ALERT_RADIUS_MI, isEmergencyCode } from './emergency';
 import { FAA_URL, parseFaa, statusFor, type FaaStatus } from './faa';
-import { META_KEY, SpotterLog, type LogDocs, type LogStats } from './log';
+import { META_KEY, SpotterLog, type LogDocs, type LogStats, type TypeRow } from './log';
 import { NO_PHOTO, PhotoService } from './photoservice';
 import type { PhotoResult } from './photos';
+import { decodePhoto, encodePhoto, MAX_SAVED_PHOTOS, photoKey } from './savedphoto';
 import { parseRouteSet, ROUTE_URL, routeBody, wantsRoute, type RouteGuess } from './route';
 import type { Aircraft, Coord, EmergencyInfo, Feed, LogEntry, NearAirport, Settings } from './types';
 import { DEFAULT_SETTINGS } from './types';
@@ -21,6 +22,11 @@ import { parseWatch } from './watch';
 
 // the zone the Overhead screen cares about
 export const OVERHEAD_MI = 10;
+
+// the most rows the log screens hold at once. the export always has the whole log
+const LOG_LIST_MAX = 200;
+// saved pictures kept ready to show on the photos view
+const KEEP_SAVED_SHOWN = 6;
 
 // seconds between runs of each job
 const EVERY = { position: 8, nearby: 6, squawk: 25, recheck: 8, wide: 60, arrivals: 10, faa: 300, save: 15 } as const;
@@ -39,6 +45,52 @@ export interface PhotoState {
   hex: string | null;
   status: 'idle' | 'loading' | 'done';
   result: PhotoResult;
+}
+
+// what the Overhead screen is about: the closest aircraft, or one picked on the Radar
+export interface Shown {
+  a: Aircraft | null;
+  picked: boolean;
+  // a picked aircraft that is no longer heard
+  lost: boolean;
+}
+
+export type SeenOutcome = { kind: 'new' | 'again'; tail: string; at: number } | { kind: 'none'; why: 'zone' | 'lost' };
+
+// an emergency aircraft carries no speed or heading, so those stay empty on the screen
+export function emergencyAircraft(e: EmergencyInfo): Aircraft {
+  return {
+    hex: e.hex,
+    reg: e.reg,
+    callsign: e.callsign,
+    type: e.type,
+    desc: e.desc,
+    operator: null,
+    lat: e.lat,
+    lon: e.lon,
+    altFt: e.altFt,
+    onGround: false,
+    gsKt: null,
+    trackDeg: null,
+    vertFpm: null,
+    squawk: e.code,
+    category: null,
+    military: false,
+    seenPosS: 0,
+    distMi: e.distMi,
+    bearingDeg: e.bearingDeg,
+  };
+}
+
+export function shownOf(s: Pick<RepoState, 'picked' | 'aircraft' | 'emergencies' | 'overhead'>): Shown {
+  if (s.picked) {
+    const live = (s.aircraft.data ?? []).find(a => a.hex === s.picked && !a.onGround && a.seenPosS <= MAX_AGE_S);
+    if (live) return { a: live, picked: true, lost: false };
+    const e = s.emergencies.find(x => x.hex === s.picked);
+    if (e) return { a: emergencyAircraft(e), picked: true, lost: false };
+    return { a: null, picked: true, lost: true };
+  }
+  return { a: s.overhead, picked: false, lost: false };
 }
 
 export interface RepoState {
@@ -72,8 +124,16 @@ export interface RepoState {
   routes: Record<string, RouteGuess | null>;
   arrivals: Feed<Arrival[]>;
   faa: FaaStatus | null;
+  // the hex of the aircraft picked on the radar, or null for the closest one
+  picked: string | null;
   logStats: LogStats;
+  // newest sighting first
   logRecent: LogEntry[];
+  // first logged today, newest first
+  logToday: LogEntry[];
+  logTypes: TypeRow[];
+  // marked as visually verified, newest mark first
+  logSeen: LogEntry[];
   logVersion: number;
 }
 
@@ -139,6 +199,9 @@ export class Repo {
   private alertN = 0;
   private overheadHex: string | null = null;
   private photoWanted: { hex: string; sinceMs: number } | null = null;
+  // marked as visually verified before the picture had loaded. saved as soon as it does
+  private keepWhenReady = new Set<string>();
+  private saved = new Map<string, PhotoResult | null>();
   private saveAt = 0;
   private startedS = 0;
   private routeAsked = new Set<string>();
@@ -172,8 +235,12 @@ export class Repo {
       routes: {},
       arrivals: idle(),
       faa: null,
-      logStats: { total: 0, types: 0, newToday: 0 },
+      picked: null,
+      logStats: { total: 0, types: 0, newToday: 0, seen: 0 },
       logRecent: [],
+      logToday: [],
+      logTypes: [],
+      logSeen: [],
       logVersion: 0,
     };
   }
@@ -207,6 +274,7 @@ export class Repo {
     this.offDoc = this.p.onDoc((key, value) => {
       if (key === META_KEY && value === null && this.log.count > 0) {
         this.log.forget();
+        this.dropSavedPictures();
         this.refreshLog();
       }
     });
@@ -267,8 +335,99 @@ export class Repo {
   }
 
   async clearLog() {
+    for (const r of this.log.seenRows()) await this.p.docDelete(photoKey(r.hex)).catch(() => undefined);
+    this.dropSavedPictures();
     await this.log.clear(this.docs());
     this.refreshLog();
+  }
+
+  // ---- the aircraft the Overhead screen is about
+
+  pick(hex: string) {
+    this.photoWanted = null;
+    this.set({ picked: hex });
+  }
+
+  unpick() {
+    if (this.state.picked === null) return;
+    this.photoWanted = null;
+    this.set({ picked: null });
+  }
+
+  // the Back button on the Overhead screen: the aircraft being shown is marked as visually verified
+  markSeen(): SeenOutcome {
+    const shown = shownOf(this.state);
+    const a = shown.a;
+    const here = this.here();
+    if (!a || !here || (!shown.picked && a.distMi > OVERHEAD_MI)) return { kind: 'none', why: shown.picked ? 'lost' : 'zone' };
+    const now = this.p.nowS();
+    const place = this.state.nearAny[0]?.name ?? '';
+    const mark = this.log.markSeen(now, a, place, here);
+    // the mark should reach the device soon, not at the next scheduled save
+    this.saveAt = 0;
+    this.refreshLog();
+    void this.keepPicture(a, mark.kind === 'new');
+    return { kind: mark.kind, tail: a.reg ?? a.callsign ?? a.hex.toUpperCase(), at: mark.at };
+  }
+
+  // keeps the picture on screen for an aircraft marked as visually verified, so the photos view can show it later
+  private async keepPicture(a: Aircraft, fresh: boolean) {
+    const ph = this.state.photo;
+    if (ph.hex !== a.hex || ph.status !== 'done') {
+      this.keepWhenReady.add(a.hex);
+      return;
+    }
+    const hit = ph.result.hit;
+    const raw = hit && ph.result.kind !== 'none' ? this.photos.rawFor(hit.imageUrl) : null;
+    if (!hit || !raw) return;
+    const text = encodePhoto({ kind: ph.result.kind, shows: ph.result.shows, mime: raw.mime, credit: hit.credit, bytes: raw.bytes });
+    if (!text) return;
+    try {
+      await this.p.docPut(photoKey(a.hex), text);
+      this.forgetSaved(a.hex);
+      if (fresh) {
+        // one picture falls off the end when there are too many
+        const old = this.log.seenRows()[MAX_SAVED_PHOTOS];
+        if (old) {
+          await this.p.docDelete(photoKey(old.hex)).catch(() => undefined);
+          this.forgetSaved(old.hex);
+        }
+      }
+    } catch {
+      // the mark stands without a picture
+    }
+  }
+
+  // the saved picture for a seen-by-eye aircraft, ready to show. null when none was saved
+  async savedPhoto(hex: string): Promise<PhotoResult | null> {
+    if (this.saved.has(hex)) return this.saved.get(hex) ?? null;
+    let result: PhotoResult | null = null;
+    try {
+      const text = await this.p.docGet(photoKey(hex));
+      const d = text ? decodePhoto(text) : null;
+      if (d) {
+        const url = URL.createObjectURL(new Blob([d.bytes as BlobPart], { type: d.mime }));
+        result = { kind: d.kind, hit: { imageUrl: url, credit: d.credit }, shows: d.shows };
+      }
+    } catch {
+      result = null;
+    }
+    this.saved.set(hex, result);
+    while (this.saved.size > KEEP_SAVED_SHOWN) {
+      const oldest = this.saved.keys().next().value as string;
+      this.forgetSaved(oldest);
+    }
+    return result;
+  }
+
+  private forgetSaved(hex: string) {
+    const r = this.saved.get(hex);
+    if (r?.hit) URL.revokeObjectURL(r.hit.imageUrl);
+    this.saved.delete(hex);
+  }
+
+  private dropSavedPictures() {
+    for (const hex of [...this.saved.keys()]) this.forgetSaved(hex);
   }
 
   // ---- settings and caches
@@ -316,9 +475,14 @@ export class Repo {
   }
 
   private refreshLog() {
+    const now = this.p.nowS();
+    const off = this.state.offsetS;
     this.set({
-      logStats: this.log.stats(this.p.nowS(), this.state.offsetS),
-      logRecent: this.log.recent(8),
+      logStats: this.log.stats(now, off),
+      logRecent: this.log.recent(LOG_LIST_MAX),
+      logToday: this.log.today(now, off, LOG_LIST_MAX),
+      logTypes: this.log.typeTable(LOG_LIST_MAX),
+      logSeen: this.log.seenRows(LOG_LIST_MAX),
       logVersion: this.log.version,
     });
   }
@@ -684,8 +848,9 @@ export class Repo {
   // ---- the photo and route of the aircraft overhead
 
   private maintainPhoto() {
-    const o = this.state.overhead;
-    const inZone = !!o && o.distMi <= OVERHEAD_MI;
+    const shown = shownOf(this.state);
+    const o = shown.a;
+    const inZone = !!o && (shown.picked || o.distMi <= OVERHEAD_MI);
     if (!inZone || this.screen !== 'overhead') {
       this.photoWanted = null;
       return;
@@ -702,7 +867,9 @@ export class Repo {
     const others = this.state.aircraft.data ?? [];
     void this.fetchRoutes([o]);
     void this.photos.find(o, others).then(result => {
-      if (this.state.photo.hex === o.hex) this.set({ photo: { hex: o.hex, status: 'done', result } });
+      if (this.state.photo.hex !== o.hex) return;
+      this.set({ photo: { hex: o.hex, status: 'done', result } });
+      if (this.keepWhenReady.delete(o.hex)) void this.keepPicture(o, false);
     });
   }
 }

@@ -2,20 +2,14 @@ import type { CSSProperties, ReactNode } from 'react';
 import { airlineFromCallsign } from '../../data/airlines';
 import { cleanOperator } from '../../data/adsb';
 import { dirText } from '../../data/format';
-import { OVERHEAD_MI, type RepoState } from '../../data/repo';
+import { lookCue, upText, usableHeading, type LookCue } from '../../data/look';
+import { OVERHEAD_MI, shownOf, type RepoState } from '../../data/repo';
 import { distLabel, distValue, fmtAlt, fmtDist, fmtSpeed } from '../../data/units';
 import type { Aircraft, UnitSystem } from '../../data/types';
-import { Chip, Heading, Waiting } from '../common';
-import {
-  CameraGlyph,
-  ClimbGlyph,
-  DescendGlyph,
-  GaugeGlyph,
-  HeadingArrow,
-  PinGlyph,
-  TargetGlyph,
-} from '../icons';
-import { dataNote, hereOf, useRepo, waitingFor } from '../state';
+import { Heading, Waiting } from '../common';
+import { CameraGlyph, ClimbGlyph, DescendGlyph, EyeGlyph, PickGlyph, PinGlyph } from '../icons';
+import SeenBanner from '../SeenBanner';
+import { dataNote, hereOf, useApp, useRepo, waitingFor } from '../state';
 import { BLUE, GREEN, LAVENDER, PEACH, SALMON, YELLOW, type Pal } from '../theme';
 
 const split = (text: string): [string, string] => {
@@ -27,13 +21,36 @@ export default function Overhead() {
   const s = useRepo();
   const here = hereOf(s);
   const ready = here && (s.aircraft.data || s.aircraft.status === 'ok');
+  const shown = shownOf(s);
+  const { nav } = useApp();
   return (
     <>
-      <Heading icon={<PinGlyph size={22} color="#8AB4F8" />} title="Overhead now" right={dataNote(s)} />
+      {nav.banner ? (
+        <SeenBanner banner={nav.banner} />
+      ) : shown.picked ? (
+        <Heading
+          icon={<PickGlyph size={22} color="#7BE0A0" />}
+          title="Picked From Radar"
+          chip={
+            <div style={{ background: '#123524', color: '#7BE0A0', borderRadius: 12, padding: '5px 12px', fontSize: 14, fontWeight: 700, lineHeight: 1, whiteSpace: 'nowrap' }}>
+              Radar: Back · Overhead: Closest
+            </div>
+          }
+          right={dataNote(s)}
+        />
+      ) : (
+        <Heading icon={<PinGlyph size={22} color="#8AB4F8" />} title="Overhead Now" right={dataNote(s)} />
+      )}
       {!ready ? (
         <WaitingBody s={s} />
-      ) : s.overhead && s.overhead.distMi <= OVERHEAD_MI ? (
-        <Present s={s} a={s.overhead} />
+      ) : shown.picked ? (
+        shown.a ? (
+          <Present s={s} a={shown.a} />
+        ) : (
+          <Waiting title="Out of Range" detail="That aircraft is no longer heard. Press Overhead to see the closest one." />
+        )
+      ) : shown.a && shown.a.distMi <= OVERHEAD_MI ? (
+        <Present s={s} a={shown.a} />
       ) : (
         <Empty s={s} />
       )}
@@ -56,104 +73,161 @@ function Present({ s, a }: { s: RepoState; a: Aircraft }) {
   const spd = split(fmtSpeed(a.gsKt, u));
   const dist = split(fmtDist(a.distMi, u));
   const trend = a.vertFpm !== null && a.vertFpm >= 300 ? 'up' : a.vertFpm !== null && a.vertFpm <= -300 ? 'down' : null;
+  const seen = s.logSeen.some(r => r.hex === a.hex);
+  // the phone only gives a heading while the car moves, and a typed in place has none
+  const carHeading = s.settings.manual ? null : usableHeading(s.fix?.headingDeg ?? null, s.fix?.speedMps ?? null);
+  const cue = lookCue(a.bearingDeg, a.distMi, a.altFt, carHeading);
+  const who = [operator ?? (a.military ? 'Military' : 'Operator Unknown'), a.desc ?? a.type ?? 'Unknown Type'].join(' · ');
   return (
     <div style={{ flex: 1, minHeight: 0, display: 'flex', gap: 12 }}>
       <PhotoCard s={s} a={a} />
-      <div style={{ flex: 1, minWidth: 0, display: 'flex', flexDirection: 'column', gap: 12 }}>
+      <div style={{ flex: 1, minWidth: 0, display: 'flex', flexDirection: 'column', gap: 10 }}>
         <div
           style={{
-            flex: 1.3,
-            minHeight: 0,
+            flex: 'none',
+            height: 104,
             background: YELLOW.bg,
-            borderRadius: 32,
-            padding: '14px 22px',
+            borderRadius: 28,
+            padding: '10px 20px',
             color: YELLOW.ink,
             display: 'flex',
             flexDirection: 'column',
             justifyContent: 'space-between',
           }}>
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 8 }}>
-            <div style={{ fontSize: 18, fontWeight: 700, minWidth: 0, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
-              {operator ?? (a.military ? 'Military' : 'Operator unknown')}
-            </div>
-            <div style={{ background: 'rgba(59,42,0,0.14)', borderRadius: 14, padding: '5px 12px', fontSize: 15, fontWeight: 700, lineHeight: 1 }}>
+            <div style={{ fontSize: 16, fontWeight: 700, minWidth: 0, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{who}</div>
+            <div
+              style={{
+                flex: 'none',
+                display: 'flex',
+                alignItems: 'center',
+                gap: 5,
+                background: 'rgba(59,42,0,0.14)',
+                borderRadius: 12,
+                padding: '4px 10px',
+                fontSize: 14,
+                fontWeight: 700,
+                lineHeight: 1,
+              }}>
+              {seen ? <EyeGlyph size={14} color={YELLOW.ink} style={{ flex: 'none' }} /> : null}
               {a.reg ?? a.hex.toUpperCase()}
             </div>
           </div>
-          <div style={{ fontSize: 58, fontWeight: 800, lineHeight: 1, letterSpacing: '-0.01em', whiteSpace: 'nowrap' }}>
+          <div style={{ fontSize: 46, fontWeight: 800, lineHeight: 1, letterSpacing: '-0.01em', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
             {a.callsign ?? a.reg ?? a.hex.toUpperCase()}
           </div>
-          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 8 }}>
-            <div style={{ fontSize: 19, fontWeight: 700, minWidth: 0, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
-              {a.desc ?? a.type ?? 'Unknown type'}
-            </div>
-            {route ? <Chip pal={YELLOW}>{`${route.from} to ${route.to}, est.`}</Chip> : null}
-          </div>
+          <div style={{ height: 17, fontSize: 14, fontWeight: 700, color: '#5C4300', whiteSpace: 'nowrap' }}>{route ? `${route.from} to ${route.to}, est.` : ''}</div>
         </div>
 
         <div
           style={{
-            flex: 1.6,
+            flex: 1,
             minHeight: 0,
             display: 'grid',
             gridTemplateColumns: 'repeat(2, minmax(0, 1fr))',
             gridTemplateRows: 'repeat(2, minmax(0, 1fr))',
-            gap: 12,
+            gap: 10,
           }}>
-          <Stat
+          <Tile
             pal={PEACH}
             label="Altitude"
             value={alt[0]}
             unit={alt[1]}
-            icon={trend === 'up' ? <ClimbGlyph size={22} color="#B93500" /> : trend === 'down' ? <DescendGlyph size={22} color="#B93500" /> : null}
+            icon={trend === 'up' ? <ClimbGlyph size={16} color="#B93500" /> : trend === 'down' ? <DescendGlyph size={16} color="#B93500" /> : null}
           />
-          <Stat
-            pal={LAVENDER}
-            label="Speed"
-            value={spd[0]}
-            unit={spd[1]}
-            icon={<GaugeGlyph size={22} color="#5B3FC4" />}
-          />
-          <Stat
+          <Tile pal={LAVENDER} label="Speed" value={spd[0]} unit={spd[1]} />
+          <Tile
             pal={GREEN}
             label="Heading"
             value={a.trackDeg === null ? '--' : `${String(Math.round(a.trackDeg) % 360).padStart(3, '0')}°`}
             unit={a.trackDeg === null ? '' : dirText(a.trackDeg)}
-            icon={a.trackDeg === null ? null : <HeadingArrow deg={a.trackDeg} color="#0B6E4F" />}
           />
-          <Stat
-            pal={SALMON}
-            label="Distance"
-            value={dist[0]}
-            unit={`${dist[1]} ${dirText(a.bearingDeg)}`}
-            icon={<TargetGlyph size={22} color="#8A2A12" />}
-          />
+          <Tile pal={SALMON} label="Distance" value={dist[0]} unit={dist[1]} />
         </div>
+
+        <LookCard cue={cue} above={a.distMi < 0.15} />
       </div>
     </div>
   );
 }
 
-function Stat({ pal, label, value, unit, icon }: { pal: Pal; label: string; value: string; unit: string; icon: ReactNode }) {
+// a small tile: the label on the left, the value on the right
+function Tile({ pal, label, value, unit, icon }: { pal: Pal; label: string; value: string; unit: string; icon?: ReactNode }) {
   return (
     <div
       style={{
         background: pal.bg,
-        borderRadius: 26,
-        padding: '10px 16px',
+        borderRadius: 22,
+        padding: '0 14px',
         color: pal.ink,
         display: 'flex',
-        flexDirection: 'column',
+        alignItems: 'center',
         justifyContent: 'space-between',
+        gap: 6,
         minHeight: 0,
       }}>
-      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', fontSize: 15, fontWeight: 700, color: pal.soft, height: 22 }}>
-        {label}
-        {icon}
-      </div>
-      <div style={{ display: 'flex', alignItems: 'baseline', gap: 6, whiteSpace: 'nowrap' }}>
-        <span style={{ fontSize: 40, fontWeight: 800, lineHeight: 1 }}>{value}</span>
-        <span style={{ fontSize: 18, fontWeight: 700, color: pal.soft }}>{unit}</span>
+      <span style={{ fontSize: 13, fontWeight: 700, color: pal.soft, whiteSpace: 'nowrap' }}>{label}</span>
+      <span style={{ display: 'flex', alignItems: 'baseline', gap: 4, whiteSpace: 'nowrap', minWidth: 0 }}>
+        {icon ? <span style={{ alignSelf: 'center', display: 'flex' }}>{icon}</span> : null}
+        <span style={{ fontSize: 24, fontWeight: 800, lineHeight: 1 }}>{value}</span>
+        <span style={{ fontSize: 14, fontWeight: 700, color: pal.soft }}>{unit}</span>
+      </span>
+    </div>
+  );
+}
+
+// ---- the look-here card: which way to turn your head, as a dial and as a clock position
+
+const LOOK_INK = '#0A2A5E';
+const LOOK_ARROW = '#0B57D0';
+
+function LookCard({ cue, above }: { cue: LookCue; above: boolean }) {
+  const known = cue.relativeDeg !== null;
+  const deg = cue.relativeDeg ?? cue.bearingDeg;
+  const big = above ? 'Right Above' : known ? cue.clockText! : `Look ${cue.compassText}`;
+  const label = known ? `You're Heading ${cue.carText}` : 'North Is Up';
+  return (
+    <div
+      style={{
+        flex: 'none',
+        height: 130,
+        background: '#F1F5FF',
+        borderRadius: 30,
+        padding: '9px 16px 9px 9px',
+        color: LOOK_INK,
+        display: 'flex',
+        alignItems: 'center',
+        gap: 12,
+      }}>
+      <svg width="112" height="112" viewBox="0 0 112 112" style={{ flex: 'none' }} aria-hidden="true">
+        <circle cx="56" cy="56" r="52" fill="#DCE6FA" stroke="#B5C6E8" strokeWidth="2" />
+        <line x1="56" y1="4" x2="56" y2="13" stroke={LOOK_INK} strokeWidth="4" strokeLinecap="round" />
+        <line x1="108" y1="56" x2="100" y2="56" stroke="#7F95BF" strokeWidth="3" strokeLinecap="round" />
+        <line x1="56" y1="108" x2="56" y2="100" stroke="#7F95BF" strokeWidth="3" strokeLinecap="round" />
+        <line x1="4" y1="56" x2="12" y2="56" stroke="#7F95BF" strokeWidth="3" strokeLinecap="round" />
+        {known ? (
+          <>
+            <rect x="49" y="43" width="14" height="26" rx="5" fill={LOOK_INK} />
+            <rect x="51.5" y="47" width="9" height="5" rx="1.5" fill="#DCE6FA" />
+          </>
+        ) : (
+          <text x="56" y="62" textAnchor="middle" fontSize="20" fontWeight="800" fill={LOOK_INK}>
+            N
+          </text>
+        )}
+        {above ? null : (
+          <g transform={`rotate(${deg.toFixed(1)} 56 56)`}>
+            <polygon points="56,8 72,32 62.5,32 62.5,40 49.5,40 49.5,32 40,32" fill={LOOK_ARROW} stroke={LOOK_ARROW} strokeWidth="2" strokeLinejoin="round" />
+          </g>
+        )}
+      </svg>
+      <div style={{ flex: 1, minWidth: 0, display: 'flex', flexDirection: 'column', gap: 3 }}>
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 8, fontSize: 13, fontWeight: 700, color: '#3A5FA8', whiteSpace: 'nowrap' }}>
+          <span style={{ letterSpacing: '0.1em' }}>LOOK</span>
+          <span>{label}</span>
+        </div>
+        <div style={{ fontSize: 36, fontWeight: 800, lineHeight: 1.05, letterSpacing: '-0.01em', whiteSpace: 'nowrap' }}>{big}</div>
+        <div style={{ fontSize: 18, fontWeight: 700, color: '#27478A', whiteSpace: 'nowrap' }}>{above ? 'Straight Up' : upText(cue)}</div>
       </div>
     </div>
   );
@@ -179,12 +253,12 @@ function PhotoCard({ s, a }: { s: RepoState; a: Aircraft }) {
   const p = s.photo.hex === a.hex ? s.photo : null;
   const hit = p?.status === 'done' ? p.result.hit : null;
   const kind = p?.status === 'done' ? p.result.kind : 'none';
-  let label = 'Looking for a photo';
+  let label = 'Looking for a Photo';
   if (p?.status === 'done') {
-    if (kind === 'exact') label = 'Photo of this aircraft';
-    else if (kind === 'fleet') label = 'Same airline and type, not this aircraft';
-    else if (kind === 'type') label = `Typical ${a.desc ?? a.type ?? 'aircraft'}, not this aircraft`;
-    else label = 'No photo found';
+    if (kind === 'exact') label = 'Photo of This Aircraft';
+    else if (kind === 'fleet') label = 'Same Airline and Type, Not This Aircraft';
+    else if (kind === 'type') label = `Typical ${a.desc ?? a.type ?? 'Aircraft'}, Not This Aircraft`;
+    else label = 'No Photo Found';
   }
   return (
     <div
@@ -220,7 +294,7 @@ function PhotoCard({ s, a }: { s: RepoState; a: Aircraft }) {
               fontWeight: 700,
               lineHeight: 1,
             }}>
-            {`Photo shows ${p.result.shows}`}
+            {`Photo Shows ${p.result.shows}`}
           </div>
         ) : null}
       </div>
@@ -290,8 +364,8 @@ function Empty({ s }: { s: RepoState }) {
     return (
       <div style={{ flex: 1, minHeight: 0, display: 'flex', gap: 12 }}>
         <div style={{ flex: 1.5, minWidth: 0, background: BLUE.bg, borderRadius: 32, padding: '18px 26px', color: BLUE.ink, display: 'flex', flexDirection: 'column', justifyContent: 'center', gap: 10 }}>
-          <div style={{ fontSize: 22, fontWeight: 700, color: BLUE.soft }}>{`No aircraft within ${zone}`}</div>
-          <div style={{ fontSize: 40, fontWeight: 800, lineHeight: 1.05 }}>{searching ? 'Looking farther out' : 'Quiet skies'}</div>
+          <div style={{ fontSize: 22, fontWeight: 700, color: BLUE.soft }}>{`No Aircraft Within ${zone}`}</div>
+          <div style={{ fontSize: 40, fontWeight: 800, lineHeight: 1.05 }}>{searching ? 'Looking Farther Out' : 'Quiet Skies'}</div>
           <div style={{ fontSize: 21, fontWeight: 600, color: BLUE.soft }}>
             {searching ? 'Checking a wider area.' : 'Nothing was heard within 100 miles. This screen updates by itself.'}
           </div>
@@ -307,7 +381,7 @@ function Empty({ s }: { s: RepoState }) {
     if (nearest.callsign ?? nearest.reg) chips.push((nearest.callsign ?? nearest.reg)!);
     if (nearest.type) chips.push(nearest.type);
     if (nearest.altFt !== null) chips.push(fmtAlt(nearest.altFt, u));
-    if (nearest.trackDeg !== null) chips.push(`heading ${String(Math.round(nearest.trackDeg) % 360).padStart(3, '0')}°`);
+    if (nearest.trackDeg !== null) chips.push(`Heading ${String(Math.round(nearest.trackDeg) % 360).padStart(3, '0')}°`);
   }
   const miles = use.distMi < 10 ? use.distMi.toFixed(1) : String(Math.round(use.distMi));
   return (
@@ -324,7 +398,7 @@ function Empty({ s }: { s: RepoState }) {
           flexDirection: 'column',
           justifyContent: 'space-between',
         }}>
-        <div style={{ fontSize: 22, fontWeight: 700, color: BLUE.soft }}>{`No aircraft within ${zone}`}</div>
+        <div style={{ fontSize: 22, fontWeight: 700, color: BLUE.soft }}>{`No Aircraft Within ${zone}`}</div>
         <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
           <div style={{ display: 'flex', alignItems: 'baseline', gap: 12 }}>
             <span style={{ fontSize: 104, fontWeight: 800, lineHeight: 0.95, letterSpacing: '-0.02em' }}>{num}</span>
@@ -395,7 +469,7 @@ function ScopeCard({
         <circle cx={cx} cy={cy} r="8" fill="#2A1A63" />
         <circle cx={cx} cy={cy} r="3" fill="#CBB8FF" />
         <text x={cx} y="342" fontSize="16" fontWeight="700" fill="#2A1A63" textAnchor="middle">
-          Dashed ring: overhead zone
+          Dashed Ring: Overhead Zone
         </text>
       </svg>
     </div>

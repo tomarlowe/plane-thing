@@ -17,9 +17,9 @@ export default function Arrivals() {
   const ap = s.nearBig[s.arrivalsPick] ?? null;
   if (!hereOf(s) || !s.airportsReady) {
     const w = waitingFor(s);
-    return <Waiting title={s.airportsReady || !hereOf(s) ? w.title : 'Loading airports'} detail={s.airportsReady ? w.detail : s.airportLabel || null} />;
+    return <Waiting title={s.airportsReady || !hereOf(s) ? w.title : 'Loading Airports'} detail={s.airportsReady ? w.detail : s.airportLabel || null} />;
   }
-  if (!ap) return <Waiting title="No airport nearby" detail="No large or medium airport was found in the airports you chose." />;
+  if (!ap) return <Waiting title="No Airport Nearby" detail="No large or medium airport was found in the airports you chose." />;
   const u = s.settings.units;
   const rows = s.arrivals.data;
   return (
@@ -31,11 +31,11 @@ export default function Arrivals() {
           <span
             onPointerDown={() => repo.cycleArrivalsAirport()}
             style={{ background: '#171717', color: MUTED, borderRadius: 14, padding: '6px 12px', fontSize: 14, fontWeight: 600, lineHeight: 1 }}>
-            {s.arrivalsPick === 0 ? 'Nearest airport' : `${ap.name}`}
-            {s.nearBig.length > 1 ? ' · turn dial to change' : ''}
+            {s.arrivalsPick === 0 ? 'Nearest Airport' : `${ap.name}`}
+            {s.nearBig.length > 1 ? ' · Turn Dial to Change' : ''}
           </span>
         </div>
-        <div style={{ fontSize: 15, fontWeight: 600, color: MUTED }}>{`${fmtDist(ap.distMi, u)} away`}</div>
+        <div style={{ fontSize: 15, fontWeight: 600, color: MUTED }}>{`${fmtDist(ap.distMi, u)} Away`}</div>
       </div>
 
       {s.faa ? (
@@ -53,10 +53,10 @@ export default function Arrivals() {
           }}>
           <WarnGlyph size={30} color={SALMON.accent} style={{ flex: 'none' }} />
           <div style={{ flex: 1, minWidth: 0, display: 'flex', flexDirection: 'column', gap: 2 }}>
-            <div style={{ fontSize: 21, fontWeight: 800, lineHeight: 1.1 }}>{`FAA: ${s.faa.kind.toLowerCase()} at ${ap.code}`}</div>
+            <div style={{ fontSize: 21, fontWeight: 800, lineHeight: 1.1 }}>{`FAA: ${s.faa.kind} at ${ap.code}`}</div>
             <div style={{ fontSize: 16, fontWeight: 600, color: SALMON.soft, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{faaLine(s.faa)}</div>
           </div>
-          <div style={{ background: SALMON.chip, color: SALMON.chipInk, borderRadius: 14, padding: '6px 12px', fontSize: 14, fontWeight: 700, lineHeight: 1 }}>FAA live</div>
+          <div style={{ background: SALMON.chip, color: SALMON.chipInk, borderRadius: 14, padding: '6px 12px', fontSize: 14, fontWeight: 700, lineHeight: 1 }}>FAA Live</div>
         </div>
       ) : null}
 
@@ -77,7 +77,7 @@ export default function Arrivals() {
         }}>
         <div style={{ width: 92, flex: 'none' }}>Estimated</div>
         <div style={{ width: 150, flex: 'none' }}>Flight</div>
-        <div style={{ flex: 1, minWidth: 0 }}>Coming from</div>
+        <div style={{ flex: 1, minWidth: 0 }}>Coming From</div>
         <div style={{ width: 120, flex: 'none' }}>Distance</div>
         <div style={{ width: 128, flex: 'none' }}>Status</div>
       </div>
@@ -85,7 +85,7 @@ export default function Arrivals() {
       <div style={{ display: 'flex', flexDirection: 'column', gap: 8, flex: 'none' }}>
         {!rows ? (
           <div style={{ fontSize: 20, fontWeight: 600, color: MUTED, padding: '14px 8px' }}>
-            {s.arrivals.status === 'error' ? `Cannot get arrivals. ${s.arrivals.error}` : 'Looking for arriving aircraft'}
+            {s.arrivals.status === 'error' ? `Cannot get arrivals. ${s.arrivals.error}` : 'Looking for Arriving Aircraft'}
           </div>
         ) : rows.length === 0 ? (
           <div style={{ fontSize: 20, fontWeight: 600, color: MUTED, padding: '14px 8px' }}>{`Nothing is arriving at ${ap.code} right now.`}</div>
@@ -124,7 +124,7 @@ function Row({ r, s, pal }: { r: Arrival; s: RepoState; pal: Pal }) {
         <span style={{ fontSize: 22, fontWeight: 800, lineHeight: 1, whiteSpace: 'nowrap' }}>{r.callsign ?? r.reg ?? r.hex.toUpperCase()}</span>
         <span style={{ fontSize: 14, fontWeight: 600, color: pal.soft, lineHeight: 1.1, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{sub}</span>
       </div>
-      <div style={{ flex: 1, minWidth: 0, fontSize: 17, fontWeight: 700, whiteSpace: 'nowrap' }}>{route ? `${route.from}, est.` : 'Origin unknown'}</div>
+      <div style={{ flex: 1, minWidth: 0, fontSize: 17, fontWeight: 700, whiteSpace: 'nowrap' }}>{route ? `${route.from}, est.` : 'Origin Unknown'}</div>
       <div style={{ width: 120, flex: 'none', display: 'flex', flexDirection: 'column', gap: 2 }}>
         <span style={{ fontSize: 18, fontWeight: 700, lineHeight: 1 }}>{fmtDist(r.distMi, u)}</span>
         <span style={{ fontSize: 14, fontWeight: 600, color: pal.soft, lineHeight: 1.1 }}>{fmtAlt(r.altFt, u)}</span>

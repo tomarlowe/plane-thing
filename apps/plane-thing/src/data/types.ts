@@ -140,4 +140,6 @@ export interface LogEntry {
   p: [number, number];
   // the nearest airport by name when it was first seen
   w: string;
+  // when the user first marked it as visually verified, unix seconds. absent on rows from before this existed
+  s?: number;
 }

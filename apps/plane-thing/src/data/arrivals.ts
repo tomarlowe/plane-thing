@@ -16,7 +16,7 @@ export interface Arrival {
 }
 
 export const STATUS_LABEL: Record<ArrivalStatus, string> = {
-  final: 'Final approach',
+  final: 'Final Approach',
   approach: 'Approach',
   descending: 'Descending',
   inbound: 'Inbound',

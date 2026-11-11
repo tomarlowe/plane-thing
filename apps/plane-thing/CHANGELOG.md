@@ -1,5 +1,17 @@
 # plane-thing
 
+## 0.2.0
+
+Look-here card, open a plane from the Radar, Visually Verified marking and the Log & Photos screen.
+
+- Overhead has a look-here card: where to look from the car, as a clock position ("11 o'clock") and how high ("Low · About 15° up"). The clock position needs the phone to report a heading while the car is moving. Without one the card says "North Is Up" and gives the compass direction instead.
+- Open any plane from the Radar. Touch a plane on the scope, or turn the dial to a row in the list view and click. The Overhead screen then follows that plane and says "Picked From Radar". Button 1 goes back to the closest plane.
+- The Back button now does something. On Overhead it marks the plane you are looking at as Visually Verified, for the planes you have seen with your own eyes. A bar replaces the Overhead heading for about 3 seconds ("Visually Verified", or "Already Marked" if you marked it before), and a small eye icon sits next to the tail number from then on. There is no undo on the device. Marked planes are never dropped when the log trims old rows. The CSV has a new "Visually Verified" column just before "Source", and the KML has a "Visually Verified" line.
+- The Spotter log screen is now Log & Photos, with a wider tab. It has four cards you can touch or turn the dial to: Aircraft Logged, Different Types, New Today and Visually Verified. The Visually Verified card shows one photo at a time with the plane's details.
+- The photo of a plane you marked is saved on the Car Thing: one picture per plane, up to 60, the oldest dropped first. Clearing the log from the settings page removes them too.
+- Every label on the screens is now in Title Case.
+- Checked on a real Car Thing on 2026-11-10, by the owner: the tab bar, marking a plane, marking it again, opening a plane from the Radar, Log & Photos with a saved photo, and the look-here card. Not checked on a real device: pressing Back before the photo has loaded, how many photos the device can hold, and the new CSV and KML columns on a real phone. Whether the look-here card used the car's heading while moving was not recorded separately.
+
 ## 0.1.0
 
 First release.

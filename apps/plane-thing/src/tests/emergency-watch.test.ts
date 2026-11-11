@@ -36,7 +36,7 @@ describe('emergency tracker', () => {
     const fresh = t.observe(1005, [ac({ squawk: '7700' })]);
     expect(fresh).toHaveLength(1);
     expect(fresh[0]!.code).toBe('7700');
-    expect(fresh[0]!.label).toBe('General emergency');
+    expect(fresh[0]!.label).toBe('General Emergency');
     expect(t.active(1006)).toHaveLength(1);
   });
   test('it alerts once, not on every update', () => {
