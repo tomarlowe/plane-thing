@@ -8,10 +8,11 @@ wardriving for Wi-Fi, but for planes: drive around, and the Car Thing shows what
 aircraft you pass. Five screens, one for each button, in bright Material 3 Expressive colors on a black background. It is free,
 has no accounts or API keys, and is open source.
 
-> **Status: early release, lightly tested on a real device.** Version 0.2.0 has been built, type-checked and run in a
+> **Status: early release, lightly tested on a real device.** Version 0.2.1 has been built, type-checked and run in a
 > simulator, and its 165 unit tests pass, but that used made-up data. Its owner drove with version 0.1.0 on a real Car Thing
 > for about a day and reports that it worked well, including photos of the actual aircraft, and on 2026-11-10 he tried the
-> main 0.2.0 features by hand on the same device. That is one person on one device: most of the
+> main 0.2.0 features by hand on the same device. Version 0.2.1 changes only the store tagline, and has not been installed on
+> a real device. That is one person on one device: most of the
 > [checklist](docs/device-test-checklist.md) has not been worked through, and exports have not been tried on a real phone.
 > See [what has and has not been tested](docs/testing.md).
 
@@ -74,7 +75,7 @@ See [docs/install.md](docs/install.md). Short version: install it from the bridg
 address of the version zip into the companion app's "install from url or file" panel (not yet tested on a real device).
 
 - Catalog address, which the store reads: `https://tomarlowe.github.io/plane-thing/catalog.v1.json`
-- Zip for version 0.2.0: `https://tomarlowe.github.io/plane-thing/r/01a1a8ce-5e3a-71a1-8619-b65be4e9d5d1/0.2.0.zip` (available once this version is published)
+- Zip for version 0.2.1: `https://tomarlowe.github.io/plane-thing/r/01a1a8ce-5e3a-71a1-8619-b65be4e9d5d1/0.2.1.zip`
 
 ## Known limits
 

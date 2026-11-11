@@ -249,3 +249,16 @@ Claude proposed something and Thomas approved it, both are named. Decisions that
 - **Decision:** version 0.2.0 contains the four changes above. A redesigned Watchlist that Thomas had been considering is not in
   it, and is undecided (see the [roadmap](roadmap.md)).
 - **Decided by:** Thomas.
+
+## Added in version 0.2.1
+
+### 30. The store tagline
+
+- **Decision:** the one-line description on the store card reads: "See what is flying near you: the closest plane with a photo
+  and where to look, a live radar, a watch list, a log of the planes you spot, and an estimated arrivals board. Not for
+  navigation or safety."
+- **Why:** the earlier line still said "spotter log" after the screen became Log & Photos, did not mention the photos or the
+  look-here cue, did not carry the "not for navigation or safety" line the project rules ask for wherever the app is described,
+  and "arrivals board" could be read as real airline schedules, which the app does not have.
+- **Decided by:** Thomas, choosing between two drafts. Claude wrote both drafts and noted what was wrong with the old line.
+  Changing the tagline needed a new version, so it shipped as 0.2.1.

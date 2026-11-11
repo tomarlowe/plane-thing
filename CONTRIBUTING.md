@@ -6,8 +6,9 @@ Car Thing, a typo fix, a bug report, or a code review from someone who reads Typ
 
 ## The most useful thing right now
 
-**Try it on a real Car Thing and tell us what happened.** Version 0.2.0 has been tested in a simulator, in unit tests
-with made-up data, and by its owner on one Car Thing (see [docs/testing.md](docs/testing.md)). Open a
+**Try it on a real Car Thing and tell us what happened.** Version 0.2.1 has been tested in a simulator and in unit tests
+with made-up data, and its owner tried the 0.2.0 features on one Car Thing (version 0.2.1 differs from 0.2.0 only in its store
+tagline). See [docs/testing.md](docs/testing.md). Open a
 [device test report](https://github.com/tomarlowe/plane-thing/issues/new?template=device_test_report.yml) even if
 everything worked. The [checklist](docs/device-test-checklist.md) lists what to look at.
 

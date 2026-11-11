@@ -14,7 +14,7 @@ It has been built, type-checked and run in a simulator, and 165 unit tests pass.
 on a real Car Thing for about a day and reports that it worked well, and he checked the main 0.2.0 features by hand on his
 Car Thing on 2026-11-10. That is one person on one device: no automated test has talked to a live flight service, and most of
 the [device test checklist](device-test-checklist.md) has not been worked through. See [testing](testing.md). Treat version
-0.2.0 as an early release that may have rough edges.
+0.2.1 as an early release that may have rough edges. (It differs from 0.2.0 only in its store tagline.)
 
 ### Is it affiliated with Spotify, Anthropic, the FAA or any data service?
 

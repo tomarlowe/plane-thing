@@ -18,9 +18,9 @@ The companion app has an "install from url or file" panel on its Apps screen. It
 2. Open the "install from url or file" panel.
 3. Paste this address, then tap install:
 
-   `https://tomarlowe.github.io/plane-thing/r/01a1a8ce-5e3a-71a1-8619-b65be4e9d5d1/0.2.0.zip`
+   `https://tomarlowe.github.io/plane-thing/r/01a1a8ce-5e3a-71a1-8619-b65be4e9d5d1/0.2.1.zip`
 
-This is the zip for version 0.2.0. The [catalog](https://tomarlowe.github.io/plane-thing/catalog.v1.json) lists the
+This is the zip for version 0.2.1. The [catalog](https://tomarlowe.github.io/plane-thing/catalog.v1.json) lists the
 address of every version.
 
 ## Option 3: install a downloaded zip file
