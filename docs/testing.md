@@ -95,6 +95,9 @@ These are the owner's own reports, not measurements. No tool recorded them.
 - **Not covered.** He did not work through the checklist, so nothing else is claimed. Exports, touch, the emergency alert,
   the Arrivals screen and the log across restarts are not confirmed.
 
+**Version 0.2.1.** Only the store tagline in `manifest.json` changed from 0.2.0, plus the version number and changelog. It
+was not installed on a device, so the 0.2.0 results below are taken to apply to it, and that is an assumption.
+
 **Version 0.2.0, reported on 2026-11-10** (a build installed from the project files by the owner on his own Car Thing):
 
 - **Worked, as he reported it:** the five-tab bar with the wider Log & Photos tab; pressing Back on Overhead to mark a plane

@@ -2,7 +2,7 @@
 
 Plane Thing's own code is MIT-licensed (see [LICENSE](LICENSE)). It is built on the open source packages, fonts and data
 below. This file lists what ships inside the app and carries the license text those licenses ask to be passed along. It was
-generated from the license files of the installed packages for version 0.1.0. Version 0.2.0 added no packages or fonts, so
+generated from the license files of the installed packages for version 0.1.0. Versions 0.2.0 and 0.2.1 added no packages or fonts, so
 it is still current. Regenerate it when dependencies change.
 
 ## Packages and fonts that can be part of the installed app

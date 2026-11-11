@@ -1,5 +1,9 @@
 # plane-thing
 
+## 0.2.1
+
+The store tagline now says what the app does in current terms (look-here cue, estimated arrivals) and that it is not for navigation or safety. No other change: the app behaves the same as 0.2.0, and was not reinstalled on a real Car Thing for this version.
+
 ## 0.2.0
 
 Look-here card, open a plane from the Radar, Visually Verified marking and the Log & Photos screen.
