@@ -4,12 +4,12 @@
   "source": "https://github.com/tomarlowe/plane-thing",
   "icon": null,
   "screenshots": [
-    "https://tomarlowe.github.io/plane-thing/screenshots/01a1a8ce-5e3a-71a1-8619-b65be4e9d5d1/01-overhead.png",
-    "https://tomarlowe.github.io/plane-thing/screenshots/01a1a8ce-5e3a-71a1-8619-b65be4e9d5d1/02-radar.png",
-    "https://tomarlowe.github.io/plane-thing/screenshots/01a1a8ce-5e3a-71a1-8619-b65be4e9d5d1/03-visually-verified.png",
-    "https://tomarlowe.github.io/plane-thing/screenshots/01a1a8ce-5e3a-71a1-8619-b65be4e9d5d1/04-log-photos.png",
-    "https://tomarlowe.github.io/plane-thing/screenshots/01a1a8ce-5e3a-71a1-8619-b65be4e9d5d1/05-watchlist.png",
-    "https://tomarlowe.github.io/plane-thing/screenshots/01a1a8ce-5e3a-71a1-8619-b65be4e9d5d1/06-arrivals.png"
+    "https://tomarlowe.github.io/plane-thing/screenshots/01a1a8ce-5e3a-71a1-8619-b65be4e9d5d1/device-01-overhead.png",
+    "https://tomarlowe.github.io/plane-thing/screenshots/01a1a8ce-5e3a-71a1-8619-b65be4e9d5d1/device-02-radar.png",
+    "https://tomarlowe.github.io/plane-thing/screenshots/01a1a8ce-5e3a-71a1-8619-b65be4e9d5d1/device-03-radar-list.png",
+    "https://tomarlowe.github.io/plane-thing/screenshots/01a1a8ce-5e3a-71a1-8619-b65be4e9d5d1/device-04-watchlist.png",
+    "https://tomarlowe.github.io/plane-thing/screenshots/01a1a8ce-5e3a-71a1-8619-b65be4e9d5d1/device-05-log-photos.png",
+    "https://tomarlowe.github.io/plane-thing/screenshots/01a1a8ce-5e3a-71a1-8619-b65be4e9d5d1/device-06-arrivals.png"
   ],
   "categories": [
     "dashboards",

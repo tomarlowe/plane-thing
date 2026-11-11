@@ -72,10 +72,10 @@ the airport file is caught), and `geo-units.test.ts` checks distances against we
 skies, failing services and missing photos (options are in the [developer guide](developer-guide.md#get-started)). It is how
 the screens, the flash, and the dial and button behavior were checked without a device.
 
-Its pictures carry a "SIMULATED PICTURE" watermark. The six images in `apps/plane-thing/screenshots/` that appear in the
-README were taken from the simulator with invented aircraft and are not photos of a real screen. Each carries a line along
-the bottom saying so. The script that took them is not part of the repository. They will be replaced with real captures from the device (`bun run shot plane-thing --replace`)
-when testing is done.
+Its pictures carry a "SIMULATED PICTURE" watermark. Two images in `apps/plane-thing/screenshots/` that appear in the
+README (`03-visually-verified.png` and `04-log-photos.png`) were taken from the simulator with invented aircraft and are not
+photos of a real screen. Each carries a line along the bottom saying so. The script that took them is not part of the
+repository. The six `device-*.png` images are real captures from the owner's Car Thing (see below).
 
 The settings page was checked against a fake phone host that stands in for the companion app. That exercised the export
 flow, but it is not the companion app.
@@ -94,6 +94,14 @@ These are the owner's own reports, not measurements. No tool recorded them.
   matter and not a Plane Thing one. That has not been investigated, and it is his observation, not a finding.
 - **Not covered.** He did not work through the checklist, so nothing else is claimed. Exports, touch, the emergency alert,
   the Arrivals screen and the log across restarts are not confirmed.
+
+**Version 0.2.2, pictures taken on 2026-11-10.** The owner captured six screens from his Car Thing with `bun run shot`
+(Overhead, Radar, the Radar list, Watchlist, Log & Photos and Arrivals), with the device running the 0.2.0 build and the
+Location setting on Fixed Place at JFK airport. Claude looked at each picture. What they show, and nothing more: the Fixed
+Place setting works on a real device once the numbers are typed correctly (a first attempt with a mistyped value fell back to
+the phone's GPS without saying so); every one of those six screens draws with live data; a photo from Planespotters loaded on
+Overhead; and Arrivals listed five flights, all with "Origin Unknown". The spotter log gained about ten New York aircraft
+while the fixed place was on. Version 0.2.2 itself changes only the pictures and was not installed on a device.
 
 **Version 0.2.1.** Only the store tagline in `manifest.json` changed from 0.2.0, plus the version number and changelog. It
 was not installed on a device, so the 0.2.0 results below are taken to apply to it, and that is an assumption.

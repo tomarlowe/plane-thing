@@ -54,7 +54,8 @@ What has been checked:
 
 - The code compiles under strict TypeScript, the build produces a valid bridgething catalog, and 165 unit tests pass.
 - Every screen was rendered in a simulator with made-up data, and Thomas reviewed mockups of the screens before the
-  build. The simulator pictures are not photos of the real device, and the README says so.
+  build. Six README and store pictures are real captures Thomas took from his Car Thing; the two simulator pictures left in the
+  README are not photos of the real device, and the README says so.
 - The data services' public terms were read, and the app changed to respect them (OpenSky was removed, request spacing
   was added, the position sent was made less precise).
 

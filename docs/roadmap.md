@@ -13,7 +13,8 @@ is to work through the checklist on a real Car Thing and a real phone, over seve
 - [ ] Run the checklist and record the results in it.
 - [ ] Fix whatever the real services and the real device show up. Expect surprises: the service replies in the tests were
       written from documentation.
-- [ ] Replace the simulator pictures in the README and store listing with real captures (`bun run shot plane-thing --replace`).
+- [x] Replace the simulator pictures in the store listing with real captures (done in 0.2.2 for six screens).
+- [ ] Take real captures of the Visually Verified bar and the saved photo view, which are still simulator pictures in the README.
 - [ ] Open a real CSV in a spreadsheet and a real KML in a map program, and in at least one plane spotter's logbook if one
       accepts imports. Adjust the columns if needed.
 

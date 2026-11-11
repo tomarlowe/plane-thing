@@ -86,6 +86,11 @@ can show it later. One picture is kept per plane, up to 60, and the oldest is de
 deletes them. This applies to any of the sources below. Plane Thing never uploads or re-publishes a photo, and the spotter
 log and the CSV carry no photo link or photographer name. The photographer and the site are credited under every photo.
 
+One exception outside the app: the Overhead screenshot in the README and the store listing (added in 0.2.2) is a capture of
+the real screen and so contains one Planespotters photo with its credit. That is a copy of a photographer's picture in this
+repository, made by the owner's decision, and it has not been cleared with Planespotters or the photographer (see
+[design decision 31](design-decisions.md)).
+
 The app tries, in order: this aircraft (Planespotters by hex code, then by tail number, then airport-data.com), another
 aircraft of the same airline and type from the aircraft in the current list (labelled "Photo shows N123AB"), a photo of
 the type from Wikimedia Commons (labelled "Typical ..., not this aircraft"), and finally a drawn silhouette.
