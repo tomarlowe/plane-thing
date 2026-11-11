@@ -8,10 +8,10 @@ wardriving for Wi-Fi, but for planes: drive around, and the Car Thing shows what
 aircraft you pass. Five screens, one for each button, in bright Material 3 Expressive colors on a black background. It is free,
 has no accounts or API keys, and is open source.
 
-> **Status: early release, lightly tested on a real device.** Version 0.2.1 has been built, type-checked and run in a
+> **Status: early release, lightly tested on a real device.** Version 0.2.2 has been built, type-checked and run in a
 > simulator, and its 165 unit tests pass, but that used made-up data. Its owner drove with version 0.1.0 on a real Car Thing
 > for about a day and reports that it worked well, including photos of the actual aircraft, and on 2026-11-10 he tried the
-> main 0.2.0 features by hand on the same device. Version 0.2.1 changes only the store tagline, and has not been installed on
+> main 0.2.0 features by hand on the same device. Versions 0.2.1 and 0.2.2 change only the store tagline and the pictures, and have not been installed on
 > a real device. That is one person on one device: most of the
 > [checklist](docs/device-test-checklist.md) has not been worked through, and exports have not been tried on a real phone.
 > See [what has and has not been tested](docs/testing.md).
@@ -22,21 +22,33 @@ Plane Thing is for fun and curiosity. Positions can be late, wrong or missing. *
 
 ## Screenshots
 
-These are **pictures from the simulator, with invented aircraft and a sample photo**, not photos of a real Car Thing. Each
-carries a "simulated" stamp. They will be replaced with real captures once device testing is done.
+The first six pictures are **real captures from a Car Thing**, taken by the owner on 2026-11-10 with `bun run shot`. The
+app's Location setting was on Fixed Place at JFK airport in New York for these, so they show live traffic around JFK and not
+where the owner lives. The device was running the 0.2.0 build. The Overhead picture includes a photo of the aircraft,
+credited on screen to Lucian Ojog on Planespotters.net.
 
 <table>
   <tr>
-    <td align="center"><img src="apps/plane-thing/screenshots/01-overhead.png" alt="Overhead screen: the closest aircraft with a simulated photo, altitude, speed, heading and distance" width="400"><br><b>Overhead (simulated)</b></td>
-    <td align="center"><img src="apps/plane-thing/screenshots/02-radar.png" alt="Radar screen: a scope with aircraft around the user, and the nearest airport marked (simulated)" width="400"><br><b>Radar (simulated)</b></td>
+    <td align="center"><img src="apps/plane-thing/screenshots/device-01-overhead.png" alt="Overhead screen on a real Car Thing: JetBlue flight JBU158 with a photo of the aircraft, altitude, speed, heading, distance and a look-here card" width="400"><br><b>Overhead</b></td>
+    <td align="center"><img src="apps/plane-thing/screenshots/device-02-radar.png" alt="Radar screen on a real Car Thing: a scope with 16 aircraft around JFK airport" width="400"><br><b>Radar</b></td>
   </tr>
+  <tr>
+    <td align="center"><img src="apps/plane-thing/screenshots/device-03-radar-list.png" alt="Radar list view on a real Car Thing: nearby aircraft closest first, with a police helicopter highlighted" width="400"><br><b>Radar, list view</b></td>
+    <td align="center"><img src="apps/plane-thing/screenshots/device-04-watchlist.png" alt="Watchlist screen on a real Car Thing: no emergency squawks, one helicopter nearby, and the list of things being watched for" width="400"><br><b>Watchlist</b></td>
+  </tr>
+  <tr>
+    <td align="center"><img src="apps/plane-thing/screenshots/device-05-log-photos.png" alt="Log and Photos screen on a real Car Thing: four counter cards and the most recent sightings" width="400"><br><b>Log &amp; Photos</b></td>
+    <td align="center"><img src="apps/plane-thing/screenshots/device-06-arrivals.png" alt="Arrivals screen on a real Car Thing: five flights approaching JFK with estimated minutes, all with origin unknown" width="400"><br><b>Arrivals</b></td>
+  </tr>
+</table>
+
+The next two are **pictures from the simulator, with invented aircraft and a sample photo**, not photos of a real Car
+Thing. Each carries a "simulated" stamp. Real captures of these two views have not been taken.
+
+<table>
   <tr>
     <td align="center"><img src="apps/plane-thing/screenshots/03-visually-verified.png" alt="Overhead screen right after the Back button: a bar says Visually Verified, replacing the heading (simulated)" width="400"><br><b>Back marks a plane Visually Verified (simulated)</b></td>
-    <td align="center"><img src="apps/plane-thing/screenshots/04-log-photos.png" alt="Log and Photos screen: the Visually Verified view showing a marked plane with its saved photo (simulated)" width="400"><br><b>Log &amp; Photos (simulated)</b></td>
-  </tr>
-  <tr>
-    <td align="center"><img src="apps/plane-thing/screenshots/05-watchlist.png" alt="Watchlist screen: emergency squawks, helicopters and listed callsigns (simulated)" width="400"><br><b>Watchlist (simulated)</b></td>
-    <td align="center"><img src="apps/plane-thing/screenshots/06-arrivals.png" alt="Arrivals screen: aircraft landing at the nearest airport with estimated times (simulated)" width="400"><br><b>Arrivals (simulated)</b></td>
+    <td align="center"><img src="apps/plane-thing/screenshots/04-log-photos.png" alt="Log and Photos screen: the Visually Verified view showing a marked plane with its saved photo (simulated)" width="400"><br><b>Log &amp; Photos, photo view (simulated)</b></td>
   </tr>
 </table>
 
@@ -71,11 +83,11 @@ it is guessing.
 
 ## Install
 
-See [docs/install.md](docs/install.md). Short version: install it from the bridgething store once it is listed, or paste the
+See [docs/install.md](docs/install.md). Short version: install it from the [bridgething store](https://bridgething.com/apps), or paste the
 address of the version zip into the companion app's "install from url or file" panel (not yet tested on a real device).
 
 - Catalog address, which the store reads: `https://tomarlowe.github.io/plane-thing/catalog.v1.json`
-- Zip for version 0.2.1: `https://tomarlowe.github.io/plane-thing/r/01a1a8ce-5e3a-71a1-8619-b65be4e9d5d1/0.2.1.zip`
+- Zip for version 0.2.2: `https://tomarlowe.github.io/plane-thing/r/01a1a8ce-5e3a-71a1-8619-b65be4e9d5d1/0.2.2.zip`
 
 ## Known limits
 

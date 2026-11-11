@@ -23,8 +23,8 @@ Record the date, the bridgething version, and the phone. Note anything that diff
 - Planned phone: Pixel 9 Pro (Android), bridgething companion app 0.16.0. The Car Thing runs Terbium firmware.
 - Car Thing firmware and daemon version: not recorded.
 - The code-level tests use simulated data and are not part of this list. The store
-  screenshots were taken in the simulator with invented aircraft, not on the device. Replace them with
-  `bun run shot plane-thing --replace` once the app runs on the device.
+  screenshots are real captures from the device, taken on 2026-11-10 with the Location setting on Fixed Place at JFK. Two
+  README pictures (the Visually Verified bar and the saved photo view) are still from the simulator.
 
 ## Install and start
 

@@ -1,5 +1,9 @@
 # plane-thing
 
+## 0.2.2
+
+The store and README pictures are now real captures from a Car Thing, taken by the owner on 2026-11-10 with the app's Location set to a fixed place at JFK airport. Two README pictures (the Visually Verified bar and the saved photo view) are still from the simulator and say so. The Overhead picture includes a photo credited to Lucian Ojog on Planespotters.net. No change to the app itself: it behaves the same as 0.2.0, and 0.2.2 was not installed on a real Car Thing.
+
 ## 0.2.1
 
 The store tagline now says what the app does in current terms (look-here cue, estimated arrivals) and that it is not for navigation or safety. No other change: the app behaves the same as 0.2.0, and was not reinstalled on a real Car Thing for this version.

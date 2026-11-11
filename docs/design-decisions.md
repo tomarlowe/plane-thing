@@ -262,3 +262,17 @@ Claude proposed something and Thomas approved it, both are named. Decisions that
   and "arrivals board" could be read as real airline schedules, which the app does not have.
 - **Decided by:** Thomas, choosing between two drafts. Claude wrote both drafts and noted what was wrong with the old line.
   Changing the tagline needed a new version, so it shipped as 0.2.1.
+
+## Added in version 0.2.2
+
+### 31. Real pictures in the store and README, including one aircraft photo
+
+- **Decision:** the six store pictures and the first six README pictures are real captures from Thomas's Car Thing, taken with
+  the app's Location on Fixed Place at JFK airport so they do not show where he lives. The Overhead picture includes a photo
+  of the aircraft with its on-screen credit (Lucian Ojog, Planespotters.net).
+- **Why:** real pictures show what the app actually does. The simulator pictures were a stand-in until the device could be used.
+- **Risk, not resolved:** the app itself never republishes a photo, but this one screenshot does put a photographer's picture
+  in a public repository and store listing. Planespotters' terms say image files may not be re-hosted, and nobody has asked
+  Planespotters or the photographer. Claude recommended keeping the simulator picture for Overhead for that reason.
+- **Decided by:** Thomas, who chose to publish all six after hearing that recommendation twice. Claude wrote the labels and
+  this note.

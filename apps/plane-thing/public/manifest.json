@@ -1,7 +1,7 @@
 {
   "id": "01a1a8ce-5e3a-71a1-8619-b65be4e9d5d1",
   "name": "Plane Thing",
-  "version": "0.2.1",
+  "version": "0.2.2",
   "description": "See what is flying near you: the closest plane with a photo and where to look, a live radar, a watch list, a log of the planes you spot, and an estimated arrivals board. Not for navigation or safety.",
   "icon": "icon.png",
   "settings": "settings.html",
